@@ -15,7 +15,7 @@ exports.addToCart = async (req, res) => {
     const existingItem = cart.cartItems.find(item => item.product.toString() === productId);
 
     if (existingItem) {
-      existingItem.quantity += Number(quantity); // ensure it’s a number
+      existingItem.quantity = Number(quantity); // ensure it’s a number
     } else {
       cart.cartItems.push({ product: productId, quantity: Number(quantity) });
     }

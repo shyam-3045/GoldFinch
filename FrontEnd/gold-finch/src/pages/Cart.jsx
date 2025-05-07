@@ -3,8 +3,10 @@ import Navbar2 from '../components/layout/NavBar2';
 import Footer from '../components/layout/Footer';
 import {useCartItems} from "../context/CartItemsContext"
 
+
+
 export default function ShoppingCart() {
-  const {cartProducts}=useCartItems()
+  const {cartProducts,getCartItems,removeCartItem}=useCartItems()
   
   
 
@@ -23,53 +25,25 @@ export default function ShoppingCart() {
     borderColor: '#C8E6C9'
   };
 
-  // Sample cart data - in a real app this would come from your state management
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Organic Plant Food",
-      price: 24.99,
-      image: "/api/placeholder/200/200",
-      quantity: 2,
-      category: "Garden"
-    },
-    {
-      id: 2,
-      name: "Ceramic Plant Pot",
-      price: 18.50,
-      image: "/api/placeholder/200/200",
-      quantity: 1,
-      category: "Home Decor"
-    },
-    {
-      id: 3,
-      name: "Bamboo Garden Tools Set",
-      price: 35.99,
-      image: "/api/placeholder/200/200",
-      quantity: 1,
-      category: "Garden"
-    }
-  ]);
   
 
-  // Calculate cart totals
   const subtotal = cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-  const shipping = 5.99;
-  const tax = subtotal * 0.07; // 7% tax rate
+  const shipping = 1.00 ;
+  const tax = subtotal * 0.01; // 7% tax rate
   const total = subtotal + shipping + tax;
 
   // Update quantity
-  const updateQuantity = (id, newQuantity) => {
+  const updateQuantity =async (id, newQuantity) => {
     if (newQuantity < 1) return;
+    else
+    {
+      await getCartItems(id,newQuantity)
+    }
     
-    setCartItems(cartItems.map(item => 
-      item.id === id ? {...item, quantity: newQuantity} : item
-    ));
   };
 
-  // Remove item from cart
   const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    removeCartItem(id)
   };
 
   return (

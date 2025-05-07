@@ -4,13 +4,7 @@ import axios from 'axios';
 const CartProducts = createContext();
 
 export const CartItemsContext = ({ children }) => {
-    const [token, setToken] = useState("");
     const [cartProducts,setCartProducts]=useState([])
-
-    useEffect(() => {
-        const userToken = localStorage.getItem("token");
-        setToken(userToken);
-    },); 
 
     useEffect(()=>
     {
@@ -36,12 +30,12 @@ export const CartItemsContext = ({ children }) => {
             getCartUser()
 
     },)
-    const getCartItems = async (id) => {
+    const getCartItems = async (id,quantity) => {
         const userToken = localStorage.getItem("token"); // ✅ use direct localStorage
         try {
             await axios.post("http://localhost:3000/cart/add", {
                 productId: id,
-                quantity: 1
+                quantity:quantity
             }, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
@@ -54,9 +48,25 @@ export const CartItemsContext = ({ children }) => {
         }
     };
     
+    const removeCartItem=async(id)=>
+    {
+        const userToken = localStorage.getItem("token"); // ✅ use direct localStorage
+        try {
+            await axios.delete(`http://localhost:3000/cart/remove/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`
+                }
+            });
+            return true;
+        } catch (err) {
+            console.error("Deletion Error", err);
+            return false;
+        }
+
+    }
 
     return (
-        <CartProducts.Provider value={{ getCartItems,cartProducts }}>
+        <CartProducts.Provider value={{ getCartItems,cartProducts,removeCartItem }}>
             {children}
         </CartProducts.Provider>
     );

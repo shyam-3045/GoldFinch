@@ -93,12 +93,6 @@ export default function Navbar() {
             >
               Contact
             </a>
-            <a
-              href="#favorites"
-              className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
-            >
-              Favorites
-            </a>
           </div>
 
           <div className="navbar-icons">
