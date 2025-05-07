@@ -12,9 +12,9 @@ export default function ProductCard({ product }) {
       <div className="product-info">
         <div className="product-header">
           <span className="product-category">{product.category}</span>
-          <Rating rating={product.rating} />
+          <span className="flex flex-row"><Rating rating={product.rating} /></span>
         </div>
-
+        
         <h3 className="product-name">{product.name}</h3>
         <p className="product-description">{product.description}</p>
 

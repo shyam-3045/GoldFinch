@@ -17,7 +17,7 @@ export default function AboutSection() {
               cultivation.
             </p>
             <p className="about-paragraph">
-              Every tea packet we offer is a result of careful selection,
+              Every tea acket we offer is a result of careful selection,
               traditional processing methods, and a commitment to sustainable
               farming practices. We work directly with tea growers to ensure
               fair trade and the highest quality in every cup you brew.

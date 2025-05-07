@@ -1,36 +1,29 @@
-
-import { useState } from "react";
-import Navbar from "./components/layout/Navbar";
-import HeroSection from "./components/sections/HeroSection";
-import FeaturedProducts from "./components/sections/FeaturedProducts";
-import AboutSection from "./components/sections/AboutSection";
-import Testimonials from "./components/sections/Testimonials";
-import Newsletter from "./components/sections/Newsletter";
-import Footer from "./components/layout/Footer";
 import "./App.css";
+import "./index.css"
+import Home from "./pages/Home"
+import PageNotFound from "./pages/PageNotFound"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import axios from "axios";
+import MainNavigation from "./components/layout/MainNavigation";
+import { useEffect } from "react";
+import Cart from "./pages/Cart";
 
-export default function TeaShopHomepage() {
-  const [email, setEmail] = useState("");
+const router=createBrowserRouter([
+  {path:'/',element:<MainNavigation/>,children:[
+    {path:'/',element:<Home/>,errorElement:<pageNotFound/>},
+  ]
+  },
+  {path:'*',element:<PageNotFound/>},
+  {path:"/cart",element:<Cart/>},
+  
+])
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    alert(`Thank you for subscribing with ${email}!`);
-    setEmail("");
-  };
-
+export default function App() {
   return (
-    <div className="app-container">
-      <Navbar />
-      <HeroSection />
-      <FeaturedProducts />
-      <AboutSection />
-      <Testimonials />
-      <Newsletter
-        email={email}
-        setEmail={setEmail}
-        handleSubscribe={handleSubscribe}
-      />
-      <Footer />
-    </div>
+    <>
+    <RouterProvider router={router}/>
+    </>
+    
+    
   );
 }
