@@ -68,3 +68,9 @@ exports.userLogOut=async(req,res)=>
 {
   return res.json({msg:"Logout successfully !"})
 }
+
+exports.userDetails=async(req,res)=>
+{
+  res.json({id:req.user.id})
+
+}

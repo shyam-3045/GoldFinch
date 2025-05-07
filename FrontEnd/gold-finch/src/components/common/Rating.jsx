@@ -1,6 +1,6 @@
 export default function Rating({ rating }) {
   return (
-    <div className="product-rating">
+    <div className="flex flex-row gap-1 text-yellow-500">
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}

@@ -1,9 +1,28 @@
 import { useState, useEffect } from "react";
 import { ShoppingCart, User, Menu, X } from "lucide-react";
+import Model from "./Model"
+import { useAuth } from "../../context/authContext";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  const {logout}=useAuth()
+  const [token,setToken]=useState("")
+  const navigate=useNavigate()
+
+  useEffect(()=>
+  {
+    const userToken=localStorage.getItem("token")
+    setToken(localStorage.getItem("token"))
+    if(userToken)
+    {
+      setLoggedIn(true)
+    }
+  })
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [loggedin, setLoggedIn] = useState(false);
+  const [isOpen,setIsOpen]=useState(false)
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,8 +33,33 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleLogin=(e)=>
+  {
+    if(e.target.value === "login"){
+      setIsOpen(true)
+    }
+    else{
+      logout()
+      setLoggedIn(false)
+    }
+    
+  }
+
+  const goToCart=()=>
+  {
+    if(token)
+    {
+      navigate("/cart")
+    }
+    else{
+      navigate("/")
+      setIsOpen(true)
+    }
+    
+  }
   return (
-    <nav className={`navbar ${isScrolled ? "navbar-scrolled" : ""}`}>
+    <>
+      <nav className={`navbar ${isScrolled ? "navbar-scrolled" : ""}`}>
       <div className="container">
         <div className="navbar-content">
           <div className="navbar-brand">
@@ -26,13 +70,13 @@ export default function Navbar() {
 
           <div className="desktop-menu">
             <a
-              href="#"
+              href="/"
               className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
             >
               Home
             </a>
             <a
-              href="#shop"
+              href="/shop"
               className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
             >
               Shop
@@ -49,28 +93,17 @@ export default function Navbar() {
             >
               Contact
             </a>
-            <a
-              href="#favorites"
-              className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
-            >
-              Favorites
-            </a>
           </div>
 
           <div className="navbar-icons">
-            <button
-              className={`icon-button ${
-                isScrolled ? "icon-button-scrolled" : ""
-              }`}
-            >
+            <button className={`icon-button ${isScrolled ? "icon-button-scrolled" : ""}`} onClick={goToCart}>
               <ShoppingCart size={22} />
             </button>
-            <button
-              className={`icon-button ${
-                isScrolled ? "icon-button-scrolled" : ""
-              }`}
-            >
-              <User size={22} />
+
+            <button onClick={handleLogin}
+              className={`icon-button ${isScrolled ? "icon-button-scrolled" : ""}`}
+              value={(loggedin)?"logout":"login"}
+            > {(loggedin)?"Logout":"Login"}
             </button>
 
             <button
@@ -95,7 +128,7 @@ export default function Navbar() {
         {mobileMenuOpen && (
           <div className="mobile-menu">
             <div className="mobile-menu-links">
-              <a href="#" className="mobile-nav-link">
+              <a href="/" className="mobile-nav-link">
                 Home
               </a>
               <a href="#shop" className="mobile-nav-link">
@@ -111,6 +144,11 @@ export default function Navbar() {
           </div>
         )}
       </div>
+      
     </nav>
+    <Model isOpen={isOpen} closeMod={() => setIsOpen(false)}  />
+    </>
+    
+    
   );
 }

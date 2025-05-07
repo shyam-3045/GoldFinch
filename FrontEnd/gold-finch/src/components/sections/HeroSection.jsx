@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import ScrollIndicator from "../layout/ScrollIndicator";
 
 export default function HeroSection() {
