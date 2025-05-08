@@ -1,31 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar2 from '../components/layout/NavBar2';
 import Footer from '../components/layout/Footer';
 import {useCartItems} from "../context/CartItemsContext"
+import { useAlert } from '../context/AlertMsgContext';
 
 
 
 export default function ShoppingCart() {
   const {cartProducts,getCartItems,removeCartItem}=useCartItems()
-  
-  
-
-  const colors = {
-    primaryColor: '#4CAF50',
-    primaryLight: '#A5D6A7',
-    primaryDark: '#2E7D32',
-    secondaryColor: '#81C784',
-    accentColor: '#C8E6C9',
-    lightColor: '#E8F5E9',
-    textColor: '#2E3A59',
-    textMuted: '#75757A',
-    background: '#FFFFFF',
-    cardBg: '#F9FFF9',
-    hoverColor: '#E8F5E9',
-    borderColor: '#C8E6C9'
-  };
-
-  
+  const {alertMsg}=useAlert()
 
   const subtotal = cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   const shipping = 1.00 ;
@@ -42,10 +25,31 @@ export default function ShoppingCart() {
     
   };
 
-  const removeItem = (id) => {
+  const removeItem = (id,name) => {
     removeCartItem(id)
+    alertMsg(`Removed ${name} from Cart`)
+
   };
 
+  const handlePayment=()=>
+  {
+    
+  }
+
+  const colors = {
+    primaryColor: '#4CAF50',
+    primaryLight: '#A5D6A7',
+    primaryDark: '#2E7D32',
+    secondaryColor: '#81C784',
+    accentColor: '#C8E6C9',
+    lightColor: '#E8F5E9',
+    textColor: '#2E3A59',
+    textMuted: '#75757A',
+    background: '#FFFFFF',
+    cardBg: '#F9FFF9',
+    hoverColor: '#E8F5E9',
+    borderColor: '#C8E6C9'
+  };
   return (
     <>
     <Navbar2/>
@@ -242,7 +246,7 @@ export default function ShoppingCart() {
 
                   {/* Remove Button */}
                   <button 
-                    onClick={() => removeItem(item.product._id)}
+                    onClick={() => removeItem(item.product._id,item.product.name)}
                     style={{
                       background: 'none',
                       border: 'none',
@@ -382,7 +386,7 @@ export default function ShoppingCart() {
               </div>
 
               {/* Checkout Button */}
-              <button style={{
+              <button onClick={handlePayment} style={{
                 width: '100%',
                 padding: '1rem',
                 backgroundColor: colors.primaryColor,
@@ -395,6 +399,7 @@ export default function ShoppingCart() {
                 transition: 'all 0.3s ease',
                 boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)'
               }}>
+
                 Proceed to Checkout
               </button>
 

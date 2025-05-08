@@ -1,75 +1,69 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import axios from '../../axios.config';
 
 const CartProducts = createContext();
 
 export const CartItemsContext = ({ children }) => {
-    const [cartProducts,setCartProducts]=useState([])
+    const [cartProducts, setCartProducts] = useState([]);
 
-    useEffect(()=>
-    {
-        const getCartUser=async()=>
-            {
-                const userToken = localStorage.getItem("token"); // ✅ use direct localStorage
-                try {
-                    await axios.get("http://localhost:3000/cart",{
-                        headers:{
-                            Authorization: `Bearer ${userToken}`
-                        }
-                    })
-                    .then(res=>{
-                        setCartProducts(res.data.cart)
-                    })
-                    
-                } catch (error) {
-                    
+    const fetchCart = async () => {
+        const userToken = localStorage.getItem("token");
+        try {
+            const res = await axios.get("http://localhost:3000/cart", {
+                headers: {
+                    Authorization: `Bearer ${userToken}`
                 }
-        
-            }   
+            });
+            setCartProducts(res.data.cart);
+        } catch (error) {
+            console.error("Error fetching cart:", error);
+        }
+    };
 
-            getCartUser()
+    useEffect(() => {
+        fetchCart(); // Fetch once on mount
+    }, []);
 
-    },)
-    const getCartItems = async (id,quantity) => {
-        const userToken = localStorage.getItem("token"); // ✅ use direct localStorage
+    const getCartItems = async (id, quantity) => {
+        const userToken = localStorage.getItem("token");
         try {
             await axios.post("http://localhost:3000/cart/add", {
                 productId: id,
-                quantity:quantity
+                quantity
             }, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
             });
+            await fetchCart(); // Refresh cart after update
             return true;
         } catch (err) {
             console.error("Add to cart error:", err);
             return false;
         }
     };
-    
-    const removeCartItem=async(id)=>
-    {
-        const userToken = localStorage.getItem("token"); // ✅ use direct localStorage
+
+    const removeCartItem = async (id) => {
+        const userToken = localStorage.getItem("token");
         try {
             await axios.delete(`http://localhost:3000/cart/remove/${id}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
             });
+            await fetchCart(); // Refresh cart after removal
             return true;
         } catch (err) {
             console.error("Deletion Error", err);
             return false;
         }
-
-    }
+    };
 
     return (
-        <CartProducts.Provider value={{ getCartItems,cartProducts,removeCartItem }}>
+        <CartProducts.Provider value={{ getCartItems, cartProducts, removeCartItem }}>
             {children}
         </CartProducts.Provider>
     );
 };
 
-export const useCartItems = () => useContext(CartProducts); // 🔄 better naming
+export const useCartItems = () => useContext(CartProducts);

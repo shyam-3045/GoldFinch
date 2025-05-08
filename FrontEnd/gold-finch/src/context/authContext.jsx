@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState } from 'react';
-import axios from 'axios';
+import axios from '../../axios.config';
+import { useAlert } from './AlertMsgContext';
 
 const AuthUser = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const {alertMsg}=useAlert()
   const [token, setToken] = useState("");
   const [user, setUser] = useState("");
 
@@ -28,12 +30,10 @@ export const AuthProvider = ({ children }) => {
   const logout=()=>{
     localStorage.removeItem("token")
     localStorage.removeItem("user")
+    alertMsg("Logged Out !")
+
   }
 
-  const isToken=()=>
-  {
-    return token
-  }
   return (
     <AuthUser.Provider value={{ login, token, user,logout }}>
       {children}

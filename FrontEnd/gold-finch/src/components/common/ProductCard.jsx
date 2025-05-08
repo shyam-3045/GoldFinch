@@ -1,30 +1,34 @@
 import { ShoppingCart } from "lucide-react";
 import Rating from "./Rating";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product,addItem,productNavigate }) {
   return (
-    <div className="product-card">
-      <div className="product-image-container">
+    <>
+    <div  className="product-card">
+      <div onClick={productNavigate} className="product-image-container">
         <div className="product-image-placeholder"></div>
         {product.isNew && <div className="product-badge">NEW</div>}
       </div>
 
       <div className="product-info">
-        <div className="product-header">
-          <span className="product-category">{product.category}</span>
-          <span className="flex flex-row"><Rating rating={product.rating} /></span>
+        <div onClick={productNavigate} className="product-header">
+          <span onClick={productNavigate} className="product-category">{product.category}</span>
+          <span onClick={productNavigate} className="flex flex-row"><Rating rating={product.rating} /></span>
         </div>
         
-        <h3 className="product-name">{product.name}</h3>
-        <p className="product-description">{product.description}</p>
+        <h3 onClick={productNavigate} className="product-name">{product.name}</h3>
+        <p onClick={productNavigate} className="product-description">{product.description}</p>
 
         <div className="product-footer">
           <span className="product-price">${product.price.toFixed(2)}</span>
-          <button className="add-to-cart-button">
+          <button onClick={addItem} className="add-to-cart-button">
             <ShoppingCart size={18} />
           </button>
         </div>
       </div>
     </div>
+
+    </>
+    
   );
 }

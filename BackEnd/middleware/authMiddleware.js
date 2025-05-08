@@ -12,7 +12,9 @@ exports.isAuthenticated = (req, res, next) => {
         req.user = decoded;
         next(); 
     } catch (error) {
-        console.error("Error:", error);
-        return res.status(401).json({ msg: "Invalid Token" });
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({ message: "TokenExpiredError" });
+          }
+          return res.status(401).json({ message: "Unauthorized" });
     }
 };

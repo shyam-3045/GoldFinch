@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../context/authContext';
+import { useAlert } from '../../context/AlertMsgContext';
 
 export default function AuthModal({isOpen , closeMod}) {
-
+  const {alertMsg}=useAlert()
   const [isLogin, setIsLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,6 +29,7 @@ export default function AuthModal({isOpen , closeMod}) {
         
     }
     else{
+        alertMsg("Login Successfull !")
         closeMod()
         
     }

@@ -5,14 +5,20 @@ import "./index.css"
 import { ProductsProvider } from "./context/ProductsDetails.jsx";
 import {AuthProvider} from "./context/authContext.jsx"
 import {CartItemsContext} from "./context/CartItemsContext.jsx"
+import {AlertMsgContext} from "./context/AlertMsgContext.jsx"
+
 createRoot(document.getElementById("root")).render
 (
+  <AlertMsgContext>
  <ProductsProvider>
   <AuthProvider>
     <CartItemsContext>
-    <App />
+      
+       <App />
+      
     </CartItemsContext>
   </AuthProvider>
   </ProductsProvider>
+  </AlertMsgContext>
   
 );
