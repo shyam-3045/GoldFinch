@@ -7,6 +7,8 @@ import MainNavigation from "./components/layout/MainNavigation";
 import Cart from "./pages/Cart";
 import ProductDetailsPage from "./components/sections/ProductDetailsPage";
 import OrderPage from "./pages/PaymentPage";
+import MyOrders from "./pages/MyOrders"; 
+import ProductDisplay from "./pages/AllProducts";
 
 const router=createBrowserRouter([
   {path:'/',element:<MainNavigation/>,children:[
@@ -17,6 +19,9 @@ const router=createBrowserRouter([
   {path:"/cart",element:<Cart/>},
   {path:"/product",element:<ProductDetailsPage/>},
   {path:"/order",element:<OrderPage/>},
+  {path:"/Myorder",element:<MyOrders/>},
+  {path:"/allProducts",element:<ProductDisplay/>},
+
 
   
 ])
