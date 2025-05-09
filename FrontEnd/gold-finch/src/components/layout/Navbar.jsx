@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ShoppingCart, User, Menu, X } from "lucide-react";
 import Model from "./Model"
 import { useAuth } from "../../context/authContext";
-import { NavLink, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const {logout}=useAuth()
