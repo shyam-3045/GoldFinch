@@ -34,6 +34,8 @@ export default function Navbar() {
         <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >Shop</NavLink>
         <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >About</NavLink>
         <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >Contact</NavLink>
+        <NavLink to="/Myorder" style={{ color: 'white', textDecoration: 'none' }} >My Orders</NavLink>
+
       </div>
       
       <div style={{

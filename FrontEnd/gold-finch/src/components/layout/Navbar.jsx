@@ -76,7 +76,7 @@ export default function Navbar() {
               Home
             </a>
             <a
-              href="/shop"
+              href="/allProducts"
               className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
             >
               Shop
@@ -92,6 +92,12 @@ export default function Navbar() {
               className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
             >
               Contact
+            </a>
+            <a
+              href="/Myorder"
+              className={`nav-link ${isScrolled ? "nav-link-scrolled" : ""}`}
+            >
+              My Orders
             </a>
           </div>
 
