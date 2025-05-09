@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 
+const deliveryDetailSchema = new mongoose.Schema({
+    address: { type: String, required: true },
+    pincode: { type: String, required: true },
+    mobile: { type: String, required: true },
+    city: { type: String },
+    state: { type: String },
+    country: { type: String, default: 'India' },
+    landmark: { type: String },
+    isDefault: { type: Boolean, default: false } // for selecting default delivery address
+});
+
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    address: { type: String },
+    deliveryDetails: [deliveryDetailSchema],
     isAdmin: { type: Boolean, default: false },
 }, { timestamps: true });
 

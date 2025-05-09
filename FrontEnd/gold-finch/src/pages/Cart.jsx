@@ -3,12 +3,14 @@ import Navbar2 from '../components/layout/NavBar2';
 import Footer from '../components/layout/Footer';
 import {useCartItems} from "../context/CartItemsContext"
 import { useAlert } from '../context/AlertMsgContext';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function ShoppingCart() {
   const {cartProducts,getCartItems,removeCartItem}=useCartItems()
   const {alertMsg}=useAlert()
+  const navigate=useNavigate()
 
   const subtotal = cartProducts.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   const shipping = 1.00 ;
@@ -33,6 +35,15 @@ export default function ShoppingCart() {
 
   const handlePayment=()=>
   {
+    navigate("/order",{
+      state:{
+        checkoutItems:cartProducts,
+        subtotal,
+        shipping,
+        tax,
+        total
+      }
+    })
     
   }
 

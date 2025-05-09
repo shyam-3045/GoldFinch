@@ -18,7 +18,7 @@ app.use("/api",require("./routes/review"))
 app.use("/api",require("./routes/profile"))
 app.use("/cart",require("./routes/cart"))
 app.use("/favorites",require("./routes/favorites"))
-app.use("/api/payment",require("./routes/payment"))
+app.use("/api",require("./routes/payment"))
 
 app.listen(PORT,()=>
 {
