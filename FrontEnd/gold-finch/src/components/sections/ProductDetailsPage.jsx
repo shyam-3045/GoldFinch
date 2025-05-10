@@ -2,52 +2,41 @@ import {  useEffect, useState } from 'react';
 import Footer from '../layout/Footer';
 import Navbar from '../layout/NavBar2';
 import { useAlert } from '../../context/AlertMsgContext';
-import { useLocation } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsDetails';
 import { useCartItems } from '../../context/CartItemsContext'; 
 
 
 export default function ProductDetailsPage() {
+  const products=useLoaderData()
   const {getCartItems}=useCartItems()
   const {getProductById}=useProducts()
   const location=useLocation()
   const {productId}=location.state
-  const [token,setToken]=useState()
   const {alertMsg}=useAlert()
   const[singlePrd,setSinglePrd]=useState([])
-  console.log("hii")
+  const token=localStorage.getItem("token")
+  const navigate=useNavigate()
+
 
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [reviewName, setReviewName] = useState('');
-  const [reviewEmail, setReviewEmail] = useState('');
-  const [reviewRating, setReviewRating] = useState(5);
-  const [reviewTitle, setReviewTitle] = useState('');
-  const [reviewContent, setReviewContent] = useState('');
 
 
-  useEffect(()=>
-  {
-    const fetchProduct=async()=>
-    {
-      const res=await getProductById(productId)
-      setSinglePrd(res)
-      
-    }
-    fetchProduct()
-  
-  },[])
+ useEffect(() => {
+  const fetchProduct = async () => {
+    const res = await getProductById(productId);
+    setSinglePrd(res);
+  };
+  fetchProduct();
+}, [productId]);  // <-- this is key!
+
 
   
   
-  useEffect(()=>
-  {
-    const jwtToken=localStorage.getItem("token")
-    setToken(jwtToken)
-  },[])
-
+  
+  
   const handleCart=()=>
   {
     if(!token)
@@ -128,41 +117,7 @@ export default function ProductDetailsPage() {
     }
   ];
 
-  // Sample recommended products
-  const recommendedProducts = [
-    {
-      id: 1,
-      name: "Insulated Lunch Box",
-      price: 34.99,
-      discountPrice: 29.99,
-      rating: 4.5,
-      image: "/api/placeholder/200/200"
-    },
-    {
-      id: 2,
-      name: "Bamboo Utensil Set",
-      price: 19.99,
-      discountPrice: 15.99,
-      rating: 4.8,
-      image: "/api/placeholder/200/200"
-    },
-    {
-      id: 3,
-      name: "Collapsible Coffee Cup",
-      price: 24.99,
-      discountPrice: 21.99,
-      rating: 4.6,
-      image: "/api/placeholder/200/200"
-    },
-    {
-      id: 4,
-      name: "Reusable Produce Bags",
-      price: 14.99,
-      discountPrice: 12.99,
-      rating: 4.7,
-      image: "/api/placeholder/200/200"
-    }
-  ];
+  const recommendedProducts=products.filter((el)=>el.name !== singlePrd.name)
 
   
   // Styles
@@ -652,7 +607,7 @@ export default function ProductDetailsPage() {
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
   }
-
+  console.log("re renders")
   return (
     <>
     <Navbar/>
@@ -835,8 +790,9 @@ export default function ProductDetailsPage() {
         <h2 style={{...sectionHeaderStyles, marginBottom: "15px"}}>You May Also Like</h2>
         <div style={productsGridStyles}>
           {recommendedProducts.map((product) => (
-            <div key={product.id} style={productCardStyles}>
-              <img 
+            <div key={product._id} style={productCardStyles}>
+              <img
+                onClick={()=>{navigate("/product",{state:{productId:product._id}})}}
                 src={product.image} 
                 alt={product.name}
                 style={productCardImageStyles}
@@ -844,12 +800,11 @@ export default function ProductDetailsPage() {
               <div style={productCardContentStyles}>
                 <h3 style={productCardTitleStyles}>{product.name}</h3>
                 <div style={productCardPriceStyles}>
-                  <span style={productCardCurrentPriceStyles}>${product.discountPrice}</span>
-                  <span style={productCardOriginalPriceStyles}>${product.price}</span>
+                  <span style={productCardCurrentPriceStyles}>${product.price}</span>
                 </div>
                 <div style={productCardRatingStyles}>
-                  <span style={{color: "#facc15"}}>{"★".repeat(Math.floor(product.rating))}{"☆".repeat(5 - Math.floor(product.rating))}</span>
-                  <span>{product.rating}</span>
+                  <span style={{color: "#facc15"}}>{"★".repeat(Math.floor(product.ratings))}{"☆".repeat(5 - Math.floor(product.ratings))}</span>
+                  <span>{product.ratings}</span>
                 </div>
               </div>
             </div>
