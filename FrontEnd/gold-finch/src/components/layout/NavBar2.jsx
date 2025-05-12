@@ -1,7 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { ShoppingCart, User, Menu, X } from "lucide-react";
+
 
 export default function Navbar() {
+    const token=localStorage.getItem("token")
   return (
     <div style={{
       backgroundColor: 'black',
@@ -31,7 +34,7 @@ export default function Navbar() {
       }}>
         
         <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >Home</NavLink>
-        <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >Shop</NavLink>
+        <NavLink to="/allProducts" style={{ color: 'white', textDecoration: 'none' }} >Shop</NavLink>
         <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >About</NavLink>
         <NavLink to="/" style={{ color: 'white', textDecoration: 'none' }} >Contact</NavLink>
         <NavLink to="/Myorder" style={{ color: 'white', textDecoration: 'none' }} >My Orders</NavLink>
@@ -47,7 +50,7 @@ export default function Navbar() {
           cursor: 'pointer',
           fontSize: '1.2rem'
         }}>
-          🛒
+          <NavLink to="/cart"><ShoppingCart size={22} /></NavLink>          
         </div>
         <div style={{
           cursor: 'pointer'

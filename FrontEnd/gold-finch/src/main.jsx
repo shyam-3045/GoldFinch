@@ -7,17 +7,18 @@ import {AuthProvider} from "./context/authContext.jsx"
 import {CartItemsContext} from "./context/CartItemsContext.jsx"
 import {AlertMsgContext} from "./context/AlertMsgContext.jsx"
 import { Order } from "./context/Order.jsx";
+import { Payment } from "./context/Payment.jsx";
 
 createRoot(document.getElementById("root")).render
 (
   <AlertMsgContext>
-    <Order>
-
-    
+    <Order> 
  <ProductsProvider>
   <AuthProvider>
     <CartItemsContext>
-       <App />
+      <Payment>
+        <App />
+      </Payment>
     </CartItemsContext>
   </AuthProvider>
   </ProductsProvider>

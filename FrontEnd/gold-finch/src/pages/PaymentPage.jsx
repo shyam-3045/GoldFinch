@@ -5,13 +5,14 @@ import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/NavBar2';
 import { giveOredr } from '../context/Order';
 import axios from "../../axios.config"
+import OtpModel from "./OtpModel"
 
     export default function OrderPage() {
         const  {setDetails}=giveOredr()
-        const [isopen,setIsOpen]=useState(false)
         const [isAddress,setIsAddress]=useState(false)
         const [add,setAdd]=useState("")
         const token=localStorage.getItem("token")
+        const [isOpen,setIsOpen]=useState(false)
         
 
 
@@ -27,13 +28,15 @@ import axios from "../../axios.config"
         }
         }, []); 
 
-        console.log()
+        
 
 
         const location=useLocation()
         let {checkoutItems,subtotal,shipping,tax,total}=location.state ||{}
         tax = Number(tax.toFixed(2));
-        console.log(add)
+  
+
+
 
 
     const [formData, setFormData] = useState({
@@ -156,59 +159,7 @@ import axios from "../../axios.config"
         return newErrors;
     };
 
-    const handlePayment=async (total)=>
-    {
-        const { data } = await axios.post('http://localhost:3000/api/create-order', {
-        amount: total, // Amount in INR
-    },{
-        headers:
-        {
-            Authorization:`Bearer ${token}`
-        }
-    });
-
-    const options = {
-        key: "rzp_test_cNG8AXPmxWUyej", // from Razorpay Dashboard
-        amount: data.order.amount,
-        currency: "INR",
-        name: "Goldfinch Teas",
-        description: "Tea Order Payment",
-        order_id: data.order.id,
-        handler: async (response) => {
-        const verifyRes = await axios.post("http://localhost:3000/api/verify-payment", {
-          razorpay_order_id: response.razorpay_order_id,
-          razorpay_payment_id: response.razorpay_payment_id,
-          razorpay_signature: response.razorpay_signature,
-        },
-        {
-            headers:
-            {
-                Authorization:`Bearer ${token}`
-            }
-        }
-    );
-
-        if (verifyRes.data.success) {
-          alert("Payment successful 🎉");
-        } else {
-          alert("Payment verification failed ❌");
-        }
-      },
-        prefill: {
-            name: user.name,
-            email: user.email,
-            contact: formData.mobile
-        },
-        theme: {
-            color: "#3399cc"
-        }
-    };
-    console.log(data)
-
-    const rzp = new window.Razorpay(options);
-    rzp.open();
-    }
-
+    
 
     const handleSubmit = async (e) => {
         if (e) e.preventDefault();
@@ -224,10 +175,7 @@ import axios from "../../axios.config"
         
         console.log('Form data submitted:', formData);
         
-        setTimeout(() => {
-        AlertMsg('Address saved successfully! Proceeding to payment...');
-        setIsSubmitting(false);
-        }, 1500);
+        
 
         if(!isSubmitting)
         {
@@ -235,7 +183,6 @@ import axios from "../../axios.config"
             if(res)
             {
                 setIsOpen(true)
-                handlePayment(total)
                 setIsSubmitting(true)
 
             }
@@ -412,7 +359,7 @@ import axios from "../../axios.config"
                     style={styles.submitButton}
                     disabled={isSubmitting}
                     >
-                    {isSubmitting ? 'Processing...' : 'Proceed to Payment'}
+                    Proceed to Payment
                     </button>
                 </div>
                 </div>
@@ -420,6 +367,7 @@ import axios from "../../axios.config"
             </div>
         </div>
         </div>
+        <OtpModel isOpen={isOpen} total={total} closeModel={()=>setIsOpen(false)} token={token} user={user} formData={formData} products={checkoutItems}/>
         <Footer/>
         
         </>

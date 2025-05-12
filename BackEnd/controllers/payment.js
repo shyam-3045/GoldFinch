@@ -51,25 +51,26 @@ exports.hadleCreds = async (req, res) => {
 };
 
 
-exports.createOredr=async(req,res)=>
-{
+
+
+exports.createOrder = async (req, res) => {
     const { amount } = req.body;
 
     const options = {
-        amount: amount * 100, 
+        amount:Math.round(amount * 100),  
         currency: "INR",
         receipt: `receipt_order_${Math.floor(Math.random() * 1000000)}`,
     };
 
     try {
         const order = await instance.orders.create(options);
+        console.log("Order created:", order);
         res.status(200).json({ success: true, order });
     } catch (error) {
+        console.error("Error creating order:", error);  // Log complete error object
         res.status(500).json({ success: false, error: error.message });
     }
-
-}
-
+};
 
 exports.verifyPayment = async (req, res) => {
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;

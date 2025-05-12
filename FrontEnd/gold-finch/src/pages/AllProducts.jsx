@@ -2,34 +2,26 @@ import { useState } from 'react';
 import { Search, Filter, ShoppingCart } from 'lucide-react';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/NavBar2';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useCartItems } from '../context/CartItemsContext';
+import { useAlert } from '../context/AlertMsgContext';
+
 
 export default function ProductDisplay() {
-  // Sample product data - in a real app this would come from an API
-  const productData = [
-    { id: 1, name: "Smartphone X", category: "Electronics", price: 899, image: "/api/placeholder/80/80", rating: 4.5 },
-    { id: 2, name: "Wireless Headphones", category: "Electronics", price: 199, image: "/api/placeholder/80/80", rating: 4.8 },
-    { id: 3, name: "Fitness Tracker", category: "Electronics", price: 99, image: "/api/placeholder/80/80", rating: 4.2 },
-    { id: 4, name: "Cotton T-Shirt", category: "Clothing", price: 29, image: "/api/placeholder/80/80", rating: 4.0 },
-    { id: 5, name: "Slim Fit Jeans", category: "Clothing", price: 59, image: "/api/placeholder/80/80", rating: 4.3 },
-    { id: 6, name: "Leather Jacket", category: "Clothing", price: 199, image: "/api/placeholder/80/80", rating: 4.7 },
-    { id: 7, name: "Coffee Maker", category: "Home & Kitchen", price: 79, image: "/api/placeholder/80/80", rating: 4.4 },
-    { id: 8, name: "Blender", category: "Home & Kitchen", price: 49, image: "/api/placeholder/80/80", rating: 4.1 },
-    { id: 9, name: "Toaster", category: "Home & Kitchen", price: 35, image: "/api/placeholder/80/80", rating: 3.9 },
-    { id: 10, name: "Basketball", category: "Sports", price: 29, image: "/api/placeholder/80/80", rating: 4.2 },
-    { id: 11, name: "Yoga Mat", category: "Sports", price: 25, image: "/api/placeholder/80/80", rating: 4.5 },
-    { id: 12, name: "Dumbbells Set", category: "Sports", price: 119, image: "/api/placeholder/80/80", rating: 4.6 },
-  ];
+    const navigate=useNavigate()
+    const {getCartItems}=useCartItems()
+    const products=useLoaderData()
+    const {alertMsg}=useAlert()
+      const token=localStorage.getItem("token")
 
-  // Extract unique categories
-  const categories = ["All", ...new Set(productData.map(product => product.category))];
+
+  const categories = ["All", ...new Set(products.map(product => product.category))];
   
-  // State for selected category and search term
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const [cart, setCart] = useState([]);
 
   // Filter products based on category and search term
-  const filteredProducts = productData.filter(product => {
+  const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -45,16 +37,18 @@ export default function ProductDisplay() {
   });
 
   // Add to cart functionality
-  const addToCart = (product) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map(item => 
-        item.id === product.id ? {...item, quantity: item.quantity + 1} : item
-      ));
-    } else {
-      setCart([...cart, {...product, quantity: 1}]);
+  const addToCart=async(id)=>
+  {
+  
+    const res =await getCartItems(id)
+    if (!token)
+    {
+      alertMsg("Login First")
     }
-  };
+    else{
+      alertMsg("Added To Cart")
+    }
+  }
 
   // Generate star rating display
   const renderRating = (rating) => {
@@ -354,7 +348,7 @@ export default function ProductDisplay() {
               <div style={styles.productGrid}>
                 {products.map(product => (
                   <div 
-                    key={product.id} 
+                    key={product._id} 
                     style={styles.productCard}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = styles.productCardHover.transform;
@@ -365,7 +359,7 @@ export default function ProductDisplay() {
                       e.currentTarget.style.boxShadow = styles.productCard.boxShadow;
                     }}
                   >
-                    <div style={styles.productImageContainer}>
+                    <div onClick={()=>{navigate("/product",{state:{productId:product._id}})}} style={styles.productImageContainer}>
                       <img 
                         src={product.image} 
                         alt={product.name} 
@@ -375,9 +369,9 @@ export default function ProductDisplay() {
                     <div style={styles.productInfo}>
                       <h3 style={styles.productTitle}>{product.name}</h3>
                       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                        {renderRating(product.rating)}
+                        {renderRating(product.ratings)}
                         <span style={{ marginLeft: '8px', color: '#7f8c8d', fontSize: '14px' }}>
-                          ({product.rating})
+                          ({product.ratings})
                         </span>
                       </div>
                       <p style={styles.productCategory}>Category: {product.category}</p>
