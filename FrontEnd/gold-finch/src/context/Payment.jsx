@@ -1,0 +1,58 @@
+import React, { createContext, useContext } from 'react'
+import axios from "../../axios.config"
+
+const  PaymentContext=createContext()
+export const Payment = ({children}) => {
+    const token=localStorage.getItem("token")
+
+
+    const MakeOrder = async (
+  formData,
+  total,
+  products,
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature
+) => {
+  try {
+        const deliveryDetails = {
+        address: formData.address,
+        pincode: formData.pincode,
+        mobile: formData.mobile,
+        city: formData.city,
+        state: formData.state,
+        country: formData.country,
+        isDefault: formData.isDefault,
+        landmark: formData.landmark,
+  };
+    
+    const res = await axios.post(
+      "http://localhost:3000/api/createOrder",
+      {
+        products,
+        deliveryDetails: deliveryDetails,
+        totalAmount: total
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error making order:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+
+  return (
+    <PaymentContext.Provider value={{MakeOrder}}>
+        {children}
+    </PaymentContext.Provider>
+  )
+}
+
+export const makeOrder=()=> useContext(PaymentContext)

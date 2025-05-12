@@ -18,6 +18,7 @@ export default function ProductDetailsPage() {
   const token=localStorage.getItem("token")
   const navigate=useNavigate()
 
+    console.log("re renders")
 
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -30,13 +31,9 @@ export default function ProductDetailsPage() {
     setSinglePrd(res);
   };
   fetchProduct();
-}, [productId]);  // <-- this is key!
+}, [productId]);  
 
 
-  
-  
-  
-  
   const handleCart=()=>
   {
     if(!token)
@@ -607,7 +604,6 @@ export default function ProductDetailsPage() {
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
   }
-  console.log("re renders")
   return (
     <>
     <Navbar/>

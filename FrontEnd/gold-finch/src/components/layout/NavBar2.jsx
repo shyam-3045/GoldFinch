@@ -4,6 +4,7 @@ import { ShoppingCart, User, Menu, X } from "lucide-react";
 
 
 export default function Navbar() {
+    const token=localStorage.getItem("token")
   return (
     <div style={{
       backgroundColor: 'black',
