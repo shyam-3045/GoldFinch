@@ -606,7 +606,6 @@ export default function ProductDetailsPage() {
   }
   return (
     <>
-    <Navbar/>
         <div style={pageStyles}>
       {/* Breadcrumb */}
       <div style={breadcrumbStyles}>
@@ -808,7 +807,6 @@ export default function ProductDetailsPage() {
         </div>
       </div>
     </div>
-    <Footer/>
     </>
     
   );

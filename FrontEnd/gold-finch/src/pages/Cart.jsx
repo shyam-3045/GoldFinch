@@ -63,7 +63,6 @@ export default function ShoppingCart() {
   };
   return (
     <>
-    <Navbar2/>
     <div style={{
       fontFamily: "'Poppins', sans-serif",
       color: colors.textColor,
@@ -456,7 +455,6 @@ export default function ShoppingCart() {
       )}
       
     </div>
-    <Footer/>
 
     </>
     

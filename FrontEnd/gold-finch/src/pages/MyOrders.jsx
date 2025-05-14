@@ -267,7 +267,6 @@ const MyOrdersPage = () => {
 
   return (
     <>
-    <Navbar/>
       <div style={styles.body}>
       {/* Navbar */}
       <div style={styles.navbar}>
@@ -338,7 +337,6 @@ const MyOrdersPage = () => {
         />
       )}
     </div>
-    <Footer/>
     </>
     
   );

@@ -300,7 +300,6 @@ export default function ProductDisplay() {
 
   return (
     <>
-    <Navbar/>
     <div style={styles.container}>
       {/* Search and Filter Bar */}
       <div style={styles.searchBar}>
@@ -407,7 +406,6 @@ export default function ProductDisplay() {
         )}
       </main>
     </div>
-    <Footer/>
 
     </>
     

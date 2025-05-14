@@ -14,9 +14,7 @@ import axios from "../axios.config";
 const router=createBrowserRouter([
   {path:'/',element:<MainNavigation/>,children:[
     {path:'/',element:<Home/>,errorElement:<pageNotFound/>},
-  ]
-  },
-  {path:'*',element:<PageNotFound/>},
+    {path:'*',element:<PageNotFound/>},
   {path:"/cart",element:<Cart/>},
   {path:"/product",loader:async()=>
     {
@@ -41,6 +39,9 @@ const router=createBrowserRouter([
 
     },element:<ProductDisplay/>},
 
+  ]
+  },
+  
 
   
 ])

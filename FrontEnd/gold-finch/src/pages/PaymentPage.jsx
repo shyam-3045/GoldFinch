@@ -195,7 +195,6 @@ import OtpModel from "./OtpModel"
 
     return (
         <>
-        <Navbar/>
         <div style={styles.container}>
         <div style={styles.orderContainer}>
             <div style={styles.leftPanel}>
@@ -368,7 +367,6 @@ import OtpModel from "./OtpModel"
         </div>
         </div>
         <OtpModel isOpen={isOpen} total={total} closeModel={()=>setIsOpen(false)} token={token} user={user} formData={formData} products={checkoutItems}/>
-        <Footer/>
         
         </>
         
