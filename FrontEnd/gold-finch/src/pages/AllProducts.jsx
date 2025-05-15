@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Search, Filter, ShoppingCart } from 'lucide-react';
 import Footer from '../components/layout/Footer';
-import Navbar from '../components/layout/NavBar2';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useCartItems } from '../context/CartItemsContext';
 import { useAlert } from '../context/AlertMsgContext';

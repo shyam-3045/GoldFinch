@@ -1,6 +1,5 @@
 import {  useEffect, useState } from 'react';
 import Footer from '../layout/Footer';
-import Navbar from '../layout/NavBar2';
 import { useAlert } from '../../context/AlertMsgContext';
 import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsDetails';

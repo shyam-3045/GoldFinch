@@ -13,9 +13,18 @@ import axios from "../axios.config";
 
 const router=createBrowserRouter([
   {path:'/',element:<MainNavigation/>,children:[
-    {path:'/',element:<Home/>,errorElement:<pageNotFound/>},
+    {path:'/',element:<Home/>},
     
-  {path:"/cart",element:<Cart/>},
+  {path:"/cart",loader:async()=>
+    {
+        const res = await axios.get("http://localhost:3000/cart", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+        return res.data.cart
+
+    },element:<Cart/>},
   {path:"/product",loader:async()=>
     {
         const res = await axios.get('http://localhost:3000/api/products');
@@ -38,10 +47,10 @@ const router=createBrowserRouter([
         return res.data.products
 
     },element:<ProductDisplay/>},
-
+    {path:'*',element:<PageNotFound/>},
   ]
   },
-  {path:'*',element:<PageNotFound/>},
+  
   
 
   

@@ -28,67 +28,52 @@ export default function FeaturedProducts() {
   };
 
   return (
-    <>
-      <section id="shop" style={{ padding: "40px 0" }}>
-        <div style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 15px" }}>
+    <div style={{ padding: '0 20px', maxWidth: '1400px', margin: '0 auto' }}>
+      <div style={{ marginBottom: '40px' }}>
+        <div style={{ marginBottom: '30px' }}>
           <div style={{ 
-            display: "flex", 
-            justifyContent: "space-between", 
-            alignItems: "center",
-            marginBottom: "40px"
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            marginBottom: '30px'
           }}>
             <h2 style={{ 
-              fontSize: "42px", 
-              fontWeight: "600",
-              color: "#222"
+              fontSize: '36px', 
+              fontWeight: '600', 
+              color: '#333',
+              margin: '0'
             }}>
               Green Tea
             </h2>
             <a href="#" style={{ 
-              display: "flex", 
-              alignItems: "center",
-              fontSize: "16px",
-              color: "#666",
-              textDecoration: "none",
-              fontWeight: "500"
+              fontSize: '16px', 
+              color: '#333', 
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center'
             }}>
-              View all 
-              <span style={{ 
-                marginLeft: "5px",
-                display: "inline-block",
-                backgroundColor: "#f2f2f2",
-                borderRadius: "50%",
-                width: "22px",
-                height: "22px",
-                textAlign: "center",
-                lineHeight: "22px"
-              }}>›</span>
+              View all
+              <span style={{ marginLeft: '5px' }}>›</span>
             </a>
           </div>
-
-          <div style={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "0 -15px",
-            justifyContent: "space-between"
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
+            gap: '30px'
           }}>
             {products.products.map((product) => (
-              <div key={product._id} style={{ 
-                width: "calc(25% - 30px)",
-                padding: "0 15px",
-                marginBottom: "30px"
-              }}>
-                <ProductCard 
-                  product={product} 
-                  addItem={() => addCart(product._id)} 
-                  value={product._id}
-                  productNavigate={() => navigateProduct(product._id)} 
-                />
-              </div>
+              <ProductCard
+                key={product._id}
+                product={product}
+                addItem={() => addCart(product._id)}
+                value={product._id}
+                productNavigate={() => navigateProduct(product._id)}
+              />
             ))}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 }
