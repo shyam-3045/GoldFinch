@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ProductCard from "../common/ProductCard";
 import { useProducts } from "../../context/ProductsDetails";
 import { useCartItems } from "../../context/CartItemsContext";
@@ -43,18 +43,21 @@ export default function FeaturedProducts() {
               color: '#333',
               margin: '0'
             }}>
-              Green Tea
+              Teas
             </h2>
-            <a href="#" style={{ 
+            <NavLink to="/allProducts"
+            style={{ 
               fontSize: '16px', 
               color: '#333', 
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center'
-            }}>
+            }}
+            >
               View all
               <span style={{ marginLeft: '5px' }}>›</span>
-            </a>
+
+            </NavLink>
           </div>
           
           <div style={{ 

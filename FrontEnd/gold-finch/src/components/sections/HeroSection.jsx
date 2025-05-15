@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 const HeroSection = () => {
+  const navigate=useNavigate()
   // Hero section styles
   const styles = {
     heroContainer: {
@@ -92,6 +95,8 @@ const HeroSection = () => {
         </div>
         <div style={styles.buttonContainer}>
           <button 
+
+          onClick={()=>{navigate("/allProducts")}}
             style={styles.shopButton}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#00a844';
