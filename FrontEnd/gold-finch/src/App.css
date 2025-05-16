@@ -349,12 +349,12 @@ img {
 
 .product-image-container {
   position: relative;
-  height: 250px;
+  height: 20px;
   overflow: hidden;
 }
 
 .product-image-placeholder {
-  width: 100%;
+  width: 400%;
   height: 100%;
   background-color: var(--light-color);
 }
@@ -460,6 +460,12 @@ img {
   width: 100%;
   height: 100%;
   background-color: var(--light-color);
+  border-radius: var(--border-radius);
+}
+.image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or use contain depending on your need */
   border-radius: var(--border-radius);
 }
 

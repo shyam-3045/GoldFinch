@@ -4,7 +4,7 @@ export default function AboutSection() {
       <div className="container">
         <div className="about-content">
           <div className="about-image">
-            <div className="image-placeholder"></div>
+            <div className="image-placeholder"><img src="https://i.pinimg.com/474x/e7/11/f7/e711f7732b51b09b1b213b4101b8137a.jpg" alt="" /></div>
           </div>
 
           <div className="about-text">

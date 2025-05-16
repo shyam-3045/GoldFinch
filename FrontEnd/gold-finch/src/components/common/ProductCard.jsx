@@ -2,6 +2,7 @@ import { ShoppingCart } from "lucide-react";
 import Rating from "./Rating";
 
 export default function ProductCard({ product, addItem, productNavigate }) {
+
   return (
     <div 
       style={{ 

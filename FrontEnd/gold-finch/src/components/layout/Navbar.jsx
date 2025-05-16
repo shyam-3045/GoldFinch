@@ -70,6 +70,7 @@ export default function Navbar() {
       setIsOpen(true);
     } else {
       logout();
+      navigate("/")
       localStorage.removeItem("token");
       setToken("");
       setLoggedIn(false);

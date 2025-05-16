@@ -607,10 +607,7 @@ export default function ProductDetailsPage() {
     <>
         <div style={pageStyles}>
       {/* Breadcrumb */}
-      <div style={breadcrumbStyles}>
-        Home &gt; Shop &gt; Outdoor &gt; Water Bottles
-      </div>
-
+      
       {/* Main container */}
       <div style={containerStyles}>
         {/* Left column - Product images */}
