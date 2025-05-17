@@ -11,8 +11,10 @@ import MyOrders from "./pages/MyOrders";
 import ProductDisplay from "./pages/AllProducts";
 import axios from "../axios.config";
 
+
+
 const router=createBrowserRouter([
-  {path:'/',element:<MainNavigation/>,children:[
+  {path:'/',element:<MainNavigation/>,errorElement:<PageNotFound/>,children:[
     {path:'/',element:<Home/>},
     
   {path:"/cart",loader:async()=>
