@@ -6,7 +6,15 @@ const instance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
-
+exports.getAllOrders=async(req,res)=>
+{
+   try {
+    const orders = await Order.find(); 
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+}
 exports.createOrder = async (req, res) => {
   const {
     products,

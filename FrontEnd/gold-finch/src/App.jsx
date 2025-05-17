@@ -10,6 +10,7 @@ import OrderPage from "./pages/PaymentPage";
 import MyOrders from "./pages/MyOrders"; 
 import ProductDisplay from "./pages/AllProducts";
 import axios from "../axios.config";
+import AdminPage from "./pages/AdminPage";
 
 
 
@@ -49,13 +50,17 @@ const router=createBrowserRouter([
         return res.data.products
 
     },element:<ProductDisplay/>},
+    
     {path:'*',element:<PageNotFound/>},
   ]
   },
-  
-  
+  {path:'/Admin@DashBoard@185',loader:async()=>
+    {
+        const res = await axios.get('http://localhost:3000/user');
+        return res.data.users
 
-  
+    },element:<AdminPage/>},
+
 ])
 
 export default function App() {
