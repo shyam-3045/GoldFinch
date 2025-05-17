@@ -1,8 +1,6 @@
 import React from 'react';
 
-
 const TeaHeader = () => {
-  // You can replace this URL with your own background image path
   const backgroundImageUrl = '../../../public/TeaHeader.png';
   
   return (
@@ -13,21 +11,20 @@ const TeaHeader = () => {
       color: 'white',
       textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
       padding: '50px 0',
-      marginTop: '60px', // Add margin-top to separate from components above
-      backgroundImage: `url(${backgroundImageUrl})`, // Background image
+      marginTop: '60px',
+      backgroundImage: `url(${backgroundImageUrl})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
-      minHeight: '500px' // Ensure minimum height for background to be visible
+      minHeight: '500px'
     }}>
-      {/* Overlay to ensure text readability */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.3)', // Dark overlay for better text contrast
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
         zIndex: 1
       }} />
       
@@ -35,7 +32,7 @@ const TeaHeader = () => {
         textAlign: 'center',
         padding: '40px 10px',
         position: 'relative',
-        zIndex: 2 // Ensure content is above the overlay
+        zIndex: 2
       }}>
         <h1 style={{
           fontSize: '60px',
@@ -43,14 +40,14 @@ const TeaHeader = () => {
           marginBottom: '20px',
           fontFamily: 'Georgia, serif',
           letterSpacing: '1px'
-        }}>The Teabox Experience</h1>
+        }}>Assam's Pride in Every Sip</h1>
         
         <p style={{
           fontSize: '24px',
           fontStyle: 'italic',
           marginBottom: '40px',
           color: '#FFEB3B'
-        }}>Taste the Difference of Pure Freshness</p>
+        }}>From Pristine Gardens to Your Cup – The Freshest Tea Experience</p>
         
         <div style={{
           display: 'flex',
@@ -61,26 +58,26 @@ const TeaHeader = () => {
         }}>
           <FeatureBox 
             icon="☕" 
-            title="Shorter Supply Chain = Fresh Tea"
-            description="From garden to cup in days, preserving natural flavors"
+            title="Farm-Fresh From Assam"
+            description="Handpicked leaves, packed within days for unmatched aroma and taste"
           />
           
           <FeatureBox 
             icon="🔍" 
-            title="100% Product Traceability"
-            description="Know exactly where your tea comes from"
+            title="Complete Source Transparency"
+            description="Track your tea’s journey from the lush estates to your kitchen"
           />
           
           <FeatureBox 
             icon="🤝" 
-            title="Equitable Sourcing"
-            description="Fair partnerships with local growers"
+            title="Ethical & Sustainable Sourcing"
+            description="Building long-term, fair trade relationships with growers"
           />
           
           <FeatureBox 
             icon="🌱" 
-            title="Recognition to over 3.5M Pluckers"
-            description="Supporting artisan tea communities worldwide"
+            title="Empowering Over 3.5M Tea Artisans"
+            description="Every sip supports local hands and heritage craftsmanship"
           />
         </div>
       </div>
@@ -88,7 +85,6 @@ const TeaHeader = () => {
   );
 };
 
-// Feature box component
 const FeatureBox = ({ icon, title, description }) => {
   const [isHovered, setIsHovered] = React.useState(false);
   

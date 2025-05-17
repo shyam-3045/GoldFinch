@@ -2,7 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-const HeroSection = () => {
+const 
+HeroSection = () => {
   const navigate=useNavigate()
   // Hero section styles
   const styles = {
@@ -87,10 +88,10 @@ const HeroSection = () => {
       <div style={styles.contentContainer}>
         <div style={styles.titleContainer}>
           <h1 style={styles.mainTitle}>
-            DARJEELING<br />FIRST FLUSH
+            ASSAM' S<br />FIRST FLUSH
           </h1>
           <p style={styles.subtitle}>
-            Sip the essence of spring with our First Flush Darjeeling Teas
+            Sip the essence of spring with our First Flush Assam Teas
           </p>
         </div>
         <div style={styles.buttonContainer}>

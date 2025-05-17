@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Filter, ShoppingCart } from 'lucide-react';
+import { Search, Filter, ShoppingCart, Star, Tag } from 'lucide-react';
 import Footer from '../components/layout/Footer';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useCartItems } from '../context/CartItemsContext';
@@ -7,11 +7,11 @@ import { useAlert } from '../context/AlertMsgContext';
 
 
 export default function ProductDisplay() {
-    const navigate=useNavigate()
-    const {getCartItems}=useCartItems()
-    const products=useLoaderData()
-    const {alertMsg}=useAlert()
-    const token=localStorage.getItem("token")
+    const navigate = useNavigate()
+    const { getCartItems } = useCartItems()
+    const products = useLoaderData()
+    const { alertMsg } = useAlert()
+    const token = localStorage.getItem("token")
 
 
   const categories = ["All", ...new Set(products.map(product => product.category))];
@@ -36,15 +36,12 @@ export default function ProductDisplay() {
   });
 
   // Add to cart functionality
-  const addToCart=async(id)=>
-  {
-  
-    const res =await getCartItems(id)
-    if (!token)
-    {
+  const addToCart = async(id) => {
+    const res = await getCartItems(id)
+    if (!token) {
       alertMsg("Login First")
     }
-    else{
+    else {
       alertMsg("Added To Cart")
     }
   }
@@ -63,6 +60,11 @@ export default function ProductDisplay() {
       );
     }
     return stars;
+  };
+
+  // Calculate discount percentage
+  const calculateDiscount = (originalPrice, discountedPrice) => {
+    return Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
   };
 
   // Styles
@@ -223,28 +225,30 @@ export default function ProductDisplay() {
       boxShadow: '0 10px 25px rgba(107, 142, 35, 0.08)',
       transition: 'transform 0.3s, box-shadow 0.3s',
       cursor: 'pointer',
-      border: '1px solid rgba(143, 188, 143, 0.2)'
+      border: '1px solid rgba(143, 188, 143, 0.2)',
+      position: 'relative',
     },
     productCardHover: {
       transform: 'translateY(-5px)',
       boxShadow: '0 15px 30px rgba(107, 142, 35, 0.15)'
     },
     productImageContainer: {
-      height: '220px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      background: 'linear-gradient(135deg, rgba(245, 255, 245, 1), rgba(240, 255, 240, 0.8))',
-      borderBottom: '1px solid rgba(143, 188, 143, 0.15)'
+      width: "100%",      // or fixed width if you want
+  height: "300px",    // or whatever height you want
+  overflow: "hidden", // hide overflow to avoid scrollbars if image overflows
+  padding: 0,
+  margin: 0,
+  position: "relative", // if you want to do anything position-wise later
     },
-    productImage: {
-      maxHeight: '100%',
-      maxWidth: '100%',
-      objectFit: 'contain'
-    },
+     productImage: {
+    width: "100%",         // Make image fill the container's width
+    height: "100%",        // Make image fill the container's height
+    objectFit: "cover",    // Cover the container, cropping if necessary to avoid distortion
+    display: "block",      // Remove any inline gap below image
+  },
     productInfo: {
-      padding: '24px'
+      padding: '24px',
+      position: 'relative',
     },
     productTitle: {
       fontSize: '18px',
@@ -268,9 +272,21 @@ export default function ProductDisplay() {
       borderTop: '1px solid rgba(143, 188, 143, 0.2)'
     },
     productPrice: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    currentPrice: {
       fontSize: '22px',
       fontWeight: 'bold',
-      color: '#3e5622'
+      color: '#3e5622',
+      display: 'inline-block',
+    },
+    originalPrice: {
+      fontSize: '16px',
+      color: '#999',
+      textDecoration: 'line-through',
+      marginRight: '8px',
+      display: 'inline-block',
     },
     addButton: {
       backgroundColor: '#6B8E23',
@@ -320,6 +336,73 @@ export default function ProductDisplay() {
       fontWeight: '500',
       marginRight: '6px',
       marginBottom: '6px'
+    },
+    discountBadge: {
+      position: 'absolute',
+      top: '15px',
+      right: '15px',
+      backgroundColor: '#e74c3c',
+      color: 'white',
+      padding: '5px 10px',
+      borderRadius: '12px',
+      fontWeight: 'bold',
+      fontSize: '14px',
+      zIndex: 2,
+      boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px',
+    },
+    newBadge: {
+      position: 'absolute',
+      top: '15px',
+      left: '15px',
+      backgroundColor: "green",
+      color: 'white',
+      padding: '5px 10px',
+      borderRadius: '12px',
+      fontWeight: 'bold',
+      fontSize: '14px',
+      zIndex: 2,
+      boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+    },
+    stockInfo: {
+      position: 'absolute',
+      bottom: '10px',
+      right: '10px',
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      color: '#2ecc71',
+      padding: '4px 10px',
+      borderRadius: '8px',
+      fontSize: '12px',
+      fontWeight: '500',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+    },
+    ratingContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: '12px',
+    },
+    ratingCount: {
+      marginLeft: '8px',
+      color: '#71906a',
+      fontSize: '14px',
+    },
+    wishlistButton: {
+      position: 'absolute',
+      top: '15px',
+      right: '15px',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      border: 'none',
+      borderRadius: '50%',
+      width: '36px',
+      height: '36px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+      zIndex: 3,
     }
   };
 
@@ -370,37 +453,69 @@ export default function ProductDisplay() {
                 {category}
               </h2>
               <div style={styles.productGrid}>
-                {products.map(product => (
+                {products.map(product => {
+                  // Calculate original price (assuming discounted price is 599)
+                  const discountedPrice = product.price;
+                  const originalPrice = 599 ;
+                  const discountPercentage = calculateDiscount(originalPrice, discountedPrice);
+                  
+                  return (
                   <div 
                     key={product._id} 
                     style={styles.productCard}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = styles.productCardHover.transform;
                       e.currentTarget.style.boxShadow = styles.productCardHover.boxShadow;
+                      // Scale image slightly on hover
+                      const image = e.currentTarget.querySelector('img');
+                      if (image) image.style.transform = 'scale(1.05)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = 'none';
                       e.currentTarget.style.boxShadow = styles.productCard.boxShadow;
+                      // Reset image scale
+                      const image = e.currentTarget.querySelector('img');
+                      if (image) image.style.transform = 'scale(1)';
                     }}
                   >
-                    <div onClick={()=>{navigate("/product",{state:{productId:product._id}})}} style={styles.productImageContainer}>
+                    
+                    
+                    {/* New badge for some products */}
+                    {product._id  !== 0 && (
+                      <div style={styles.newBadge}>NEW</div>
+                    )}
+                    
+                    <div 
+                      onClick={() => {navigate("/product", {state: {productId: product._id}})}} 
+                      style={styles.productImageContainer}
+                    >
                       <img 
-                        src={product.image} 
+                        src="../../../public//Product1-front.jpg"
                         alt={product.name} 
                         style={styles.productImage} 
                       />
+                      {/* In-stock indicator */}
+                      <div style={styles.stockInfo}>In Stock</div>
                     </div>
+                    
                     <div style={styles.productInfo}>
                       <h3 style={styles.productTitle}>{product.name}</h3>
-                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                      <div style={styles.ratingContainer}>
                         {renderRating(product.ratings)}
-                        <span style={{ marginLeft: '8px', color: '#71906a', fontSize: '14px' }}>
-                          ({product.ratings})
+                        <span style={styles.ratingCount}>
+                          ({product.numOfReviews})
                         </span>
                       </div>
                       <p style={styles.productCategory}>Category: {product.category}</p>
+                      
                       <div style={styles.productFooter}>
-                        <p style={styles.productPrice}>${product.price}</p>
+                        <div style={styles.productPrice}>
+                          <div>
+                            <span style={styles.currentPrice}>${discountedPrice}</span>
+                            <span style={styles.originalPrice}>${originalPrice}</span>
+                          </div>
+                          
+                        </div>
                         <button 
                           style={styles.addButton}
                           onClick={() => addToCart(product)}
@@ -421,7 +536,7 @@ export default function ProductDisplay() {
                       </div>
                     </div>
                   </div>
-                ))}
+                )})}
               </div>
             </div>
           ))
@@ -433,8 +548,6 @@ export default function ProductDisplay() {
         )}
       </main>
     </div>
-
     </>
-    
   );
 }

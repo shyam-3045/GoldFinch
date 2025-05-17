@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 
 const MyOrdersPage = () => {
   const product = useLoaderData();
+  console.log(product)
   
   const [orders, setOrders] = useState(product);
   const [selectedOrder, setSelectedOrder] = useState(product[0]);
@@ -805,7 +806,7 @@ const MyOrdersPage = () => {
               <tbody>
                 {order.products.map((product, index) => (
                   <tr key={index}>
-                    <td style={styles.tableCell}>{product.name}</td>
+                    <td style={styles.tableCell}>{product.product.name}</td>
                     <td style={styles.tableCell}>{product.quantity}</td>
                   </tr>
                 ))}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from "../../axios.config";
 import OtpModel from "./OtpModel";
 import { giveOredr } from '../context/Order';
 
@@ -435,14 +434,14 @@ export default function PaymentConfirmationPage() {
             {checkoutItems && checkoutItems.map((item, index) => (
               <div key={index} style={styles.orderItem}>
                 <div style={styles.productImage}>
-                  {item.image && <img src={item.image} alt={item.name} style={styles.productImg} />}
+                  <img src={item.product.name === "Assam Delight Tea" ?"../../../public/Product1-front.jpg":"/"} alt={item.name} style={styles.productImg} />
                 </div>
                 <div style={styles.productDetails}>
-                  <h3 style={styles.productName}>{item.name || 'Product Name'}</h3>
-                  <p style={styles.productDescription}>{item.description || 'Product description'}</p>
+                  <h3 style={styles.productName}>{item.product.name || 'Product Name'}</h3>
+                  <p style={styles.productDescription}>{`Category: ${item.product.category}` || 'Product description'}</p>
                   <div style={styles.productMeta}>
                     <span style={styles.productQuantity}>Qty: {item.quantity || 1}</span>
-                    <span style={styles.productPrice}>{formatCurrency(item.price || 0)}</span>
+                    <span style={styles.productPrice}>{formatCurrency(item.product.price || 0)}</span>
                   </div>
                 </div>
               </div>

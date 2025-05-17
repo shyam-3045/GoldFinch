@@ -1,72 +1,64 @@
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Footer from '../layout/Footer';
 import { useAlert } from '../../context/AlertMsgContext';
 import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsDetails';
-import { useCartItems } from '../../context/CartItemsContext'; 
-
+import { useCartItems } from '../../context/CartItemsContext';
 
 export default function ProductDetailsPage() {
-  const products=useLoaderData()
-  const {getCartItems}=useCartItems()
-  const {getProductById}=useProducts()
-  const location=useLocation()
-  const {productId}=location.state
-  const {alertMsg}=useAlert()
-  const[singlePrd,setSinglePrd]=useState([])
-  const token=localStorage.getItem("token")
-  const navigate=useNavigate()
-
-    console.log("re renders")
-
+  const products = useLoaderData();
+  const { getCartItems } = useCartItems();
+  const { getProductById } = useProducts();
+  const location = useLocation();
+  const { productId } = location.state;
+  const { alertMsg } = useAlert();
+  const [singlePrd, setSinglePrd] = useState([]);
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const res = await getProductById(productId);
+      setSinglePrd(res);
+    };
+    fetchProduct();
+  }, [productId]);
 
- useEffect(() => {
-  const fetchProduct = async () => {
-    const res = await getProductById(productId);
-    setSinglePrd(res);
+  const handleCart = () => {
+    if (!token) {
+      alertMsg("Login To Proceed");
+    } else {
+      getCartItems(productId, quantity);
+      alertMsg(`Added ${singlePrd.name} To the Cart`);
+    }
   };
-  fetchProduct();
-}, [productId]);  
 
-
-  const handleCart=()=>
-  {
-    if(!token)
-    {
-      alertMsg("Login To Procced")
-    }
-    else{
-      getCartItems(productId,quantity)
-      alertMsg(`Added ${singlePrd.name} To the Cart `)
-    }
-  }
-
-  
   const product = {
     name: singlePrd.name,
     price: singlePrd.price,
+    originalPrice: 599,
     discountPrice: 24.99,
     rating: singlePrd.ratings,
     reviews: singlePrd.numOfReviews,
     description: singlePrd.description,
     features: [
-      "BPA-free stainless steel construction",
-      "Double-wall vacuum insulation",
-      "Leak-proof design",
-      "Wide mouth for easy cleaning",
-      "Fits standard cup holders"
+      "Handpicked premium Assam tea leaves",
+      "Rich aroma with bold and full-bodied taste",
+      "Perfect for strong chai and milk tea preparations",
+      "Freshly packed to preserve natural flavor",
+      "Sourced from lush Assam estates"
     ],
     specifications: {
-      "Material": "18/8 Food-grade stainless steel",
-      "Capacity": "24 oz (710ml)",
-      "Dimensions": "9.5\" H x 2.9\" D",
-      "Weight": "0.8 lbs"
+      "Type": "Loose Leaf Assam Tea",
+      "Net Weight": "100g",
+      "Origin": "Assam, India",
+      "Packaging": "Sealed foil pouch",
+      "Shelf Life": "12 months from packaging date"
     },
-    colors: ["#a8e6cf", "#1e88e5", "#ff8a65"],
+    colors: ["#d4af37", "#6b4c3b", "#f5f5dc"],
     stock: singlePrd.stock,
     images: [
       "/api/placeholder/400/400",
@@ -75,52 +67,49 @@ export default function ProductDetailsPage() {
       "/api/placeholder/400/400"
     ],
     fullDescription: [
-      "This premium eco-friendly water bottle is designed for the modern adventurer and everyday user alike. The double-wall vacuum insulation technology keeps your beverages at the perfect temperature - cold drinks stay cold for up to 24 hours, while hot drinks remain hot for up to 12 hours.",
-      "Crafted from high-quality 18/8 food-grade stainless steel, this bottle is built to last and completely free from BPA and other harmful chemicals. The leak-proof design ensures you can toss it in your bag without worry, while the wide mouth makes filling and cleaning a breeze.",
-      "Whether you're hiking a mountain trail, hitting the gym, or just staying hydrated at your desk, this bottle is the perfect companion. Its sleek design fits standard cup holders, and the powder-coated finish provides a comfortable grip that won't sweat or leave condensation rings."
+      "Goldfinch Teas - Assam Delight offers an authentic Assam tea experience with bold aroma and rich flavor, perfect for your daily chai or relaxing evenings.",
+      "Our tea is handpicked from premium Assam estates, ensuring every leaf is of the highest quality and freshness. The sealed foil packaging preserves the natural taste and aroma until you brew your perfect cup.",
+      "Enjoy a strong, full-bodied cup that complements milk perfectly, making it a favorite for traditional Indian chai lovers. Brew a cup of Goldfinch Assam Delight and enjoy the heritage and taste of Assam in every sip."
     ]
   };
-
-  
 
   const reviews = [
     {
       id: 1,
-      user: "Sarah J.",
+      user: "Ravi",
       rating: 5,
-      date: "April 15, 2025",
-      title: "Exactly what I was looking for!",
-      content: "I've been using this bottle for a month now and it's exceeded my expectations. My coffee stays hot during my entire morning commute, and ice water stays cold all day during hikes. The mint green color is gorgeous too!",
+      date: "May 15, 2025",
+      title: "Very good tea!",
+      content: "This Assam tea has a strong aroma and bold taste. Perfect for making my morning chai. Really happy with the quality.",
       verified: true
     },
     {
       id: 2,
-      user: "Michael T.",
+      user: "Chandra",
       rating: 4,
-      date: "March 30, 2025",
-      title: "Great quality, slightly heavy",
-      content: "The quality is excellent and it definitely keeps drinks at temperature as advertised. My only small complaint is that it's a bit heavier than I expected, but that's probably due to the good insulation.",
+      date: "May 12, 2025",
+      title: "Good taste but a bit pricey",
+      content: "I liked the taste and aroma, very nice tea. But I think the price could be a little less for daily use.",
       verified: true
     },
     {
       id: 3,
-      user: "Elena R.",
+      user: "Kumar",
       rating: 5,
-      date: "April 2, 2025",
-      title: "No more plastic bottles!",
-      content: "I'm so happy with this purchase. The bottle is sturdy, doesn't leak at all, and has helped me completely eliminate single-use plastic bottles from my routine. Worth every penny!",
+      date: "May 16, 2025",
+      title: "Highly recommended",
+      content: "Bought this for the first time and really liked the strong flavor. Feels like a true Assam tea experience. Will buy again.",
       verified: true
     }
   ];
 
-  const recommendedProducts=products.filter((el)=>el.name !== singlePrd.name)
+  const recommendedProducts = products.filter((el) => el.name !== singlePrd.name);
 
-  
-  // Styles
+  // Enhanced styles
   const pageStyles = {
-    fontFamily: "'Inter', -apple-system, system-ui, sans-serif",
+    fontFamily: "'Poppins', -apple-system, system-ui, sans-serif",
     color: "#333",
-    backgroundColor: "#f9fafb",
+    backgroundColor: "#f5f7fa",
     padding: "40px 20px",
     maxWidth: "1200px",
     margin: "0 auto",
@@ -130,6 +119,9 @@ export default function ProductDetailsPage() {
     fontSize: "14px",
     color: "#666",
     marginBottom: "20px",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px"
   };
 
   const containerStyles = {
@@ -140,7 +132,7 @@ export default function ProductDetailsPage() {
     backgroundColor: "#fff",
     borderRadius: "12px",
     padding: "30px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
   };
 
   const imageColumnStyles = {
@@ -153,29 +145,32 @@ export default function ProductDetailsPage() {
   const thumbnailColumnStyles = {
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
-    width: "80px",
+    gap: "15px",
+    width: "90px",
   };
 
   const thumbnailStyles = {
-    width: "80px",
-    height: "80px",
+    width: "90px",
+    height: "90px",
     border: "1px solid #e0e0e0",
-    borderRadius: "6px",
+    borderRadius: "8px",
     cursor: "pointer",
     objectFit: "cover",
-    transition: "all 0.2s ease",
+    transition: "all 0.3s ease",
   };
 
   const selectedThumbnailStyles = {
     ...thumbnailStyles,
-    borderColor: "#86efac",
-    boxShadow: "0 0 0 2px #86efac",
+    borderColor: "#4ade80",
+    boxShadow: "0 0 0 2px #4ade80",
   };
 
   const mainImageContainerStyles = {
     flex: "1",
     position: "relative",
+    borderRadius: "12px",
+    overflow: "hidden",
+    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
   };
 
   const mainImageStyles = {
@@ -183,6 +178,7 @@ export default function ProductDetailsPage() {
     borderRadius: "8px",
     objectFit: "cover",
     aspectRatio: "1/1",
+    transition: "transform 0.5s ease",
   };
 
   const infoColumnStyles = {
@@ -190,70 +186,85 @@ export default function ProductDetailsPage() {
     minWidth: "300px",
     display: "flex",
     flexDirection: "column",
-    gap: "20px",
-    maxHeight: "800px", // Added fixed height for scrolling
+    gap: "24px",
+    maxHeight: "800px",
   };
 
   const scrollableContentStyles = {
     overflowY: "auto",
-    paddingRight: "10px",
+    paddingRight: "15px",
     height: "100%",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#10b981 transparent",
   };
 
   const productTitleStyles = {
-    fontSize: "28px",
-    fontWeight: "600",
+    fontSize: "32px",
+    fontWeight: "700",
     margin: "0 0 8px 0",
     color: "#111",
+    letterSpacing: "-0.5px",
   };
 
   const priceContainerStyles = {
     display: "flex",
     alignItems: "center",
     gap: "12px",
-    margin: "5px 0 15px 0",
+    margin: "8px 0 15px 0",
   };
 
   const currentPriceStyles = {
-    fontSize: "28px",
-    fontWeight: "700",
-    color: "#10b981",
+    fontSize: "32px",
+    fontWeight: "800",
+    color: "#047857",
   };
 
   const originalPriceStyles = {
-    fontSize: "18px",
-    color: "#888",
+    fontSize: "20px",
+    color: "#94a3b8",
     textDecoration: "line-through",
+  };
+
+  const discountBadgeStyles = {
+    backgroundColor: "#fef2f2",
+    color: "#ef4444",
+    padding: "4px 10px",
+    borderRadius: "20px",
+    fontSize: "14px",
+    fontWeight: "600",
   };
 
   const ratingContainerStyles = {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
+    gap: "10px",
+    margin: "5px 0",
   };
 
   const starStyles = {
     color: "#facc15",
     fontSize: "18px",
+    letterSpacing: "2px",
   };
 
   const reviewCountStyles = {
-    color: "#666",
-    fontSize: "14px",
+    color: "#64748b",
+    fontSize: "15px",
+    fontWeight: "500",
   };
 
   const dividerStyles = {
     height: "1px",
     backgroundColor: "#e5e7eb",
-    margin: "10px 0",
+    margin: "15px 0",
     width: "100%",
   };
 
   const descriptionStyles = {
     fontSize: "16px",
-    lineHeight: "1.6",
-    color: "#444",
-    marginBottom: "10px",
+    lineHeight: "1.7",
+    color: "#4b5563",
+    marginBottom: "15px",
   };
 
   const featureListStyles = {
@@ -265,269 +276,218 @@ export default function ProductDetailsPage() {
   const featureItemStyles = {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    marginBottom: "8px",
+    gap: "10px",
+    marginBottom: "12px",
     fontSize: "15px",
   };
 
   const checkmarkStyles = {
     color: "#10b981",
-    fontSize: "16px",
+    fontSize: "18px",
+    fontWeight: "bold",
   };
 
   const sectionTitleStyles = {
-    fontSize: "18px",
+    fontSize: "20px",
     fontWeight: "600",
-    marginBottom: "12px",
-    marginTop: "20px",
-  };
-
-  const colorOptionsStyles = {
-    display: "flex",
-    gap: "10px",
-    marginTop: "8px",
-  };
-
-  const colorOptionStyles = {
-    width: "30px",
-    height: "30px",
-    borderRadius: "50%",
-    cursor: "pointer",
-    transition: "transform 0.2s ease",
-  };
-
-  const selectedColorOptionStyles = {
-    transform: "scale(1.1)",
-    boxShadow: "0 0 0 2px white, 0 0 0 4px #10b981",
+    marginBottom: "15px",
+    marginTop: "25px",
+    color: "#0f172a",
+    position: "relative",
+    paddingLeft: "15px",
+    borderLeft: "4px solid #10b981",
   };
 
   const quantitySelectorStyles = {
     display: "flex",
     alignItems: "center",
-    gap: "15px",
-    margin: "15px 0",
+    gap: "20px",
+    margin: "20px 0",
   };
 
   const quantityLabelStyles = {
     fontSize: "16px",
     fontWeight: "500",
+    color: "#374151",
   };
 
   const quantityControlsStyles = {
     display: "flex",
     alignItems: "center",
+    borderRadius: "8px",
+    overflow: "hidden",
+    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.08)",
   };
 
   const quantityButtonStyles = {
-    width: "32px",
-    height: "32px",
+    width: "40px",
+    height: "40px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f1f5f9",
-    border: "1px solid #e5e7eb",
+    border: "none",
     cursor: "pointer",
     userSelect: "none",
-    fontSize: "16px",
+    fontSize: "18px",
+    fontWeight: "bold",
+    transition: "background-color 0.2s ease",
   };
 
   const decrementButtonStyles = {
     ...quantityButtonStyles,
-    borderRadius: "6px 0 0 6px",
+    borderRadius: "8px 0 0 8px",
   };
 
   const incrementButtonStyles = {
     ...quantityButtonStyles,
-    borderRadius: "0 6px 6px 0",
+    borderRadius: "0 8px 8px 0",
   };
 
   const quantityInputStyles = {
-    width: "50px",
-    height: "32px",
+    width: "60px",
+    height: "40px",
     border: "1px solid #e5e7eb",
     borderLeft: "none",
     borderRight: "none",
     textAlign: "center",
     fontSize: "16px",
+    fontWeight: "500",
   };
 
   const stockInfoStyles = {
-    fontSize: "14px",
+    fontSize: "15px",
     color: product.stock > 5 ? "#10b981" : "#f59e0b",
     display: "flex",
     alignItems: "center",
-    gap: "5px",
+    gap: "8px",
+    fontWeight: "500",
   };
 
   const addToCartButtonStyles = {
-    backgroundColor: "#10b981",
+    backgroundColor: "#047857",
     color: "white",
     border: "none",
-    borderRadius: "8px",
-    padding: "12px 24px",
+    borderRadius: "10px",
+    padding: "16px 24px",
     fontSize: "16px",
     fontWeight: "600",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "10px",
-    transition: "background-color 0.2s ease",
-    marginTop: "10px",
+    gap: "12px",
+    transition: "all 0.3s ease",
+    marginTop: "15px",
     width: "100%",
+    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)",
   };
 
   const specificationsTableStyles = {
     width: "100%",
-    borderCollapse: "collapse",
-    marginTop: "10px",
+    borderCollapse: "separate",
+    borderSpacing: "0 8px",
+    marginTop: "15px",
   };
 
   const tableRowStyles = {
-    borderBottom: "1px solid #e5e7eb",
+    transition: "background-color 0.2s",
   };
 
   const tableCellStyles = {
-    padding: "10px 5px",
+    padding: "12px 15px",
     fontSize: "14px",
+    backgroundColor: "#f8fafc",
+    border: "1px solid #e2e8f0",
+    borderLeft: "none",
+    borderRight: "none",
   };
 
   const tableCellHeaderStyles = {
     ...tableCellStyles,
     fontWeight: "600",
     width: "40%",
+    backgroundColor: "#f1f5f9",
+    borderRadius: "6px 0 0 6px",
+    borderLeft: "1px solid #e2e8f0",
+  };
+
+  const tableCellValueStyles = {
+    ...tableCellStyles,
+    borderRadius: "0 6px 6px 0",
+    borderRight: "1px solid #e2e8f0",
   };
 
   const sectionStyles = {
     backgroundColor: "#fff",
     borderRadius: "12px",
     padding: "30px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
     marginTop: "40px",
   };
 
   const sectionHeaderStyles = {
     fontSize: "24px",
-    fontWeight: "600",
-    marginBottom: "25px",
-    color: "#111",
+    fontWeight: "700",
+    marginBottom: "30px",
+    color: "#0f172a",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    position: "relative",
+    paddingBottom: "15px",
+    borderBottom: "2px solid #e2e8f0",
   };
 
   const reviewContainerStyles = {
     borderBottom: "1px solid #e5e7eb",
-    paddingBottom: "20px",
-    marginBottom: "20px",
+    paddingBottom: "25px",
+    marginBottom: "25px",
+    transition: "transform 0.2s ease",
   };
 
   const reviewHeaderStyles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: "10px",
+    marginBottom: "12px",
   };
 
   const reviewUserStyles = {
     fontWeight: "600",
     fontSize: "16px",
+    color: "#1e293b",
   };
 
   const reviewDateStyles = {
-    color: "#6b7280",
+    color: "#64748b",
     fontSize: "14px",
   };
 
   const reviewTitleStyles = {
     fontSize: "18px",
     fontWeight: "600",
-    marginBottom: "8px",
+    marginBottom: "10px",
+    color: "#0f172a",
   };
 
   const reviewContentStyles = {
-    lineHeight: "1.6",
+    lineHeight: "1.7",
     fontSize: "15px",
-    color: "#374151",
+    color: "#4b5563",
   };
 
   const verifiedBadgeStyles = {
     backgroundColor: "#ecfdf5",
     color: "#10b981",
-    padding: "2px 8px",
-    borderRadius: "4px",
+    padding: "3px 10px",
+    borderRadius: "20px",
     fontSize: "12px",
-    fontWeight: "500",
-    marginLeft: "8px",
-  };
-
-  const reviewFormStyles = {
-    marginTop: "30px",
-    padding: "25px",
-    backgroundColor: "#f8fafc",
-    borderRadius: "8px",
-    border: "1px solid #e2e8f0",
-  };
-
-  const reviewFormTitleStyles = {
-    fontSize: "20px",
     fontWeight: "600",
-    marginBottom: "20px",
-  };
-
-  const formGroupStyles = {
-    marginBottom: "15px",
-  };
-
-  const formLabelStyles = {
-    display: "block",
-    fontSize: "15px",
-    fontWeight: "500",
-    marginBottom: "6px",
-  };
-
-  const formInputStyles = {
-    width: "100%",
-    padding: "10px 12px",
-    border: "1px solid #d1d5db",
-    borderRadius: "6px",
-    fontSize: "15px",
-  };
-
-  const formTextareaStyles = {
-    ...formInputStyles,
-    minHeight: "120px",
-    resize: "vertical",
-  };
-
-  const ratingInputContainerStyles = {
-    display: "flex",
+    marginLeft: "10px",
+    display: "inline-flex",
     alignItems: "center",
-    gap: "6px",
-  };
-
-  const starInputStyles = {
-    fontSize: "24px",
-    color: "#d1d5db",
-    cursor: "pointer",
-  };
-
-  const starInputActiveStyles = {
-    ...starInputStyles,
-    color: "#facc15",
-  };
-
-  const submitButtonStyles = {
-    backgroundColor: "#10b981",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    padding: "12px 24px",
-    fontSize: "16px",
-    fontWeight: "600",
-    cursor: "pointer",
-    transition: "background-color 0.2s ease",
-    marginTop: "10px",
+    gap: "4px",
   };
 
   const recommendedSectionStyles = {
@@ -537,58 +497,62 @@ export default function ProductDetailsPage() {
   const productsGridStyles = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-    gap: "20px",
-    marginTop: "20px",
+    gap: "25px",
+    marginTop: "25px",
   };
 
   const productCardStyles = {
     backgroundColor: "#fff",
-    borderRadius: "8px",
+    borderRadius: "12px",
     overflow: "hidden",
     border: "1px solid #e5e7eb",
-    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
     cursor: "pointer",
+    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
   };
 
   const productCardImageStyles = {
     width: "100%",
-    height: "200px",
+    height: "220px",
     objectFit: "cover",
+    transition: "transform 0.5s ease",
   };
 
   const productCardContentStyles = {
-    padding: "15px",
+    padding: "20px",
   };
 
   const productCardTitleStyles = {
-    fontSize: "16px",
+    fontSize: "17px",
     fontWeight: "600",
-    marginBottom: "8px",
+    marginBottom: "10px",
+    color: "#1e293b",
+    lineHeight: "1.4",
   };
 
   const productCardPriceStyles = {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    marginBottom: "8px",
+    gap: "10px",
+    marginBottom: "10px",
   };
 
   const productCardCurrentPriceStyles = {
     fontSize: "18px",
     fontWeight: "700",
-    color: "#10b981",
+    color: "#047857",
   };
 
   const productCardOriginalPriceStyles = {
     fontSize: "14px",
-    color: "#888",
+    color: "#94a3b8",
     textDecoration: "line-through",
   };
 
   const productCardRatingStyles = {
     display: "flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "6px",
     fontSize: "14px",
   };
 
@@ -599,211 +563,264 @@ export default function ProductDetailsPage() {
     document.head.appendChild(styleTag);
     
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
   }
+
+  // Calculate discount percentage
+  const calculateDiscount = () => {
+    if (product.originalPrice && product.price) {
+      const discount = ((product.originalPrice - product.price) / product.originalPrice) * 100;
+      return Math.round(discount);
+    }
+    return 0;
+  };
+
   return (
     <>
-        <div style={pageStyles}>
-      {/* Breadcrumb */}
-      
-      {/* Main container */}
-      <div style={containerStyles}>
-        {/* Left column - Product images */}
-        <div style={imageColumnStyles}>
-          {/* Thumbnails column */}
-          <div style={thumbnailColumnStyles}>
-            {product.images.slice(0, 4).map((img, index) => (
+      <div style={pageStyles}>
+        {/* Breadcrumb */}
+        <div style={breadcrumbStyles}>
+          <span style={{cursor: "pointer"}} onClick={() => navigate("/")}>Home</span>
+          <span>›</span>
+          <span style={{cursor: "pointer"}} onClick={() => navigate("/allProducts")}>Tea Collection</span>
+          <span>›</span>
+          <span style={{color: "#10b981"}}>{product.name}</span>
+        </div>
+        
+        {/* Main container */}
+        <div style={containerStyles}>
+          {/* Left column - Product images */}
+          <div style={imageColumnStyles}>
+            {/* Thumbnails column */}
+            <div style={thumbnailColumnStyles}>
+              {products[0]?.images?.slice(0, 2).map((img, index) => {
+                const imageUrl = img?.url ? `/${img.url.replace(/^public\//, '')}` : '';
+
+                return (
+                  <img
+                    key={index}
+                    src={imageUrl}
+                    alt={`Thumbnail ${index + 1}`}
+                    style={index === selectedImage ? selectedThumbnailStyles : thumbnailStyles}
+                    onClick={() => setSelectedImage(index)}
+                  />
+                );
+              })}
+            </div>
+            
+            {/* Main image */}
+            <div style={mainImageContainerStyles}>
               <img 
-                key={index}
-                src={img} 
-                alt={`${product.name} thumbnail ${index + 1}`}
-                style={index === selectedImage ? selectedThumbnailStyles : thumbnailStyles}
-                onClick={() => setSelectedImage(index)}
+                src={products[0]?.images[selectedImage]?.url ? `/${products[0].images[selectedImage].url.replace(/^public\//, '')}` : '/api/placeholder/400/400'} 
+                alt={product.name}
+                style={mainImageStyles}
               />
+            </div>
+          </div>
+
+          {/* Right column - Product info with scrollable content */}
+          <div style={infoColumnStyles}>
+            <div style={scrollableContentStyles}>
+              <div>
+                <h1 style={productTitleStyles}>{product.name}</h1>
+                
+                <div style={priceContainerStyles}>
+                  <span style={currentPriceStyles}>₹{product.price}</span>
+                  <span style={originalPriceStyles}>₹{product.originalPrice}</span>
+                  <span style={discountBadgeStyles}>Save {calculateDiscount()}%</span>
+                </div>
+
+                <div style={ratingContainerStyles}>
+                  <div style={starStyles}>★★★★★</div>
+                  <span style={{fontWeight: "500"}}>{product.rating}</span>
+                  <span style={reviewCountStyles}>({product.reviews} reviews)</span>
+                </div>
+              </div>
+
+              <div style={dividerStyles}></div>
+
+              <div>
+                <p style={descriptionStyles}>{product.description}</p>
+              </div>
+
+              <div>
+                <h3 style={sectionTitleStyles}>Key Features</h3>
+                <ul style={featureListStyles}>
+                  {product.features.map((feature, index) => (
+                    <li key={index} style={featureItemStyles}>
+                      <span style={checkmarkStyles}>✓</span> {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div style={dividerStyles}></div>
+
+              <div style={quantitySelectorStyles}>
+                <span style={quantityLabelStyles}>Quantity:</span>
+                <div style={quantityControlsStyles}>
+                  <div 
+                    style={decrementButtonStyles}
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  >−</div>
+                  <input
+                    type="text"
+                    value={quantity}
+                    style={quantityInputStyles}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value);
+                      if (!isNaN(val) && val > 0) {
+                        setQuantity(val);
+                      }
+                    }}
+                  />
+                  <div 
+                    style={incrementButtonStyles}
+                    onClick={() => setQuantity(quantity + 1)}
+                  >+</div>
+                </div>
+              </div>
+
+              <div style={stockInfoStyles}>
+                <span style={{fontSize: "18px"}}>●</span>
+                {product.stock > 0 
+                  ? `In Stock (${product.stock} available)` 
+                  : "Out of Stock"}
+              </div>
+
+              <button onClick={handleCart} style={addToCartButtonStyles}>
+                <span style={{fontSize: "20px"}}>🛒</span> Add to Cart
+              </button>
+
+              <div style={dividerStyles}></div>
+
+              <div>
+                <h3 style={sectionTitleStyles}>Full Description</h3>
+                {product.fullDescription.map((paragraph, index) => (
+                  <p key={index} style={descriptionStyles}>{paragraph}</p>
+                ))}
+              </div>
+
+              <div style={dividerStyles}></div>
+
+              <div>
+                <h3 style={sectionTitleStyles}>Specifications</h3>
+                <table style={specificationsTableStyles}>
+                  <tbody>
+                    {Object.entries(product.specifications).map(([key, value], index) => (
+                      <tr key={index} style={tableRowStyles}>
+                        <td style={tableCellHeaderStyles}>{key}</td>
+                        <td style={tableCellValueStyles}>{value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Reviews section */}
+        <div style={sectionStyles}>
+          <div style={sectionHeaderStyles}>
+            <h2 style={{margin: 0}}>Customer Reviews</h2>
+            <div style={ratingContainerStyles}>
+              <div style={starStyles}>★★★★★</div>
+              <span style={{fontWeight: "500"}}>{product.rating}</span>
+              <span style={reviewCountStyles}>({product.reviews} reviews)</span>
+            </div>
+          </div>
+
+          {/* Review list */}
+          <div>
+            {reviews.map((review) => (
+              <div key={review.id} style={reviewContainerStyles}>
+                <div style={reviewHeaderStyles}>
+                  <div>
+                    <span style={reviewUserStyles}>{review.user}</span>
+                    {review.verified && (
+                      <span style={verifiedBadgeStyles}>
+                        <span style={{fontSize: "10px"}}>✓</span> Verified Purchase
+                      </span>
+                    )}
+                  </div>
+                  <span style={reviewDateStyles}>{review.date}</span>
+                </div>
+                <div style={{display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px"}}>
+                  <div style={starStyles}>
+                    {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
+                  </div>
+                </div>
+                <h4 style={reviewTitleStyles}>{review.title}</h4>
+                <p style={reviewContentStyles}>{review.content}</p>
+              </div>
             ))}
           </div>
-          
-          {/* Main image */}
-          <div style={mainImageContainerStyles}>
-            <img 
-              src={product.images[selectedImage]} 
-              alt={product.name}
-              style={mainImageStyles}
-            />
-          </div>
         </div>
 
-        {/* Right column - Product info with scrollable content */}
-        <div style={infoColumnStyles}>
-          <div style={scrollableContentStyles}>
-            <div>
-              <h1 style={productTitleStyles}>{product.name}</h1>
-              
-              <div style={priceContainerStyles}>
-                <span style={currentPriceStyles}>${product.price}</span>                
-              </div>
-
-              <div style={ratingContainerStyles}>
-                <div style={starStyles}>★★★★★</div>
-                <span style={{fontWeight: "500"}}>{product.rating}</span>
-                <span style={reviewCountStyles}>({product.reviews} reviews)</span>
-              </div>
-            </div>
-
-            <div style={dividerStyles}></div>
-
-            <div>
-              <p style={descriptionStyles}>{product.description}</p>
-            </div>
-
-            <div>
-              <h3 style={sectionTitleStyles}>Key Features</h3>
-              <ul style={featureListStyles}>
-                {product.features.map((feature, index) => (
-                  <li key={index} style={featureItemStyles}>
-                    <span style={checkmarkStyles}>✓</span> {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div style={dividerStyles}></div>
-
-
-            <div style={quantitySelectorStyles}>
-              <span style={quantityLabelStyles}>Quantity:</span>
-              <div style={quantityControlsStyles}>
+        {/* Recommended Products section */}
+        <div style={recommendedSectionStyles}>
+          <h2 style={{...sectionHeaderStyles, marginBottom: "15px"}}>You May Also Like</h2>
+          <div style={productsGridStyles}>
+            {recommendedProducts.length > 0 ? (
+              recommendedProducts.map((product) => (
                 <div 
-                  style={decrementButtonStyles}
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >−</div>
-                <input
-                  type="text"
-                  value={quantity}
-                  style={quantityInputStyles}
-                  onChange={(e) => {
-                    const val = parseInt(e.target.value);
-                    if (!isNaN(val) && val > 0) {
-                      setQuantity(val);
-                    }
-                  }}
-                />
-                <div 
-                  style={incrementButtonStyles}
-                  onClick={() => setQuantity(quantity + 1)}
-                >+</div>
+                  key={product._id} 
+                  style={productCardStyles} 
+                  onClick={() => navigate("/product", {state: {productId: product._id}})}
+                >
+                  <img
+                    src={product.image} 
+                    alt={product.name}
+                    style={productCardImageStyles}
+                  />
+                  <div style={productCardContentStyles}>
+                    <h3 style={productCardTitleStyles}>{product.name}</h3>
+                    <div style={productCardPriceStyles}>
+                      <span style={productCardCurrentPriceStyles}>₹{product.price}</span>
+                      <span style={productCardOriginalPriceStyles}>₹599</span>
+                    </div>
+                    <div style={productCardRatingStyles}>
+                      <span style={{color: "#facc15"}}>{"★".repeat(Math.floor(product.ratings))}{"☆".repeat(5 - Math.floor(product.ratings))}</span>
+                      <span>{product.ratings}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div style={{
+                ...productCardStyles,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "30px",
+                backgroundColor: "#f8fafc",
+                border: "1px dashed #cbd5e1",
+                height: "250px"
+              }}>
+                <div style={{
+                  fontSize: "36px",
+                  marginBottom: "10px"
+                }}>🍃</div>
+                <h3 style={{
+                  fontSize: "18px",
+                  fontWeight: "600",
+                  marginBottom: "8px",
+                  textAlign: "center"
+                }}>More Teas Coming Soon</h3>
+                <p style={{
+                  fontSize: "14px",
+                  color: "#64748b",
+                  textAlign: "center"
+                }}>We're adding new premium teas to our collection.</p>
               </div>
-            </div>
-
-            <div style={stockInfoStyles}>
-              <span style={{fontSize: "16px"}}>●</span>
-              {product.stock > 0 
-                ? `In Stock (${product.stock} available)` 
-                : "Out of Stock"}
-            </div>
-
-            <button onClick={handleCart} style={addToCartButtonStyles}>
-              <span style={{fontSize: "18px"}}>🛒</span> Add to Cart
-            </button>
-
-            <div style={dividerStyles}></div>
-
-            <div>
-              <h3 style={sectionTitleStyles}>Full Description</h3>
-              {product.fullDescription.map((paragraph, index) => (
-                <p key={index} style={descriptionStyles}>{paragraph}</p>
-              ))}
-            </div>
-
-            <div style={dividerStyles}></div>
-
-            <div>
-              <h3 style={sectionTitleStyles}>Specifications</h3>
-              <table style={specificationsTableStyles}>
-                <tbody>
-                  {Object.entries(product.specifications).map(([key, value], index) => (
-                    <tr key={index} style={tableRowStyles}>
-                      <td style={tableCellHeaderStyles}>{key}</td>
-                      <td style={tableCellStyles}>{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Reviews section */}
-      <div style={sectionStyles}>
-        <div style={sectionHeaderStyles}>
-          <h2 style={{margin: 0}}>Customer Reviews</h2>
-          <div style={ratingContainerStyles}>
-            <div style={starStyles}>★★★★★</div>
-            <span style={{fontWeight: "500"}}>{product.rating}</span>
-            <span style={reviewCountStyles}>({product.reviews} reviews)</span>
-          </div>
-        </div>
-
-        {/* Review list */}
-        <div>
-          { reviews.map((review) => (
-            <div key={review.id} style={reviewContainerStyles}>
-              <div style={reviewHeaderStyles}>
-                <div>
-                  <span style={reviewUserStyles}>{review.user}</span>
-                  {review.verified && (
-                    <span style={verifiedBadgeStyles}>Verified Purchase</span>
-                  )}
-                </div>
-                <span style={reviewDateStyles}>{review.date}</span>
-              </div>
-              <div style={{display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px"}}>
-                <div style={starStyles}>
-                  {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
-                </div>
-              </div>
-              <h4 style={reviewTitleStyles}>{review.title}</h4>
-              <p style={reviewContentStyles}>{review.content}</p>
-            </div>
-          ))
-          }
-        </div>
-
-        {/* Write a review form */}
-        
-      </div>
-
-      {/* Recommended Products section */}
-      <div style={recommendedSectionStyles}>
-        <h2 style={{...sectionHeaderStyles, marginBottom: "15px"}}>You May Also Like</h2>
-        <div style={productsGridStyles}>
-          {recommendedProducts.map((product) => (
-            <div key={product._id} style={productCardStyles}>
-              <img
-                onClick={()=>{navigate("/product",{state:{productId:product._id}})}}
-                src={product.image} 
-                alt={product.name}
-                style={productCardImageStyles}
-              />
-              <div style={productCardContentStyles}>
-                <h3 style={productCardTitleStyles}>{product.name}</h3>
-                <div style={productCardPriceStyles}>
-                  <span style={productCardCurrentPriceStyles}>${product.price}</span>
-                </div>
-                <div style={productCardRatingStyles}>
-                  <span style={{color: "#facc15"}}>{"★".repeat(Math.floor(product.ratings))}{"☆".repeat(5 - Math.floor(product.ratings))}</span>
-                  <span>{product.ratings}</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
     </>
-    
   );
 }

@@ -1,7 +1,23 @@
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart,Star } from "lucide-react";
 import Rating from "./Rating";
 
 export default function ProductCard({ product, addItem, productNavigate }) {
+  const renderStars = (rating = 4) => {
+  return (
+    <div style={{ display: "flex", gap: "2px", marginTop: "5px" }}>
+      {[1, 2, 3, 4, 5].map((index) => (
+        <Star
+          key={index}
+          size={14} // Small, neat size
+          fill={index <= rating ? "#facc15" : "none"} // Yellow for filled
+          stroke={index <= rating ? "#facc15" : "#d1d5db"} // Light gray for empty
+          style={{ transition: "all 0.2s ease-in-out" }}
+        />
+      ))}
+    </div>
+  );
+};
+
 
   return (
     <div 
@@ -122,13 +138,14 @@ export default function ProductCard({ product, addItem, productNavigate }) {
           </span>
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Rating value={product.rating || 5} />
+              {renderStars(product.ratings || 5)}
+
             <span style={{ 
               marginLeft: '5px', 
               color: '#666',
               fontSize: '14px'
             }}>
-              ({product.reviews || 0})
+              ({product.numOfReviews || 0})
             </span>
           </div>
         </div>

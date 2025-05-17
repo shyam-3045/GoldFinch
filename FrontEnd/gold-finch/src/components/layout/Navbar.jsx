@@ -5,6 +5,7 @@ import { useAuth } from "../../context/authContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAlert  } from "../../context/AlertMsgContext";
 
+
 export default function Navbar() {
   const {alertMsg}=useAlert()
   const { logout } = useAuth();
@@ -240,74 +241,88 @@ export default function Navbar() {
   };
 
   return (
-    <>
-      {/* Announcement Bar */}
-      <div style={announcementBarStyles}>
-        <span style={leftArrowStyles} onClick={handlePrevAnnouncement}>‹</span>
-        <span style={announcementTextStyles}>{announcements[currentAnnouncementIndex]}</span>
-        <span style={rightArrowStyles} onClick={handleNextAnnouncement}>›</span>
-      </div>
+  <>
+    {/* Announcement Bar */}
+    <div style={announcementBarStyles}>
+      <span style={leftArrowStyles} onClick={handlePrevAnnouncement}>‹</span>
+      <span style={announcementTextStyles}>{announcements[currentAnnouncementIndex]}</span>
+      <span style={rightArrowStyles} onClick={handleNextAnnouncement}>›</span>
+    </div>
 
-      <nav style={navStyles}>
-        <div style={containerStyles}>
-          <div style={navRow}>
-            {/* Logo */}
-            <div style={logoStyles}>
-              <span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span>
-            </div>
-
-            {/* Desktop Nav Links */}
-            <div style={{ ...navLinks, display: isMobile ? "none" : "flex" }}>
-              <NavLink to="/" style={navLink}>Home</NavLink>
-              <NavLink to="/allProducts" style={navLink}>Shop</NavLink>
-              <NavLink to="#about" style={navLink}>About</NavLink>
-              <NavLink to="#contact" style={navLink}>Contact</NavLink>
-              <NavLink to={token ? "/Myorder" : "/"} style={navLink}>My Orders</NavLink>
-            </div>
-
-            {/* Icons */}
-            <div style={iconSection}>
-              <button 
-                style={{
-                  ...iconButton,
-                  fontSize: isMobile ? "14px" : "16px",
-                }}
-                onClick={handleLogin}
-                value={loggedin ? "logout" : "login"}
-              >
-                {loggedin ? "Logout" : "Login"}
-              </button>
-
-              <div style={{ position: "relative" }}>
-                <button style={iconButton} onClick={goToCart}>
-                  <ShoppingCart size={isMobile ? 20 : 22} />
-                  <div style={cartIndicator}>1</div>
-                </button>
-              </div>
-
-              <button
-                style={{ ...iconButton, display: isMobile ? "block" : "none" }}
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
-            </div>
+    <nav style={navStyles}>
+      <div style={containerStyles}>
+        <div style={navRow}>
+          {/* Logo */}
+          <div style={logoStyles}>
+            <img 
+              src="public/Logo.png" 
+              alt="Goldfinch Logo" 
+              style={{
+                height: isMobile ? "32px" : "45px",
+                width: "auto",
+                objectFit: "contain",
+                marginRight: isMobile ? "10px" : "12px",
+                display: "inline-block",
+                verticalAlign: "middle",
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.1))",
+                backgroundColor: "transparent",
+              }} 
+            />
+            <span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span>
           </div>
 
-          {/* Mobile Menu */}
-          {isMobile && mobileMenuOpen && (
-            <div style={mobileMenuStyles}>
-              <a href="/" style={navLink}>Home</a>
-              <a href="/allProducts" style={navLink}>Shop</a>
-              <a href="#about" style={navLink}>About</a>
-              <a href="#contact" style={navLink}>Contact</a>
-              <a href={token ? "/Myorder" : "/"} style={navLink}>My Orders</a>
-            </div>
-          )}
-        </div>
-      </nav>
+          {/* Desktop Nav Links */}
+          <div style={{ ...navLinks, display: isMobile ? "none" : "flex" }}>
+            <NavLink to="/" style={navLink}>Home</NavLink>
+            <NavLink to="/allProducts" style={navLink}>Shop</NavLink>
+            <NavLink to="#about" style={navLink}>About</NavLink>
+            <NavLink to="#contact" style={navLink}>Contact</NavLink>
+            <NavLink to={token ? "/Myorder" : "/"} style={navLink}>My Orders</NavLink>
+          </div>
 
-      <Model isOpen={isOpen} closeMod={() => setIsOpen(false)} />
-    </>
-  );
+          {/* Icons */}
+          <div style={iconSection}>
+            <button
+              style={{
+                ...iconButton,
+                fontSize: isMobile ? "14px" : "16px",
+              }}
+              onClick={handleLogin}
+              value={loggedin ? "logout" : "login"}
+            >
+              {loggedin ? "Logout" : "Login"}
+            </button>
+
+            <div style={{ position: "relative" }}>
+              <button style={iconButton} onClick={goToCart}>
+                <ShoppingCart size={isMobile ? 20 : 22} />
+                <div style={cartIndicator}>1</div>
+              </button>
+            </div>
+
+            <button
+              style={{ ...iconButton, display: isMobile ? "block" : "none" }}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobile && mobileMenuOpen && (
+          <div style={mobileMenuStyles}>
+            <a href="/" style={navLink}>Home</a>
+            <a href="/allProducts" style={navLink}>Shop</a>
+            <a href="#about" style={navLink}>About</a>
+            <a href="#contact" style={navLink}>Contact</a>
+            <a href={token ? "/Myorder" : "/"} style={navLink}>My Orders</a>
+          </div>
+        )}
+      </div>
+    </nav>
+
+    <Model isOpen={isOpen} closeMod={() => setIsOpen(false)} />
+  </>
+);
 }
