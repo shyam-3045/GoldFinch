@@ -11,13 +11,22 @@ import MyOrders from "./pages/MyOrders";
 import ProductDisplay from "./pages/AllProducts";
 import axios from "../axios.config";
 
+
+
 const router=createBrowserRouter([
-  {path:'/',element:<MainNavigation/>,children:[
-    {path:'/',element:<Home/>,errorElement:<pageNotFound/>},
-  ]
-  },
-  {path:'*',element:<PageNotFound/>},
-  {path:"/cart",element:<Cart/>},
+  {path:'/',element:<MainNavigation/>,errorElement:<PageNotFound/>,children:[
+    {path:'/',element:<Home/>},
+    
+  {path:"/cart",loader:async()=>
+    {
+        const res = await axios.get("http://localhost:3000/cart", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+        return res.data.cart
+
+    },element:<Cart/>},
   {path:"/product",loader:async()=>
     {
         const res = await axios.get('http://localhost:3000/api/products');
@@ -40,7 +49,11 @@ const router=createBrowserRouter([
         return res.data.products
 
     },element:<ProductDisplay/>},
-
+    {path:'*',element:<PageNotFound/>},
+  ]
+  },
+  
+  
 
   
 ])
