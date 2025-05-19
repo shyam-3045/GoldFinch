@@ -279,7 +279,8 @@ export default function Navbar() {
                 backgroundColor: "transparent",
               }} 
             />
-            <span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span>
+            <NavLink to="/" ><span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span></NavLink>
+            
           </div>
 
           {/* Desktop Nav Links */}
