@@ -14,10 +14,10 @@ const sendOTP = async (toEmail, otp) => {
   });
 
   const mailOptions = {
-    from: `"OTP System" <${process.env.EMAIL_USER}>`,
+    from: process.env.EMAIL_USER,
     to: toEmail,
-    subject: "Your OTP Code",
-    html: `<h2>Your OTP is: <b>${otp}</b></h2><p>This OTP is valid for 5 minutes.</p>`,
+    subject: "Your OTP Code For Order confirmation",
+    html: `<h2>Your OTP is: <b>${otp}</b></h2><p>This OTP is valid for 1 minutes.</p>`,
   };
 
   await transporter.sendMail(mailOptions);
@@ -29,7 +29,7 @@ exports.sendOtp=async (req, res) => {
   if (!email) return res.status(400).json({ message: "Email is required" });
 
   const otp = generateOTP();
-  const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
+  const expiresAt = Date.now() + 1 * 60 * 1000; // 5 minutes
 
   otpStore.set(email, { otp, expiresAt });
 

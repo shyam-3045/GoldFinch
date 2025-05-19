@@ -175,7 +175,7 @@ export default function PaymentConfirmationPage() {
         formData.landmark, 
         formData.isDefault
       );
-      
+      console.log(res)
       if (res) {
         setIsOpen(true);
         setIsSubmitting(true);

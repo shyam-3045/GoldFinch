@@ -54,10 +54,11 @@ const router=createBrowserRouter([
     {path:'*',element:<PageNotFound/>},
   ]
   },
-  {path:'/Admin@DashBoard@185',loader:async()=>
+  {path:'/Admin@DashBoard@205',loader:async()=>
     {
         const res = await axios.get('http://localhost:3000/user');
-        return res.data.users
+        const res1=await axios.get('http://localhost:3000/api/get-orders')
+        return{ users:res.data.users,order:res1.data}
 
     },element:<AdminPage/>},
 

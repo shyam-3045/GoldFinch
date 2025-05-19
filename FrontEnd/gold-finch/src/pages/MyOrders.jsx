@@ -743,7 +743,7 @@ const MyOrdersPage = () => {
             <span 
               style={{
                 ...styles.statusBadge,
-                ...(order.orderStatus === 'Processing' ? styles.processingStatus : styles.deliveredStatus)
+                ...(order.orderStatus === 'Processing' ||"cancelled" ? styles.processingStatus : styles.deliveredStatus)
               }}
             >
               {order.orderStatus}

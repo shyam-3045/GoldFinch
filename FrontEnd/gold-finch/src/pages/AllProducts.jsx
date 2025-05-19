@@ -36,8 +36,10 @@ export default function ProductDisplay() {
   });
 
   // Add to cart functionality
-  const addToCart = async(id) => {
-    const res = await getCartItems(id)
+  const addToCart = (id) => {
+    let quantity=1
+    const res =  getCartItems(id._id,quantity)
+    console.log(id._id)
     if (!token) {
       alertMsg("Login First")
     }

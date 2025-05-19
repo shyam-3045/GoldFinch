@@ -9,7 +9,8 @@ const instance = new Razorpay({
 exports.getAllOrders=async(req,res)=>
 {
    try {
-    const orders = await Order.find(); 
+    const orders = await Order.find(
+    ).populate('products.product')
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
@@ -62,7 +63,7 @@ exports.getMyOrders = async (req, res) => {
   .sort({ createdAt: -1 });
   
 
-        res.status(200).json({
+      res.status(200).json({
       success: true,
       orders
     });
@@ -71,3 +72,30 @@ exports.getMyOrders = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to fetch orders" });
   }
 };
+
+exports.editOrder=async(req,res)=>
+{
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    ).populate('user').populate('products.product');
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.status(200).json({
+      message: 'Order updated successfully',
+      order: updatedOrder,
+    });
+
+  } catch (err) {
+    console.error('Error updating order:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+}

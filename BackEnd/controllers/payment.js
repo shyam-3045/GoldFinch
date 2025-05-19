@@ -9,47 +9,58 @@ const instance = new Razorpay({
 });
 
 exports.hadleCreds = async (req, res) => {
-    const { address, pincode, mobile, city, state, landmark, isDefault } = req.body.Details
+  const { address, pincode, mobile, city, state, landmark, isDefault } = req.body.Details;
 
-    try {
-        const userId = req.user.id; 
+  try {
+    const userId = req.user.id;
 
-        const deliveryDetails = {
-            address,
-            pincode,
-            mobile,
-            city,
-            state,
-            landmark,
-            isDefault: isDefault || false
-        };
+    const deliveryDetails = {
+      address,
+      pincode,
+      mobile,
+      city,
+      state,
+      landmark,
+      isDefault: isDefault || false
+    };
 
-        const user = await User.findById(userId);
+    const user = await User.findById(userId);
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        if (isDefault) {
-            user.deliveryDetails.forEach(detail => detail.isDefault = false);
-        }
-
-        user.deliveryDetails.push(deliveryDetails);
-
-        await user.save();
-
-        res.status(200).json({
-            message: "Delivery address added successfully",
-            deliveryDetails: user.deliveryDetails,
-            user
-        });
-
-    } catch (error) {
-        console.error("Error adding delivery address:", error);
-        res.status(500).json({ message: error.message });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-};
 
+    const isDuplicate = user.deliveryDetails.some(detail =>
+      detail.address === address &&
+      detail.pincode === pincode &&
+      detail.mobile === mobile &&
+      detail.city === city &&
+      detail.state === state &&
+      detail.landmark === landmark
+    );
+
+    if (!isDuplicate) {
+      if (isDefault) {
+        user.deliveryDetails.forEach(detail => {
+          detail.isDefault = false;
+        });
+      }
+
+      user.deliveryDetails.push(deliveryDetails);
+      await user.save();
+    }
+
+    res.status(200).json({
+      message: "Delivery address added successfully",
+      deliveryDetails: user.deliveryDetails,
+      user
+    });
+
+  } catch (error) {
+    console.error("Error adding delivery address:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 
@@ -64,7 +75,6 @@ exports.createOrder = async (req, res) => {
 
     try {
         const order = await instance.orders.create(options);
-        console.log("Order created:", order);
         res.status(200).json({ success: true, order });
     } catch (error) {
         console.error("Error creating order:", error);  // Log complete error object

@@ -1,35 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import AdminOrders from "./AdminOrders"
+import AdminOrders from "./AdminOrders";
 import { useLoaderData } from 'react-router-dom';
-import { useAuth } from '../context/authContext';
 
-// AdminDashboard component
 const AdminDashboard = () => {
-
-  const getOrders=async()=>
-  {
-      const { ordersDet }= await useAuth()
-      return ordersDet
-  }
-  const Orders= getOrders()
-
-  console.log("render")
-  console.log(Orders)
-  const user=useLoaderData()
-  // State for active tab
+  const { users, order } = useLoaderData();
+  
   const [activeTab, setActiveTab] = useState('dashboard');
-  // Mock data for demonstration
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const deliverdItems=order.filter((item)=>
+  {
+     return item.orderStatus == "Delivered"
+  })
+  function formatIndianCurrencyFromInt(amount) {
+  const strAmount = amount.toString();
+
+  if (strAmount.length <= 2) {
+    const paise = strAmount.padStart(2, '0');
+    return `₹0.${paise}`;
+  }
+
+  const rupees = strAmount.slice(0, -2);
+  const paise = strAmount.slice(-2);
+
+  const formattedRupees = new Intl.NumberFormat('en-IN').format(parseInt(rupees));
+
+  return `₹${formattedRupees}.${paise}`;
+}
+  
+  let totalAmount=0
+  order.forEach(element => {
+    totalAmount+=Number(element.totalAmount)
+  });
   const [stats, setStats] = useState({
-    totalUsers: 0,
-    totalOrders: 0,
-    deliveredOrders: 0,
-    totalRevenue: 0
+    totalUsers: users.length,
+    totalOrders: order.length,
+    deliveredOrders: deliverdItems.length,
+    totalRevenue: formatIndianCurrencyFromInt(totalAmount)
   });
   
-  const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
-  
-  // Product form state
+
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
@@ -39,42 +50,24 @@ const AdminDashboard = () => {
     stock: ''
   });
   
-  // Fetch data on component mount
+  const updateWindowDimensions = () => {
+    setWindowWidth(window.innerWidth);
+    if (window.innerWidth > 768 && showMobileSidebar) {
+      setShowMobileSidebar(false);
+    }
+  };
+  
   useEffect(() => {
-    // Simulate API calls
-    fetchStats();
-    fetchUsers();
     fetchProducts();
-  }, []);
-  
-  // Mock API calls
-  const fetchStats = () => {
-    // In a real application, this would be an API call
-    setTimeout(() => {
-      setStats({
-        totalUsers: 245,
-        totalOrders: 1023,
-        deliveredOrders: 856,
-        totalRevenue: 45890
-      });
-    }, 500);
-  };
-  
-  const fetchUsers = () => {
-    // Simulated user data
-    setTimeout(() => {
-      setUsers([
-        { id: 1, name: 'John Doe', email: 'john@example.com', orders: 12, totalSpent: 560 },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com', orders: 8, totalSpent: 320 },
-        { id: 3, name: 'Robert Johnson', email: 'robert@example.com', orders: 5, totalSpent: 210 },
-        { id: 4, name: 'Emily Davis', email: 'emily@example.com', orders: 15, totalSpent: 780 },
-        { id: 5, name: 'Michael Brown', email: 'michael@example.com', orders: 3, totalSpent: 150 }
-      ]);
-    }, 500);
-  };
+    
+    window.addEventListener('resize', updateWindowDimensions);
+    
+    return () => {
+      window.removeEventListener('resize', updateWindowDimensions);
+    };
+  }, [showMobileSidebar]);
   
   const fetchProducts = () => {
-    // Simulated product data
     setTimeout(() => {
       setProducts([
         { id: 1, name: 'Green Tea', category: 'Herbal', price: 12.99, stock: 45 },
@@ -85,15 +78,11 @@ const AdminDashboard = () => {
     }, 500);
   };
   
-  // Handle new product submission
   const handleProductSubmit = (e) => {
     e.preventDefault();
-    // In a real app, this would be an API call to save the product
     alert('Product saved successfully!');
-    // Then add to local state
     const productWithId = { ...newProduct, id: products.length + 1 };
     setProducts([...products, productWithId]);
-    // Reset form
     setNewProduct({
       name: '',
       description: '',
@@ -104,7 +93,6 @@ const AdminDashboard = () => {
     });
   };
   
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewProduct({
@@ -113,7 +101,15 @@ const AdminDashboard = () => {
     });
   };
   
-  // Render dashboard stats
+  const handleTabSelect = (tab) => {
+    setActiveTab(tab);
+    setShowMobileSidebar(false);
+  };
+  
+  const toggleMobileSidebar = () => {
+    setShowMobileSidebar(!showMobileSidebar);
+  };
+  
   const renderDashboard = () => (
     <div style={styles.dashboardContainer}>
       <h2 style={styles.sectionTitle}>Dashboard Overview</h2>
@@ -121,11 +117,11 @@ const AdminDashboard = () => {
       <div style={styles.statsContainer}>
         <div style={styles.statCard}>
           <h3>Total Users</h3>
-          <p style={styles.statNumber}>{user.length}</p>
+          <p style={styles.statNumber}>{stats.totalUsers}</p>
         </div>
         <div style={styles.statCard}>
           <h3>Total Orders</h3>
-          <p style={styles.statNumber}>{Orders.length }</p>
+          <p style={styles.statNumber}>{stats.totalOrders}</p>
         </div>
         <div style={styles.statCard}>
           <h3>Delivered Orders</h3>
@@ -133,60 +129,32 @@ const AdminDashboard = () => {
         </div>
         <div style={styles.statCard}>
           <h3>Total Revenue</h3>
-          <p style={styles.statNumber}>${stats.totalRevenue.toLocaleString()}</p>
+          <p style={styles.statNumber}>{stats.totalRevenue.toLocaleString()}</p>
         </div>
       </div>
       
       <h3 style={styles.subSectionTitle}>Recent Users</h3>
       <div style={styles.tableContainer}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.tableHeader}>ID</th>
-              <th style={styles.tableHeader}>Name</th>
-              <th style={styles.tableHeader}>Email</th>
-              <th style={styles.tableHeader}>Orders</th>
-              <th style={styles.tableHeader}>Total Spent</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td style={styles.tableCell}>{user.id}</td>
-                <td style={styles.tableCell}>{user.name}</td>
-                <td style={styles.tableCell}>{user.email}</td>
-                <td style={styles.tableCell}>{user.orders}</td>
-                <td style={styles.tableCell}>${user.totalSpent}</td>
+        <div style={styles.tableWrapper}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.tableHeader}>ID</th>
+                <th style={styles.tableHeader}>Name</th>
+                <th style={styles.tableHeader}>Email</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      
-      <h3 style={styles.subSectionTitle}>Recent Products</h3>
-      <div style={styles.tableContainer}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.tableHeader}>ID</th>
-              <th style={styles.tableHeader}>Name</th>
-              <th style={styles.tableHeader}>Category</th>
-              <th style={styles.tableHeader}>Price</th>
-              <th style={styles.tableHeader}>Stock</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map(product => (
-              <tr key={product.id}>
-                <td style={styles.tableCell}>{product.id}</td>
-                <td style={styles.tableCell}>{product.name}</td>
-                <td style={styles.tableCell}>{product.category}</td>
-                <td style={styles.tableCell}>${product.price}</td>
-                <td style={styles.tableCell}>{product.stock}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.slice(0,5).map(user => (
+                <tr key={user._id}>
+                  <td style={styles.tableCell}>{user._id}</td>
+                  <td style={styles.tableCell}>{user.name}</td>
+                  <td style={styles.tableCell}>{user.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -196,43 +164,39 @@ const AdminDashboard = () => {
     <div style={styles.tabContent}>
       <h2 style={styles.sectionTitle}>User Management</h2>
       <div style={styles.tableContainer}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.tableHeader}>ID</th>
-              <th style={styles.tableHeader}>Name</th>
-              <th style={styles.tableHeader}>Email</th>
-              <th style={styles.tableHeader}>Orders</th>
-              <th style={styles.tableHeader}>Total Spent</th>
-              <th style={styles.tableHeader}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td style={styles.tableCell}>{user.id}</td>
-                <td style={styles.tableCell}>{user.name}</td>
-                <td style={styles.tableCell}>{user.email}</td>
-                <td style={styles.tableCell}>{user.orders}</td>
-                <td style={styles.tableCell}>${user.totalSpent}</td>
-                <td style={styles.tableCell}>
-                  <button style={styles.actionButton}>View</button>
-                  <button style={styles.actionButton}>Edit</button>
-                </td>
+        <div style={styles.tableWrapper}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.tableHeader}>ID</th>
+                <th style={styles.tableHeader}>Name</th>
+                <th style={styles.tableHeader}>Email</th>
+                <th style={styles.tableHeader}>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map(user => (
+                <tr key={user._id}>
+                  <td style={styles.tableCell}>{user._id}</td>
+                  <td style={styles.tableCell}>{user.name}</td>
+                  <td style={styles.tableCell}>{user.email}</td>
+                  <td style={styles.tableCell}>
+                    <button style={styles.actionButton}>View</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
   
-  // Render orders tab (using your component)
+  // Render orders tab
   const renderOrders = () => (
     <div style={styles.tabContent}>
       <h2 style={styles.sectionTitle}>Orders Management</h2>
-      {/* Here we're including your AdminOrders component as requested */}
-      <AdminOrders/>
+      <AdminOrders order={order}/>
     </div>
   );
   
@@ -264,7 +228,7 @@ const AdminDashboard = () => {
           />
         </div>
         
-        <div style={styles.formRow}>
+        <div style={styles.formRowResponsive}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Price ($)</label>
             <input
@@ -297,7 +261,7 @@ const AdminDashboard = () => {
           </div>
         </div>
         
-        <div style={styles.formRow}>
+        <div style={styles.formRowResponsive}>
           <div style={styles.formGroup}>
             <label style={styles.label}>Image URL</label>
             <input
@@ -330,33 +294,37 @@ const AdminDashboard = () => {
       
       <h3 style={styles.subSectionTitle}>Current Products</h3>
       <div style={styles.tableContainer}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.tableHeader}>ID</th>
-              <th style={styles.tableHeader}>Name</th>
-              <th style={styles.tableHeader}>Category</th>
-              <th style={styles.tableHeader}>Price</th>
-              <th style={styles.tableHeader}>Stock</th>
-              <th style={styles.tableHeader}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map(product => (
-              <tr key={product.id}>
-                <td style={styles.tableCell}>{product.id}</td>
-                <td style={styles.tableCell}>{product.name}</td>
-                <td style={styles.tableCell}>{product.category}</td>
-                <td style={styles.tableCell}>${product.price}</td>
-                <td style={styles.tableCell}>{product.stock}</td>
-                <td style={styles.tableCell}>
-                  <button style={styles.actionButton}>Edit</button>
-                  <button style={{...styles.actionButton, backgroundColor: '#f44336'}}>Delete</button>
-                </td>
+        <div style={styles.tableWrapper}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.tableHeader}>ID</th>
+                <th style={styles.tableHeader}>Name</th>
+                <th style={styles.tableHeader}>Category</th>
+                <th style={styles.tableHeader}>Price</th>
+                <th style={styles.tableHeader}>Stock</th>
+                <th style={styles.tableHeader}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map(product => (
+                <tr key={product.id}>
+                  <td style={styles.tableCell}>{product.id}</td>
+                  <td style={styles.tableCell}>{product.name}</td>
+                  <td style={styles.tableCell}>{product.category}</td>
+                  <td style={styles.tableCell}>${product.price}</td>
+                  <td style={styles.tableCell}>{product.stock}</td>
+                  <td style={styles.tableCell}>
+                    <div style={styles.actionButtonsContainer}>
+                      <button style={styles.actionButton}>Edit</button>
+                      <button style={{...styles.actionButton, backgroundColor: '#f44336'}}>Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -369,7 +337,7 @@ const AdminDashboard = () => {
         <div style={styles.profileHeader}>
           <div style={styles.profileImage}>
             <img 
-              src="https://via.placeholder.com/150" 
+              src="/api/placeholder/150/150" 
               alt="Admin profile" 
               style={styles.avatar} 
             />
@@ -385,7 +353,7 @@ const AdminDashboard = () => {
         <div style={styles.profileContent}>
           <h3 style={styles.subSectionTitle}>Account Settings</h3>
           <form style={styles.form}>
-            <div style={styles.formRow}>
+            <div style={styles.formRowResponsive}>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Full Name</label>
                 <input 
@@ -405,7 +373,7 @@ const AdminDashboard = () => {
               </div>
             </div>
             
-            <div style={styles.formRow}>
+            <div style={styles.formRowResponsive}>
               <div style={styles.formGroup}>
                 <label style={styles.label}>Password</label>
                 <input 
@@ -452,40 +420,73 @@ const AdminDashboard = () => {
     }
   };
 
+  // Determine if we're in mobile view
+  const isMobile = windowWidth <= 768;
+  const isTablet = windowWidth <= 1024 && windowWidth > 768;
+
   return (
     <div style={styles.container}>
-      <div style={styles.sidebar}>
+      {/* Mobile hamburger menu */}
+      {isMobile && (
+        <div style={styles.mobileMenuToggle} onClick={toggleMobileSidebar}>
+          <div style={styles.hamburgerIcon}>
+            <div style={styles.hamburgerBar}></div>
+            <div style={styles.hamburgerBar}></div>
+            <div style={styles.hamburgerBar}></div>
+          </div>
+          <span style={styles.mobileMenuText}>Gold Finch Admin</span>
+        </div>
+      )}
+      
+      {/* Sidebar - will be hidden on mobile unless toggled */}
+      <div style={{
+        ...styles.sidebar,
+        ...(isMobile && {
+          transform: showMobileSidebar ? 'translateX(0)' : 'translateX(-100%)',
+          position: 'fixed',
+          zIndex: 1000,
+          height: '100vh'
+        })
+      }}>
         <div style={styles.sidebarHeader}>
           <h2 style={styles.sidebarTitle}>Gold Finch Admin</h2>
+          {isMobile && (
+            <button 
+              onClick={toggleMobileSidebar} 
+              style={styles.closeSidebarButton}
+            >
+              ×
+            </button>
+          )}
         </div>
         <ul style={styles.sidebarMenu}>
           <li 
             style={activeTab === 'dashboard' ? {...styles.sidebarItem, ...styles.activeItem} : styles.sidebarItem}
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => handleTabSelect('dashboard')}
           >
             Dashboard
           </li>
           <li 
             style={activeTab === 'users' ? {...styles.sidebarItem, ...styles.activeItem} : styles.sidebarItem}
-            onClick={() => setActiveTab('users')}
+            onClick={() => handleTabSelect('users')}
           >
             Users
           </li>
           <li 
             style={activeTab === 'orders' ? {...styles.sidebarItem, ...styles.activeItem} : styles.sidebarItem}
-            onClick={() => setActiveTab('orders')}
+            onClick={() => handleTabSelect('orders')}
           >
             Orders
           </li>
           <li 
             style={activeTab === 'addProduct' ? {...styles.sidebarItem, ...styles.activeItem} : styles.sidebarItem}
-            onClick={() => setActiveTab('addProduct')}
+            onClick={() => handleTabSelect('addProduct')}
           >
             Products
           </li>
           <li 
             style={activeTab === 'profile' ? {...styles.sidebarItem, ...styles.activeItem} : styles.sidebarItem}
-            onClick={() => setActiveTab('profile')}
+            onClick={() => handleTabSelect('profile')}
           >
             Profile
           </li>
@@ -494,6 +495,15 @@ const AdminDashboard = () => {
           <button style={styles.logoutButton}>Logout</button>
         </div>
       </div>
+      
+      {/* Overlay for mobile sidebar */}
+      {showMobileSidebar && isMobile && (
+        <div 
+          style={styles.sidebarOverlay} 
+          onClick={toggleMobileSidebar}
+        />
+      )}
+      
       <div style={styles.content}>
         <div style={styles.mainContent}>
           {renderTabContent()}
@@ -503,41 +513,98 @@ const AdminDashboard = () => {
   );
 };
 
-// AdminOrders component placeholder (you mentioned you have this component)
-
 // Styles
 const styles = {
   container: {
     display: 'flex',
     height: '100vh',
     fontFamily: 'Arial, sans-serif',
+    position: 'relative',
+    flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
+  },
+  // Mobile menu toggle
+  mobileMenuToggle: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#2c3e50',
+    color: 'white',
+    padding: '15px',
+    cursor: 'pointer',
+    position: 'sticky',
+    top: 0,
+    zIndex: 100,
+  },
+  hamburgerIcon: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: '22px',
+    height: '16px',
+    marginRight: '15px',
+  },
+  hamburgerBar: {
+    height: '2px',
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: '2px',
+    marginBottom: '4px',
+  },
+  mobileMenuText: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+  },
+  sidebarOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 999,
+  },
+  closeSidebarButton: {
+    position: 'absolute',
+    top: '10px',
+    right: '10px',
+    background: 'none',
+    border: 'none',
+    color: 'white',
+    fontSize: '24px',
+    cursor: 'pointer',
+    padding: '0',
+    fontWeight: 'bold',
+    lineHeight: '1',
   },
   sidebar: {
-    width: '250px',
+    width: window.innerWidth <= 768 ? '250px' : (window.innerWidth <= 1024 ? '200px' : '250px'),
     backgroundColor: '#2c3e50',
     color: 'white',
     display: 'flex',
     flexDirection: 'column',
+    transition: 'transform 0.3s ease',
   },
   sidebarHeader: {
     padding: '20px',
     borderBottom: '1px solid #34495e',
+    position: 'relative',
   },
   sidebarTitle: {
     margin: 0,
-    fontSize: '20px',
+    fontSize: window.innerWidth <= 1024 ? '16px' : '20px',
   },
   sidebarMenu: {
     listStyleType: 'none',
     padding: 0,
     margin: 0,
     flexGrow: 1,
+    overflowY: 'auto',
   },
   sidebarItem: {
     padding: '15px 20px',
     cursor: 'pointer',
     borderBottom: '1px solid #34495e',
     transition: 'background-color 0.3s',
+    fontSize: window.innerWidth <= 1024 ? '14px' : '16px',
   },
   activeItem: {
     backgroundColor: '#34495e',
@@ -562,30 +629,13 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: '#f5f5f5',
-  },
-  topbar: {
-    height: '60px',
-    backgroundColor: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 20px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-  },
-  userInfo: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-  },
-  userAvatar: {
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
+    overflow: 'hidden',
   },
   mainContent: {
-    padding: '20px',
+    padding: window.innerWidth <= 768 ? '15px' : '20px',
     overflowY: 'auto',
     flexGrow: 1,
+    height: '100%',
   },
   dashboardContainer: {
     display: 'flex',
@@ -602,11 +652,11 @@ const styles = {
     borderRadius: '8px',
     padding: '20px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    minWidth: '200px',
-    flex: '1 1 200px',
+    minWidth: '140px',
+    flex: '1 1 140px',
   },
   statNumber: {
-    fontSize: '28px',
+    fontSize: window.innerWidth <= 768 ? '22px' : '28px',
     fontWeight: 'bold',
     color: '#3498db',
     margin: '10px 0 0 0',
@@ -614,36 +664,53 @@ const styles = {
   sectionTitle: {
     margin: '0 0 20px 0',
     color: '#2c3e50',
+    fontSize: window.innerWidth <= 768 ? '20px' : '24px',
   },
   subSectionTitle: {
     margin: '20px 0 10px 0',
     color: '#2c3e50',
+    fontSize: window.innerWidth <= 768 ? '18px' : '20px',
   },
   tableContainer: {
     backgroundColor: 'white',
     borderRadius: '8px',
-    padding: '20px',
+    padding: window.innerWidth <= 768 ? '10px' : '20px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+  },
+  tableWrapper: {
     overflowX: 'auto',
+    width: '100%',
   },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
     textAlign: 'left',
+    minWidth: '600px', // Ensures table doesn't get too squished
   },
   tableHeader: {
     padding: '12px 15px',
     borderBottom: '1px solid #ddd',
     backgroundColor: '#f8f9fa',
+    fontSize: window.innerWidth <= 768 ? '14px' : '16px',
   },
   tableCell: {
     padding: '12px 15px',
     borderBottom: '1px solid #ddd',
+    fontSize: window.innerWidth <= 768 ? '14px' : '16px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    maxWidth: '200px',
+  },
+  actionButtonsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '5px',
   },
   tabContent: {
     backgroundColor: 'white',
     borderRadius: '8px',
-    padding: '20px',
+    padding: window.innerWidth <= 768 ? '15px' : '20px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
   },
   form: {
@@ -656,10 +723,12 @@ const styles = {
     flexDirection: 'column',
     gap: '5px',
     flex: 1,
+    minWidth: window.innerWidth <= 768 ? '100%' : 'auto',
   },
-  formRow: {
+  formRowResponsive: {
     display: 'flex',
     gap: '15px',
+    flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
   },
   label: {
     fontSize: '14px',
@@ -671,6 +740,8 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ddd',
     fontSize: '14px',
+    width: '100%',
+    boxSizing: 'border-box',
   },
   textarea: {
     padding: '10px',
@@ -679,6 +750,8 @@ const styles = {
     fontSize: '14px',
     minHeight: '100px',
     resize: 'vertical',
+    width: '100%',
+    boxSizing: 'border-box',
   },
   submitButton: {
     padding: '10px 15px',
@@ -700,6 +773,7 @@ const styles = {
     cursor: 'pointer',
     fontSize: '12px',
     marginRight: '5px',
+    display: 'inline-block',
   },
   profileContainer: {
     display: 'flex',
@@ -708,13 +782,16 @@ const styles = {
   },
   profileHeader: {
     display: 'flex',
+    flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
     gap: '20px',
-    alignItems: 'center',
+    alignItems: window.innerWidth <= 768 ? 'center' : 'flex-start',
     padding: '20px',
     backgroundColor: '#f8f9fa',
     borderRadius: '8px',
+    textAlign: window.innerWidth <= 768 ? 'center' : 'left',
   },
   profileImage: {
+    marginBottom: window.innerWidth <= 768 ? '10px' : 0,
   },
   avatar: {
     width: '120px',

@@ -31,6 +31,7 @@ export default function ProductDetailsPage() {
     if (!token) {
       alertMsg("Login To Proceed");
     } else {
+      console.log(productId)
       getCartItems(productId, quantity);
       alertMsg(`Added ${singlePrd.name} To the Cart`);
     }

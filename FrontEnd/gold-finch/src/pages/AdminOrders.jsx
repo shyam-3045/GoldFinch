@@ -1,104 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import axios from "../../axios.config";
 
-const AdminOrders = () => {
-  // State for orders data
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+const AdminOrders = ({ order }) => {
+  // State for UI
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [mobileView, setMobileView] = useState(window.innerWidth < 768);
 
-  // Mock data - in a real application, this would come from an API
+  // Set breakpoints for responsive design
+  const breakpoints = {
+    mobile: 480,
+    tablet: 768,
+    desktop: 1024
+  };
+
+  // Monitor window size for responsive design
   useEffect(() => {
-    // Simulate API call with setTimeout
-    setTimeout(() => {
-      const mockOrders = [
-        {
-          id: 'ORD-2025-001',
-          customer: 'John Smith',
-          email: 'john.smith@email.com',
-          date: '2025-05-05',
-          status: 'delivered',
-          total: 32.99,
-          items: [
-            { id: 1, name: 'Jasmine Green Tea', quantity: 2, price: 12.50 },
-            { id: 2, name: 'Earl Grey', quantity: 1, price: 7.99 },
-          ],
-          shipping: {
-            address: '123 Main St',
-            city: 'Anytown',
-            state: 'CA',
-            zip: '12345',
-            method: 'Standard Shipping',
-            cost: 5.99
-          },
-          payment: {
-            method: 'Credit Card',
-            last4: '4242',
-            status: 'paid'
-          }
-        },
-        {
-          id: 'ORD-2025-002',
-          customer: 'Sarah Johnson',
-          email: 'sarah.j@email.com',
-          date: '2025-05-07',
-          status: 'processing',
-          total: 45.50,
-          items: [
-            { id: 3, name: 'Darjeeling Premium', quantity: 1, price: 18.50 },
-            { id: 4, name: 'Herbal Tea Sampler', quantity: 2, price: 13.50 },
-          ],
-          shipping: {
-            address: '456 Oak Ave',
-            city: 'Somewhere',
-            state: 'NY',
-            zip: '67890',
-            method: 'Express Shipping',
-            cost: 8.99
-          },
-          payment: {
-            method: 'PayPal',
-            last4: 'N/A',
-            status: 'paid'
-          }
-        },
-        {
-          id: 'ORD-2025-003',
-          customer: 'Michael Brown',
-          email: 'michael.b@email.com',
-          date: '2025-05-08',
-          status: 'pending',
-          total: 25.99,
-          items: [
-            { id: 5, name: 'Chamomile Tea', quantity: 3, price: 8.33 },
-          ],
-          shipping: {
-            address: '789 Pine Ln',
-            city: 'Elsewhere',
-            state: 'TX',
-            zip: '54321',
-            method: 'Standard Shipping',
-            cost: 5.99
-          },
-          payment: {
-            method: 'Credit Card',
-            last4: '7890',
-            status: 'pending'
-          }
-        }
-      ];
-      setOrders(mockOrders);
-      setLoading(false);
-    }, 1000);
+    const handleResize = () => {
+      const width = window.innerWidth;
+      setWindowWidth(width);
+      setMobileView(width < breakpoints.tablet);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+    
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Make sure order is available and is an array
+  const orders = Array.isArray(order) ? order : [];
 
   // Filter orders based on status and search term
   const filteredOrders = orders.filter(order => {
-    const matchesStatus = filterStatus === 'all' || order.status === filterStatus;
-    const matchesSearch = order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = filterStatus === 'all' || order.orderStatus.toLowerCase() === filterStatus.toLowerCase();
+    const matchesSearch = order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (order.user && order.user.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (order.deliveryDetails && order.deliveryDetails.mobile && order.deliveryDetails.mobile.includes(searchTerm));
     return matchesStatus && matchesSearch;
   });
 
@@ -107,60 +47,126 @@ const AdminOrders = () => {
     setSelectedOrder(order);
   };
 
-  // Handle order status change - Fixed the syntax error here
-  const handleStatusChange = (orderId, newStatus) => {
-    setOrders(orders.map(order => 
-      order.id === orderId ? {...order, status: newStatus} : order
-    ));
+  // Handle order status change
+  const handleStatusChange = async (orderId, newStatus) => {
+    try {
+      await axios.put(`http://localhost:3000/api/edit-orders/${orderId}`, {
+        orderStatus: newStatus
+      });
 
-    if (selectedOrder && selectedOrder.id === orderId) {
-      setSelectedOrder({...selectedOrder, status: newStatus});
+      // Update the UI state - would normally happen through context or redux in a real app
+      const updatedOrders = orders.map(order => 
+        order._id === orderId ? {...order, orderStatus: newStatus} : order
+      );
+      
+      // Update selected order if it's the one being changed
+      if (selectedOrder && selectedOrder._id === orderId) {
+        setSelectedOrder({...selectedOrder, orderStatus: newStatus});
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
     }
   };
 
-  // Styles object
+  // Format currency helper for Indian Rupees
+  const formatCurrency = (amount) => {
+    return `₹${(amount / 100).toFixed(2)}`;
+  };
+
+  // Format date helper
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Get status cell styling based on order status
+  const getStatusStyles = (status) => {
+    let color;
+    switch (status.toLowerCase()) {
+      case 'delivered':
+        color = '#4caf50';
+        break;
+      case 'processing':
+        color = '#2196f3';
+        break;
+      case 'pending':
+      case 'wait':
+        color = '#ff9800';
+        break;
+      case 'cancelled':
+        color = '#f44336';
+        break;
+      default:
+        color = '#757575';
+    }
+    
+    return {
+      display: 'inline-block',
+      padding: '4px 8px',
+      borderRadius: '4px',
+      color: 'white',
+      backgroundColor: color,
+      fontSize: '12px',
+      textTransform: 'capitalize'
+    };
+  };
+
+  // Base styles with responsive adjustments
   const styles = {
     container: {
       fontFamily: 'Arial, sans-serif',
-      maxWidth: '1200px',
+      maxWidth: '100%',
       margin: '0 auto',
-      padding: '20px',
+      padding: mobileView ? '10px' : '20px',
       color: '#333',
+      boxSizing: 'border-box',
     },
     header: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: '20px',
+      marginBottom: mobileView ? '15px' : '20px',
       padding: '10px 0',
       borderBottom: '1px solid #eaeaea',
+      flexDirection: mobileView ? 'column' : 'row',
     },
     headerTitle: {
-      fontSize: '24px',
+      fontSize: mobileView ? '20px' : '24px',
       fontWeight: 'bold',
-      color: '#2a5e41', // Tea-themed color
-      margin: '0',
+      color: '#2a5e41',
+      margin: mobileView ? '0 0 10px 0' : '0',
+      textAlign: mobileView ? 'center' : 'left',
+      width: mobileView ? '100%' : 'auto',
     },
     controlsContainer: {
       display: 'flex',
       justifyContent: 'space-between',
+      alignItems: 'center',
       marginBottom: '20px',
-      flexWrap: 'wrap',
+      flexDirection: mobileView ? 'column' : 'row',
+      gap: mobileView ? '10px' : '0',
+    },
+    searchBoxContainer: {
+      width: mobileView ? '100%' : '250px',
     },
     searchBox: {
       padding: '8px 12px',
       border: '1px solid #ddd',
       borderRadius: '4px',
-      width: '250px',
+      width: '100%',
       fontSize: '14px',
+      boxSizing: 'border-box',
     },
     filterContainer: {
       display: 'flex',
       alignItems: 'center',
+      width: mobileView ? '100%' : 'auto',
+      justifyContent: mobileView ? 'space-between' : 'flex-start',
     },
     filterLabel: {
       marginRight: '10px',
       fontWeight: 'bold',
+      whiteSpace: 'nowrap',
     },
     filterSelect: {
       padding: '8px 12px',
@@ -168,22 +174,30 @@ const AdminOrders = () => {
       borderRadius: '4px',
       backgroundColor: '#fff',
       fontSize: '14px',
+      flex: mobileView ? '1' : '0',
     },
     ordersContainer: {
       display: 'flex',
       gap: '20px',
+      flexDirection: mobileView ? 'column' : 'row',
     },
     ordersList: {
       flex: '1',
-      borderRight: '1px solid #eaeaea',
-      paddingRight: '20px',
+      borderRight: mobileView ? 'none' : '1px solid #eaeaea',
+      paddingRight: mobileView ? '0' : '20px',
+      marginBottom: mobileView ? '20px' : '0',
+    },
+    tableWrapper: {
+      overflowX: 'auto',
+      width: '100%',
     },
     ordersTable: {
       width: '100%',
       borderCollapse: 'collapse',
+      minWidth: '500px', // Ensures table doesn't shrink too much on mobile
     },
     tableHeader: {
-      backgroundColor: '#f1f8e9', // Light green background
+      backgroundColor: '#f1f8e9',
       textAlign: 'left',
       padding: '12px',
       fontSize: '14px',
@@ -195,69 +209,42 @@ const AdminOrders = () => {
       cursor: 'pointer',
       transition: 'background-color 0.2s',
     },
-    tableRowHover: {
-      backgroundColor: '#f5f5f5',
-    },
     tableCell: {
       padding: '12px',
       fontSize: '14px',
       color: '#333',
     },
-    statusCell: (status) => {
-      let color;
-      switch (status) {
-        case 'delivered':
-          color = '#4caf50'; // Green
-          break;
-        case 'processing':
-          color = '#2196f3'; // Blue
-          break;
-        case 'pending':
-          color = '#ff9800'; // Orange
-          break;
-        case 'cancelled':
-          color = '#f44336'; // Red
-          break;
-        default:
-          color = '#757575'; // Grey
-      }
-      return {
-        display: 'inline-block',
-        padding: '4px 8px',
-        borderRadius: '4px',
-        color: 'white',
-        backgroundColor: color,
-        fontSize: '12px',
-        textTransform: 'capitalize',
-      };
-    },
     detailsContainer: {
       flex: '2',
-      padding: '0 20px',
+      padding: mobileView ? '0' : '0 20px',
     },
     noOrderSelected: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '300px',
+      height: '200px',
       border: '1px dashed #ddd',
       borderRadius: '8px',
       color: '#757575',
       fontSize: '16px',
+      padding: '20px',
+      textAlign: 'center',
     },
     orderDetailsCard: {
       border: '1px solid #eaeaea',
       borderRadius: '8px',
-      padding: '20px',
+      padding: mobileView ? '15px' : '20px',
       boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
     },
     orderDetailsHeader: {
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: mobileView ? 'flex-start' : 'center',
       marginBottom: '20px',
       paddingBottom: '10px',
       borderBottom: '1px solid #eaeaea',
+      flexDirection: mobileView ? 'column' : 'row',
+      gap: mobileView ? '10px' : '0',
     },
     orderDetailsTitle: {
       fontSize: '18px',
@@ -269,6 +256,8 @@ const AdminOrders = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '10px',
+      width: mobileView ? '100%' : 'auto',
+      justifyContent: mobileView ? 'space-between' : 'flex-start',
     },
     orderStatusSelect: {
       padding: '6px 10px',
@@ -276,10 +265,11 @@ const AdminOrders = () => {
       borderRadius: '4px',
       backgroundColor: '#fff',
       fontSize: '14px',
+      flex: mobileView ? '1' : '0',
     },
     orderInfoGrid: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: mobileView ? '1fr' : '1fr 1fr',
       gap: '20px',
       marginBottom: '20px',
     },
@@ -299,46 +289,31 @@ const AdminOrders = () => {
       fontSize: '14px',
       lineHeight: '1.5',
     },
+    itemsTableWrapper: {
+      overflowX: 'auto',
+      width: '100%',
+    },
     itemsTable: {
       width: '100%',
       borderCollapse: 'collapse',
       marginTop: '20px',
+      minWidth: '500px', // Ensures table doesn't shrink too much on mobile
     },
     totalRow: {
       fontWeight: 'bold',
       borderTop: '2px solid #eaeaea',
     },
-    actionButton: {
-      padding: '8px 16px',
-      margin: '0 5px',
-      backgroundColor: '#2a5e41',
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      transition: 'background-color 0.2s',
-    },
-    actionButtonHover: {
-      backgroundColor: '#1e4031',
-    },
-    loading: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '300px',
-      fontSize: '16px',
-      color: '#757575',
-    },
     empty: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '300px',
+      height: '200px',
       border: '1px dashed #ddd',
       borderRadius: '8px',
       color: '#757575',
       fontSize: '16px',
+      padding: '20px',
+      textAlign: 'center',
     },
     footer: {
       marginTop: '20px',
@@ -348,17 +323,17 @@ const AdminOrders = () => {
       color: '#757575',
       fontSize: '14px',
     },
-  };
-
-  // Format date helper
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  // Format currency helper
-  const formatCurrency = (amount) => {
-    return `$${amount.toFixed(2)}`;
+    backToListButton: {
+      display: mobileView && selectedOrder ? 'block' : 'none',
+      margin: '0 0 15px 0',
+      padding: '8px 15px',
+      backgroundColor: '#f1f8e9',
+      color: '#2a5e41',
+      border: '1px solid #c5e1a5',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontSize: '14px',
+    }
   };
 
   return (
@@ -369,10 +344,10 @@ const AdminOrders = () => {
 
       {/* Controls */}
       <div style={styles.controlsContainer}>
-        <div>
+        <div style={styles.searchBoxContainer}>
           <input
             type="text"
-            placeholder="Search orders by ID, customer, or email"
+            placeholder="Search orders by ID or mobile"
             style={styles.searchBox}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -386,7 +361,7 @@ const AdminOrders = () => {
             onChange={(e) => setFilterStatus(e.target.value)}
           >
             <option value="all">All Orders</option>
-            <option value="pending">Pending</option>
+            <option value="wait">Waiting</option>
             <option value="processing">Processing</option>
             <option value="delivered">Delivered</option>
             <option value="cancelled">Cancelled</option>
@@ -394,69 +369,81 @@ const AdminOrders = () => {
         </div>
       </div>
 
-      {/* Content */}
-      {loading ? (
-        <div style={styles.loading}>Loading orders...</div>
-      ) : (
-        <div style={styles.ordersContainer}>
-          {/* Orders List */}
+      {/* Orders Container */}
+      <div style={styles.ordersContainer}>
+        {/* Mobile Back Button */}
+        {mobileView && selectedOrder && (
+          <button 
+            style={styles.backToListButton}
+            onClick={() => setSelectedOrder(null)}
+          >
+            ← Back to Orders List
+          </button>
+        )}
+
+        {/* Orders List - Hide on mobile when order is selected */}
+        {(!mobileView || !selectedOrder) && (
           <div style={styles.ordersList}>
             {filteredOrders.length > 0 ? (
-              <table style={styles.ordersTable}>
-                <thead>
-                  <tr>
-                    <th style={styles.tableHeader}>Order ID</th>
-                    <th style={styles.tableHeader}>Customer</th>
-                    <th style={styles.tableHeader}>Date</th>
-                    <th style={styles.tableHeader}>Total</th>
-                    <th style={styles.tableHeader}>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredOrders.map((order) => (
-                    <tr
-                      key={order.id}
-                      style={{
-                        ...styles.tableRow,
-                        backgroundColor: selectedOrder && selectedOrder.id === order.id ? '#f1f8e9' : 'transparent'
-                      }}
-                      onClick={() => handleOrderClick(order)}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = selectedOrder && selectedOrder.id === order.id ? '#f1f8e9' : '#f5f5f5'}
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = selectedOrder && selectedOrder.id === order.id ? '#f1f8e9' : 'transparent'}
-                    >
-                      <td style={styles.tableCell}>{order.id}</td>
-                      <td style={styles.tableCell}>{order.customer}</td>
-                      <td style={styles.tableCell}>{formatDate(order.date)}</td>
-                      <td style={styles.tableCell}>{formatCurrency(order.total)}</td>
-                      <td style={styles.tableCell}>
-                        <span style={styles.statusCell(order.status)}>{order.status}</span>
-                      </td>
+              <div style={styles.tableWrapper}>
+                <table style={styles.ordersTable}>
+                  <thead>
+                    <tr>
+                      <th style={styles.tableHeader}>Order ID</th>
+                      <th style={styles.tableHeader}>Customer</th>
+                      <th style={styles.tableHeader}>Date</th>
+                      <th style={styles.tableHeader}>Total</th>
+                      <th style={styles.tableHeader}>Status</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filteredOrders.map((order) => (
+                      <tr
+                        key={order._id}
+                        style={{
+                          ...styles.tableRow,
+                          backgroundColor: selectedOrder && selectedOrder._id === order._id ? '#f1f8e9' : 'transparent'
+                        }}
+                        onClick={() => handleOrderClick(order)}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = selectedOrder && selectedOrder._id === order._id ? '#f1f8e9' : '#f5f5f5'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = selectedOrder && selectedOrder._id === order._id ? '#f1f8e9' : 'transparent'}
+                      >
+                        <td style={styles.tableCell}>{order._id.substring(order._id.length - 8)}</td>
+                        <td style={styles.tableCell}>{order.deliveryDetails?.mobile || 'N/A'}</td>
+                        <td style={styles.tableCell}>{order.createdAt ? formatDate(order.createdAt) : 'N/A'}</td>
+                        <td style={styles.tableCell}>{formatCurrency(order.totalAmount)}</td>
+                        <td style={styles.tableCell}>
+                          <span style={getStatusStyles(order.orderStatus)}>{order.orderStatus}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
               <div style={styles.empty}>No orders found matching your criteria.</div>
             )}
           </div>
+        )}
 
-          {/* Order Details */}
+        {/* Order Details - Show on mobile only when an order is selected */}
+        {(!mobileView || selectedOrder) && (
           <div style={styles.detailsContainer}>
             {selectedOrder ? (
               <div style={styles.orderDetailsCard}>
                 <div style={styles.orderDetailsHeader}>
-                  <h2 style={styles.orderDetailsTitle}>Order {selectedOrder.id}</h2>
+                  <h2 style={styles.orderDetailsTitle}>Order #{selectedOrder._id.substring(selectedOrder._id.length - 8)}</h2>
                   <div style={styles.orderStatus}>
                     <label>Status:</label>
                     <select
                       style={styles.orderStatusSelect}
-                      value={selectedOrder.status}
-                      onChange={(e) => handleStatusChange(selectedOrder.id, e.target.value)}
+                      value={selectedOrder.orderStatus}
+                      onChange={(e) => handleStatusChange(selectedOrder._id, e.target.value)}
                     >
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option value="Wait">Waiting</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Delivered">Delivered</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
                 </div>
@@ -465,82 +452,60 @@ const AdminOrders = () => {
                   {/* Customer Information */}
                   <div style={styles.orderInfoSection}>
                     <h3 style={styles.sectionTitle}>Customer Information</h3>
-                    <p style={styles.infoText}><strong>Name:</strong> {selectedOrder.customer}</p>
-                    <p style={styles.infoText}><strong>Email:</strong> {selectedOrder.email}</p>
-                    <p style={styles.infoText}><strong>Order Date:</strong> {formatDate(selectedOrder.date)}</p>
+                    <p style={styles.infoText}><strong>Mobile:</strong> {selectedOrder.deliveryDetails?.mobile || 'N/A'}</p>
+                    <p style={styles.infoText}><strong>Order Date:</strong> {selectedOrder.createdAt ? formatDate(selectedOrder.createdAt) : 'N/A'}</p>
+                    <p style={styles.infoText}><strong>User:</strong> {selectedOrder.deliveryDetails?.email || selectedOrder.user || 'N/A'}</p>
                   </div>
 
                   {/* Payment Information */}
                   <div style={styles.orderInfoSection}>
                     <h3 style={styles.sectionTitle}>Payment Information</h3>
-                    <p style={styles.infoText}><strong>Method:</strong> {selectedOrder.payment.method}</p>
-                    {selectedOrder.payment.last4 !== 'N/A' && (
-                      <p style={styles.infoText}><strong>Card:</strong> **** **** **** {selectedOrder.payment.last4}</p>
-                    )}
-                    <p style={styles.infoText}><strong>Payment Status:</strong> {selectedOrder.payment.status}</p>
+                    <p style={styles.infoText}><strong>Payment Status:</strong> {selectedOrder.paymentStatus}</p>
+                    <p style={styles.infoText}><strong>Order Status:</strong> {selectedOrder.orderStatus}</p>
+                    <p style={styles.infoText}><strong>Wait Status:</strong> {selectedOrder.waitStatus}</p>
                   </div>
 
                   {/* Shipping Information */}
                   <div style={styles.orderInfoSection}>
                     <h3 style={styles.sectionTitle}>Shipping Information</h3>
-                    <p style={styles.infoText}><strong>Address:</strong> {selectedOrder.shipping.address}</p>
-                    <p style={styles.infoText}><strong>City:</strong> {selectedOrder.shipping.city}, {selectedOrder.shipping.state} {selectedOrder.shipping.zip}</p>
-                    <p style={styles.infoText}><strong>Method:</strong> {selectedOrder.shipping.method}</p>
-                  </div>
-
-                  {/* Order Actions */}
-                  <div style={styles.orderInfoSection}>
-                    <h3 style={styles.sectionTitle}>Order Actions</h3>
-                    <div>
-                      <button
-                        style={styles.actionButton}
-                        onMouseOver={(e) => e.target.style.backgroundColor = styles.actionButtonHover.backgroundColor}
-                        onMouseOut={(e) => e.target.style.backgroundColor = styles.actionButton.backgroundColor}
-                      >
-                        Print Invoice
-                      </button>
-                      <button
-                        style={styles.actionButton}
-                        onMouseOver={(e) => e.target.style.backgroundColor = styles.actionButtonHover.backgroundColor}
-                        onMouseOut={(e) => e.target.style.backgroundColor = styles.actionButton.backgroundColor}
-                      >
-                        Send Email
-                      </button>
-                    </div>
+                    <p style={styles.infoText}><strong>Address:</strong> {selectedOrder.deliveryDetails?.address || 'N/A'}</p>
+                    <p style={styles.infoText}><strong>City:</strong> {selectedOrder.deliveryDetails?.city || 'N/A'}, {selectedOrder.deliveryDetails?.state || 'N/A'} {selectedOrder.deliveryDetails?.pincode || 'N/A'}</p>
+                    <p style={styles.infoText}><strong>Country:</strong> {selectedOrder.deliveryDetails?.country || 'N/A'}</p>
+                    {selectedOrder.deliveryDetails?.landmark && (
+                      <p style={styles.infoText}><strong>Landmark:</strong> {selectedOrder.deliveryDetails.landmark}</p>
+                    )}
                   </div>
                 </div>
 
                 {/* Order Items */}
                 <div>
                   <h3 style={styles.sectionTitle}>Order Items</h3>
-                  <table style={styles.itemsTable}>
-                    <thead>
-                      <tr>
-                        <th style={styles.tableHeader}>Product</th>
-                        <th style={styles.tableHeader}>Quantity</th>
-                        <th style={styles.tableHeader}>Price</th>
-                        <th style={styles.tableHeader}>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedOrder.items.map((item) => (
-                        <tr key={item.id} style={styles.tableRow}>
-                          <td style={styles.tableCell}>{item.name}</td>
-                          <td style={styles.tableCell}>{item.quantity}</td>
-                          <td style={styles.tableCell}>{formatCurrency(item.price)}</td>
-                          <td style={styles.tableCell}>{formatCurrency(item.price * item.quantity)}</td>
+                  <div style={styles.itemsTableWrapper}>
+                    <table style={styles.itemsTable}>
+                      <thead>
+                        <tr>
+                          <th style={styles.tableHeader}>Product</th>
+                          <th style={styles.tableHeader}>Quantity</th>
+                          <th style={styles.tableHeader}>Price</th>
+                          <th style={styles.tableHeader}>Total</th>
                         </tr>
-                      ))}
-                      <tr style={styles.tableRow}>
-                        <td colSpan="3" style={{...styles.tableCell, textAlign: 'right'}}><strong>Shipping:</strong></td>
-                        <td style={styles.tableCell}>{formatCurrency(selectedOrder.shipping.cost)}</td>
-                      </tr>
-                      <tr style={{...styles.tableRow, ...styles.totalRow}}>
-                        <td colSpan="3" style={{...styles.tableCell, textAlign: 'right'}}><strong>Total:</strong></td>
-                        <td style={styles.tableCell}>{formatCurrency(selectedOrder.total)}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {selectedOrder.products && selectedOrder.products.map((item, index) => (
+                          <tr key={index} style={styles.tableRow}>
+                            <td style={styles.tableCell}>{item.product?.name || 'Product Name N/A'}</td>
+                            <td style={styles.tableCell}>{item.quantity}</td>
+                            <td style={styles.tableCell}>{formatCurrency(item.product?.price || 0)}</td>
+                            <td style={styles.tableCell}>{formatCurrency((item.product?.price || 0) * item.quantity)}</td>
+                          </tr>
+                        ))}
+                        <tr style={{...styles.tableRow, ...styles.totalRow}}>
+                          <td colSpan="3" style={{...styles.tableCell, textAlign: 'right'}}><strong>Total:</strong></td>
+                          <td style={styles.tableCell}>{formatCurrency(selectedOrder.totalAmount)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -549,15 +514,14 @@ const AdminOrders = () => {
               </div>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <div style={styles.footer}>
-        <p>© 2025 Tea Emporium. All rights reserved.</p>
+        <p>© 2025 Your Company. All rights reserved.</p>
       </div>
     </div>
   );
 };
 
 export default AdminOrders;
-

@@ -380,11 +380,11 @@ export default function ShoppingCart() {
                       fontWeight: '600',
                       color: '#4a7c59',
                       fontSize: '16px'
-                    }}>${(item.product.price * item.quantity).toFixed(2)}</div>
+                    }}>₹{(item.product.price * item.quantity).toFixed(2)}</div>
                     <div style={{
                       fontSize: '14px',
                       color: '#777'
-                    }}>${item.product.price.toFixed(2)} each</div>
+                    }}>₹{item.product.price.toFixed(2)} each</div>
                   </div>
 
                   {/* Remove Button */}
@@ -475,7 +475,7 @@ export default function ShoppingCart() {
                 <span style={{color: '#666'}}>
                   Subtotal ({cartProducts.reduce((total, item) => total + item.quantity, 0)} items)
                 </span>
-                <span style={{fontWeight: '500'}}>${subtotal.toFixed(2)}</span>
+                <span style={{fontWeight: '500'}}>₹{subtotal.toFixed(2)}</span>
               </div>
 
               <div style={{
@@ -483,7 +483,7 @@ export default function ShoppingCart() {
                 justifyContent: 'space-between'
               }}>
                 <span style={{color: '#666'}}>Shipping</span>
-                <span style={{fontWeight: '500'}}>${shipping.toFixed(2)}</span>
+                <span style={{fontWeight: '500'}}>₹{shipping.toFixed(2)}</span>
               </div>
 
               <div style={{
@@ -493,7 +493,7 @@ export default function ShoppingCart() {
                 borderBottom: '1px solid #eaeaea'
               }}>
                 <span style={{color: '#666'}}>Estimated Tax</span>
-                <span style={{fontWeight: '500'}}>${tax.toFixed(2)}</span>
+                <span style={{fontWeight: '500'}}>₹{tax.toFixed(2)}</span>
               </div>
 
               <div style={{
@@ -510,7 +510,7 @@ export default function ShoppingCart() {
                   fontWeight: '700',
                   fontSize: '18px',
                   color: '#2b5d34'
-                }}>${total.toFixed(2)}</span>
+                }}>₹{total.toFixed(2)}</span>
               </div>
             </div>
 
