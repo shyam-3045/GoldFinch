@@ -99,6 +99,30 @@ export default function Navbar() {
     );
   };
 
+  // Function to handle smooth scrolling
+  const scrollToSection = (sectionId, event) => {
+    event.preventDefault();
+    setMobileMenuOpen(false); // Close mobile menu if open
+    
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const navigateOrder=()=>
+  {
+    if(token)
+    {
+      navigate("/Myorder")
+    }
+    else{
+      alertMsg("Login First")
+      navigate("/")
+    }
+
+  }
+
   // Announcement bar styles
   const announcementBarStyles = {
     backgroundColor: "#000000",
@@ -138,7 +162,6 @@ export default function Navbar() {
     right: isMobile ? "10px" : "20px",
   };
 
-  // Navbar styles
   // Navbar styles
   const navStyles = {
     position: "sticky",
@@ -191,6 +214,7 @@ export default function Navbar() {
     textTransform: "uppercase",
     padding: "5px 0",
     position: "relative",
+    cursor: "pointer", // Add cursor pointer to indicate clickable
   };
 
   const iconSection = {
@@ -268,16 +292,19 @@ export default function Navbar() {
                 backgroundColor: "transparent",
               }} 
             />
-            <span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span>
+            <NavLink to="/" ><span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span></NavLink>
+            
           </div>
 
           {/* Desktop Nav Links */}
           <div style={{ ...navLinks, display: isMobile ? "none" : "flex" }}>
             <NavLink to="/" style={navLink}>Home</NavLink>
             <NavLink to="/allProducts" style={navLink}>Shop</NavLink>
-            <NavLink to="#about" style={navLink}>About</NavLink>
-            <NavLink to="#contact" style={navLink}>Contact</NavLink>
-            <NavLink to={token ? "/Myorder" : "/"} style={navLink}>My Orders</NavLink>
+            <a href="#about" style={navLink} onClick={(e) => scrollToSection('about', e)}>About</a>
+            <a href="#contact" style={navLink} onClick={(e) => scrollToSection('contact', e)}>Contact</a>
+            <button onClick={navigateOrder} style={navLink}>
+              My Orders
+            </button>
           </div>
 
           {/* Icons */}
@@ -314,8 +341,8 @@ export default function Navbar() {
           <div style={mobileMenuStyles}>
             <a href="/" style={navLink}>Home</a>
             <a href="/allProducts" style={navLink}>Shop</a>
-            <a href="#about" style={navLink}>About</a>
-            <a href="#contact" style={navLink}>Contact</a>
+            <a href="#about" style={navLink} onClick={(e) => scrollToSection('about', e)}>About</a>
+            <a href="#contact" style={navLink} onClick={(e) => scrollToSection('contact', e)}>Contact</a>
             <a href={token ? "/Myorder" : "/"} style={navLink}>My Orders</a>
           </div>
         )}

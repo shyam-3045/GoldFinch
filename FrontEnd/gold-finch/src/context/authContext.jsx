@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from '../../axios.config';
 import { useAlert } from './AlertMsgContext';
 
@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const {alertMsg}=useAlert()
   const [token, setToken] = useState("");
   const [user, setUser] = useState("");
+  const [ordersDet,setOrdersDet]=useState()
 
   const login = (endPoint, name, password, email) => {
     return axios.post(`http://localhost:3000/${endPoint}`, { email, password, name })
@@ -32,10 +33,21 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user")
     alertMsg("Logged Out !")
 
+
   }
 
+useEffect(()=>
+{
+  (async function() {
+    const res=await axios.get("http://localhost:3000/api/get-orders")
+    setOrdersDet(res.data)
+})();
+},[])
+  
+
+
   return (
-    <AuthUser.Provider value={{ login, token, user,logout }}>
+    <AuthUser.Provider value={{ login, token, user,logout,ordersDet }}>
       {children}
     </AuthUser.Provider>
   );

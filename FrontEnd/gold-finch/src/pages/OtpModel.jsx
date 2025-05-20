@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from '../../axios.config';
 import { makeOrder } from '../context/Payment';
 import { useAlert } from '../context/AlertMsgContext';
-import { useNavigate } from 'react-router-dom';
 
 
 const OtpModel = ({ isOpen, closeModel, total, user, formData, token,products }) => {
-  const navigate=useNavigate()
   const {alertMsg}=useAlert()
     const {MakeOrder}=makeOrder()
   const [otp, setOtp] = useState(new Array(6).fill(''));
@@ -295,8 +293,7 @@ const handlePayment = async (total) => {
            headers: {
                Authorization: `Bearer ${token}`
            }
-       }); // log the order data for debugging
-
+       }); // log the order data for debuggin
        // Step 2: Set up Razorpay options
        const options = {
            key: "rzp_test_cNG8AXPmxWUyej", // from Razorpay Dashboard
@@ -320,8 +317,9 @@ const handlePayment = async (total) => {
 
                    if (verifyRes.data.success) {
                        alertMsg("Order Confirmed !!!")
-                       navigate("/Myorder")
-                       MakeOrder(formData,data.order.amount,products)
+                       MakeOrder(formData,data.order.amount,products, response.razorpay_order_id,
+                       response.razorpay_payment_id,
+                       response.razorpay_signature,)
                       
                    } else {
                        alert("Payment verification failed ❌");
@@ -516,6 +514,7 @@ const handlePayment = async (total) => {
             Please enter the <span style={styles.highlight}>6-digit OTP</span> sent to your registered email
             {user?.email && <span style={styles.highlight}> ({user.email})</span>}.
           </p>
+          <p style={styles.message}>(Check in Spam Email !)</p>
           
           {isLoading.sending ? (
             <div style={styles.statusMessage}>

@@ -3,9 +3,6 @@ import axios from "../../axios.config"
 
 const  PaymentContext=createContext()
 export const Payment = ({children}) => {
-    const token=localStorage.getItem("token")
-
-
     const MakeOrder = async (
   formData,
   total,
@@ -31,14 +28,18 @@ export const Payment = ({children}) => {
       {
         products,
         deliveryDetails: deliveryDetails,
-        totalAmount: total
+        totalAmount: total,
+        razorpay_order_id: razorpay_order_id,
+        razorpay_payment_id: razorpay_payment_id,
+        razorpay_signature: razorpay_signature
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         }
       }
     );
+    
     return res.data;
   } catch (error) {
     console.error("Error making order:", error.response?.data || error.message);

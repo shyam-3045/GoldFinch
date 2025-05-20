@@ -3,7 +3,6 @@ import { useLoaderData } from 'react-router-dom';
 
 const MyOrdersPage = () => {
   const product = useLoaderData();
-  console.log(product)
   
   const [orders, setOrders] = useState(product);
   const [selectedOrder, setSelectedOrder] = useState(product[0]);
@@ -743,7 +742,7 @@ const MyOrdersPage = () => {
             <span 
               style={{
                 ...styles.statusBadge,
-                ...(order.orderStatus === 'Processing' ? styles.processingStatus : styles.deliveredStatus)
+                ...(order.orderStatus === 'Processing' ||"cancelled" ? styles.processingStatus : styles.deliveredStatus)
               }}
             >
               {order.orderStatus}

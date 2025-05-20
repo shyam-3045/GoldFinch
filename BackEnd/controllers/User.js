@@ -71,6 +71,12 @@ exports.userLogOut=async(req,res)=>
 
 exports.userDetails=async(req,res)=>
 {
-  res.json({id:req.user.id})
+  try {
+    const users=await User.find()
+    res.status(200).json({users})
+  } catch (error) {
+    res.status(200).json({error:error.message , msg:"Cannot get user Details"})
+    
+  }
 
 }

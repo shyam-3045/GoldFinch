@@ -38,18 +38,6 @@ const testimonialData = [
     comment:
       "Cardamom Wonder adds a lovely aroma and flavor to my daily tea routine. Always fresh and never bitter.",
   },
-  {
-    name: "Raghav",
-    rating: 5,
-    comment:
-      "Masala Magic is my go-to chai blend. The freshness and direct sourcing from Assam really make it special.",
-  },
-  {
-    name: "Lakshmi",
-    rating: 4,
-    comment:
-      "Good quality Assam tea with natural freshness. I appreciate that it’s directly sourced from farmers, supporting their livelihood.",
-  },
 ];
 
 export default function Testimonials() {

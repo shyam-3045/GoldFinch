@@ -134,7 +134,7 @@ export default function ProductCard({ product, addItem, productNavigate }) {
             fontWeight: '600',
             color: '#333'
           }}>
-            ${product.price.toFixed(2)}
+            ₹{product.price.toFixed(2)}
           </span>
           
           <div style={{ display: 'flex', alignItems: 'center' }}>
