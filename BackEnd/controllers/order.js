@@ -27,10 +27,22 @@ exports.createOrder = async (req, res) => {
   } = req.body;
 
   try {
-    // 2. Save order in DB
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ success: false, message: "User not authenticated" });
+    }
+
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ success: false, message: "Payment details missing" });
+    }
+
+    const cleanedProducts = products.map(item => ({
+      product: item.product._id || item.product,
+      quantity: item.quantity
+    }));
+
     const order = await Order.create({
       user: req.user.id,
-      products,
+      products: cleanedProducts,
       deliveryDetails,
       totalAmount,
       paymentInfo: {
@@ -41,6 +53,7 @@ exports.createOrder = async (req, res) => {
       paymentStatus: "Paid",
       orderStatus: "Processing"
     });
+
 
     res.status(201).json({
       success: true,

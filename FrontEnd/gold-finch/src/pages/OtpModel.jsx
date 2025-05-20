@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from '../../axios.config';
 import { makeOrder } from '../context/Payment';
 import { useAlert } from '../context/AlertMsgContext';
-import { useNavigate } from 'react-router-dom';
 
 
 const OtpModel = ({ isOpen, closeModel, total, user, formData, token,products }) => {
-  const navigate=useNavigate()
   const {alertMsg}=useAlert()
     const {MakeOrder}=makeOrder()
   const [otp, setOtp] = useState(new Array(6).fill(''));
@@ -320,8 +318,9 @@ const handlePayment = async (total) => {
 
                    if (verifyRes.data.success) {
                        alertMsg("Order Confirmed !!!")
-                       navigate("/Myorder")
-                       MakeOrder(formData,data.order.amount,products)
+                       MakeOrder(formData,data.order.amount,products, response.razorpay_order_id,
+                       response.razorpay_payment_id,
+                       response.razorpay_signature)
                       
                    } else {
                        alert("Payment verification failed ❌");

@@ -39,7 +39,6 @@ export default function ProductDisplay() {
   const addToCart = (id) => {
     let quantity=1
     const res =  getCartItems(id._id,quantity)
-    console.log(id._id)
     if (!token) {
       alertMsg("Login First")
     }

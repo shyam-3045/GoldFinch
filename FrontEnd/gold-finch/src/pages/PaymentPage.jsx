@@ -23,7 +23,6 @@ export default function PaymentConfirmationPage() {
     city: '',
     state: '',
     country: 'India',
-    landmark: '',
     isDefault: false
   });
   
@@ -48,7 +47,6 @@ export default function PaymentConfirmationPage() {
         city: deliveryAddress.city || '',
         state: deliveryAddress.state || '',
         country: 'India',
-        landmark: deliveryAddress.landmark || '',
         isDefault: true
       });
     }
@@ -171,11 +169,10 @@ export default function PaymentConfirmationPage() {
         formData.city, 
         formData.state, 
         formData.mobile, 
-        formData.pincode, 
-        formData.landmark, 
+        formData.pincode,  
         formData.isDefault
       );
-      console.log(res)
+
       if (res) {
         setIsOpen(true);
         setIsSubmitting(true);
@@ -259,7 +256,6 @@ export default function PaymentConfirmationPage() {
                         city: addr.city || '',
                         state: addr.state || '',
                         country: 'India',
-                        landmark: addr.landmark || '',
                         isDefault: addr.isDefault || false
                       });
                     }}
@@ -374,17 +370,7 @@ export default function PaymentConfirmationPage() {
                 </div>
               </div>
               
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Landmark (Optional)</label>
-                <input 
-                  type="text"
-                  name="landmark"
-                  value={formData.landmark}
-                  onChange={handleChange}
-                  style={styles.input}
-                  placeholder="Nearby landmark for easier navigation"
-                />
-              </div>
+              
               
               <div style={styles.formGroup}>
                 <label style={styles.label}>Country</label>

@@ -14,11 +14,14 @@ const sendOTP = async (toEmail, otp) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: toEmail,
-    subject: "Your OTP Code For Order confirmation",
-    html: `<h2>Your OTP is: <b>${otp}</b></h2><p>This OTP is valid for 1 minutes.</p>`,
-  };
+  from: `GoldFinch <${process.env.EMAIL_USER}>`,  
+  to: toEmail,
+  replyTo: process.env.EMAIL_USER,                    
+  subject: "Your OTP Code For Order Confirmation",
+  text: `Your OTP is: ${otp}. This OTP is valid for 1 minute.`,
+  html: `<h2>Your OTP is: <b>${otp}</b></h2><p>This OTP is valid for 1 minute.</p>`,
+};
+
 
   await transporter.sendMail(mailOptions);
 };

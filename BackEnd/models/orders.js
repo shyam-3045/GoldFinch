@@ -26,7 +26,6 @@ const orderSchema = new mongoose.Schema({
     state: { type: String },
     country: { type: String },
     isDefault: { type: Boolean, default: false },
-    landmark: { type: String, default: '' },
   },
   totalAmount: Number,
   paymentInfo: {

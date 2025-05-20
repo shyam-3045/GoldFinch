@@ -9,7 +9,7 @@ const instance = new Razorpay({
 });
 
 exports.hadleCreds = async (req, res) => {
-  const { address, pincode, mobile, city, state, landmark, isDefault } = req.body.Details;
+  const { address, pincode, mobile, city, state, isDefault } = req.body.Details;
 
   try {
     const userId = req.user.id;
@@ -20,7 +20,6 @@ exports.hadleCreds = async (req, res) => {
       mobile,
       city,
       state,
-      landmark,
       isDefault: isDefault || false
     };
 
@@ -35,9 +34,8 @@ exports.hadleCreds = async (req, res) => {
       detail.pincode === pincode &&
       detail.mobile === mobile &&
       detail.city === city &&
-      detail.state === state &&
-      detail.landmark === landmark
-    );
+      detail.state === state 
+        );
 
     if (!isDuplicate) {
       if (isDefault) {
