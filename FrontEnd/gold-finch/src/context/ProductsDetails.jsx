@@ -9,7 +9,7 @@ export const ProductsProvider = ({ children }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/products');
+        const res = await axios.get('https://goldfinch-backend.onrender.com/api/products');
         setProducts(res.data.products);
       } catch (err) {
         console.error('Failed to fetch products:', err);
@@ -20,7 +20,7 @@ export const ProductsProvider = ({ children }) => {
 
   const getProductById = async (productId) => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/product/${productId}`);
+      const res = await axios.get(`https://goldfinch-backend.onrender.com/api/product/${productId}`);
       return res.data.product
     } catch (err) {
       console.error('Failed to fetch product by ID:', err);

@@ -28,7 +28,7 @@ const OtpModel = ({ isOpen, closeModel, total, user, formData, token,products })
         
         try {
           await axios.post(
-            `http://localhost:3000/api/send-otp`,
+            `https://goldfinch-backend.onrender.com/api/send-otp`,
             { email: user.email },
             { headers: { Authorization: `Bearer ${token}`} }
           );
@@ -228,7 +228,7 @@ const OtpModel = ({ isOpen, closeModel, total, user, formData, token,products })
     setErrorMessage('');
     
     try {
-      const verifyEndpoint = `http://localhost:3000/api/verify-otp`;
+      const verifyEndpoint = `https://goldfinch-backend.onrender.com/api/verify-otp`;
       
       const res = await axios.post(
         verifyEndpoint,
@@ -264,7 +264,7 @@ const OtpModel = ({ isOpen, closeModel, total, user, formData, token,products })
     
     try {
       await axios.post(
-        "http://localhost:3000/api/send-otp",
+        "https://goldfinch-backend.onrender.com/api/send-otp",
         { email: user?.email },
         { headers: { Authorization: `Bearer ${token}`} }
       );
@@ -287,7 +287,7 @@ const OtpModel = ({ isOpen, closeModel, total, user, formData, token,products })
 const handlePayment = async (total) => {
    try {
        // Step 1: Create the order
-       const { data } = await axios.post('http://localhost:3000/api/create-order', {
+       const { data } = await axios.post('https://goldfinch-backend.onrender.com/api/create-order', {
            amount: total, // Amount in INR
        }, {
            headers: {
@@ -305,7 +305,7 @@ const handlePayment = async (total) => {
            handler: async (response) => {
                try {
                    // Step 3: Verify the payment
-                   const verifyRes = await axios.post("http://localhost:3000/api/verify-payment", {
+                   const verifyRes = await axios.post("https://goldfinch-backend.onrender.com/api/verify-payment", {
                        razorpay_order_id: response.razorpay_order_id,
                        razorpay_payment_id: response.razorpay_payment_id,
                        razorpay_signature: response.razorpay_signature,

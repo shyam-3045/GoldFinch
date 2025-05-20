@@ -20,7 +20,7 @@ const router=createBrowserRouter([
     
   {path:"/cart",loader:async()=>
     {
-        const res = await axios.get("http://localhost:3000/cart", {
+        const res = await axios.get("https://goldfinch-backend.onrender.com/cart", {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
@@ -30,14 +30,14 @@ const router=createBrowserRouter([
     },element:<Cart/>},
   {path:"/product",loader:async()=>
     {
-        const res = await axios.get('http://localhost:3000/api/products');
+        const res = await axios.get('https://goldfinch-backend.onrender.comapi/products');
         return res.data.products
 
     },element:<ProductDetailsPage/>},
   {path:"/order",element:<OrderPage/>},
   {path:"/Myorder",loader:async()=>
     {
-      const res =await axios.get('http://localhost:3000/api/my-orders',{
+      const res =await axios.get('https://goldfinch-backend.onrender.com/api/my-orders',{
         headers:{
           Authorization:`Bearer ${localStorage.getItem("token")}`
         }
@@ -46,7 +46,7 @@ const router=createBrowserRouter([
     },element:<MyOrders/>},
   {path:"/allProducts",loader:async()=>
     {
-        const res = await axios.get('http://localhost:3000/api/products');
+        const res = await axios.get('https://goldfinch-backend.onrender.com/api/products');
         return res.data.products
 
     },element:<ProductDisplay/>},
@@ -56,8 +56,8 @@ const router=createBrowserRouter([
   },
   {path:'/Admin@DashBoard@205',loader:async()=>
     {
-        const res = await axios.get('http://localhost:3000/user');
-        const res1=await axios.get('http://localhost:3000/api/get-orders')
+        const res = await axios.get('https://goldfinch-backend.onrender.com/user');
+        const res1=await axios.get('https://goldfinch-backend.onrender.com/api/get-orders')
         return{ users:res.data.users,order:res1.data}
 
     },element:<AdminPage/>},

@@ -9,7 +9,7 @@ export const CartItemsContext = ({ children }) => {
     const fetchCart = async () => {
         const userToken = localStorage.getItem("token");
         try {
-            const res = await axios.get("http://localhost:3000/cart", {
+            const res = await axios.get("https://goldfinch-backend.onrender.com/cart", {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -27,7 +27,7 @@ export const CartItemsContext = ({ children }) => {
     const getCartItems = async (id, quantity) => {
         const userToken = localStorage.getItem("token");
         try {
-            await axios.post("http://localhost:3000/cart/add", {
+            await axios.post("https://goldfinch-backend.onrender.com/cart/add", {
                 productId: id,
                 quantity
             }, {
@@ -46,7 +46,7 @@ export const CartItemsContext = ({ children }) => {
     const removeCartItem = async (id) => {
         const userToken = localStorage.getItem("token");
         try {
-            await axios.delete(`http://localhost:3000/cart/remove/${id}`, {
+            await axios.delete(`https://goldfinch-backend.onrender.com/cart/remove/${id}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }

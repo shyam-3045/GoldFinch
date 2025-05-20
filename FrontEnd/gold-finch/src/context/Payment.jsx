@@ -24,7 +24,7 @@ export const Payment = ({children}) => {
   };
     
     const res = await axios.post(
-      "http://localhost:3000/api/createOrder",
+      "https://goldfinch-backend.onrender.com/api/createOrder",
       {
         products,
         deliveryDetails: deliveryDetails,
