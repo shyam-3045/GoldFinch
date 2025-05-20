@@ -293,8 +293,7 @@ const handlePayment = async (total) => {
            headers: {
                Authorization: `Bearer ${token}`
            }
-       }); // log the order data for debugging
-
+       }); // log the order data for debuggin
        // Step 2: Set up Razorpay options
        const options = {
            key: "rzp_test_cNG8AXPmxWUyej", // from Razorpay Dashboard
@@ -320,7 +319,7 @@ const handlePayment = async (total) => {
                        alertMsg("Order Confirmed !!!")
                        MakeOrder(formData,data.order.amount,products, response.razorpay_order_id,
                        response.razorpay_payment_id,
-                       response.razorpay_signature)
+                       response.razorpay_signature,)
                       
                    } else {
                        alert("Payment verification failed ❌");

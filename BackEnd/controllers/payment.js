@@ -74,6 +74,7 @@ exports.createOrder = async (req, res) => {
     try {
         const order = await instance.orders.create(options);
         res.status(200).json({ success: true, order });
+
     } catch (error) {
         console.error("Error creating order:", error);  // Log complete error object
         res.status(500).json({ success: false, error: error.message });
