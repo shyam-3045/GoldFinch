@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an axios instance with your base URL
 const instance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://goldfinch-backend.onrender.com",
 });
 
 // Interceptor to handle expired token

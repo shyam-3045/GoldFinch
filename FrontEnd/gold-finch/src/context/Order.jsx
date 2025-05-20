@@ -12,7 +12,7 @@ export const Order = ({ children }) => {
     };
     
     try {
-      const response = await axios.post("http://localhost:3000/api/order-details", { Details }, {
+      const response = await axios.post("https://goldfinch-backend.onrender.com/api/order-details", { Details }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }

@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [ordersDet,setOrdersDet]=useState()
 
   const login = (endPoint, name, password, email) => {
-    return axios.post(`http://localhost:3000/${endPoint}`, { email, password, name })
+    return axios.post(`https://goldfinch-backend.onrender.com/${endPoint}`, { email, password, name })
       .then((res) => {
         setToken(res.data.token);
         setUser(JSON.stringify(res.data.user));
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 useEffect(()=>
 {
   (async function() {
-    const res=await axios.get("http://localhost:3000/api/get-orders")
+    const res=await axios.get("https://goldfinch-backend.onrender.com/api/get-orders")
     setOrdersDet(res.data)
 })();
 },[])

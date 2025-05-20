@@ -50,7 +50,7 @@ const AdminOrders = ({ order }) => {
   // Handle order status change
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.put(`http://localhost:3000/api/edit-orders/${orderId}`, {
+      await axios.put(`https://goldfinch-backend.onrender.com/api/edit-orders/${orderId}`, {
         orderStatus: newStatus
       });
 
