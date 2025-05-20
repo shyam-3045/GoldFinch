@@ -320,6 +320,8 @@ const handlePayment = async (total) => {
                        MakeOrder(formData,data.order.amount,products, response.razorpay_order_id,
                        response.razorpay_payment_id,
                        response.razorpay_signature,)
+                       const result=await axios.delete("https://goldfinch-backend.onrender.com/cart/clear-cart")
+                       console.log(result)
                       
                    } else {
                        alert("Payment verification failed ❌");

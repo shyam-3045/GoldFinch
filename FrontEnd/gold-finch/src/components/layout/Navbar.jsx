@@ -19,11 +19,11 @@ export default function Navbar() {
 
   // Announcement messages
   const announcements = [
-    "SAVE Extra 5% up to ₹100 on Prepaid Orders",
-    "FREE Shipping on Orders Above ₹499",
-    "NEW! Seasonal Blends Now Available",
-    "Use Code WELCOME10 for 10% Off First Order"
-  ];
+  "Savor Luxury in Every Sip – Explore Our Premium Tea Collection",
+  "Complimentary Shipping on All Orders Above ₹499 In Future",
+  "Now Brewing: Limited Edition Seasonal Tea Blends",
+  "Expects Some Discounts in Future"
+];
 
   // Scroll effect
   useEffect(() => {

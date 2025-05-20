@@ -512,8 +512,8 @@ export default function ProductDisplay() {
                       <div style={styles.productFooter}>
                         <div style={styles.productPrice}>
                           <div>
-                            <span style={styles.currentPrice}>${discountedPrice}</span>
-                            <span style={styles.originalPrice}>${originalPrice}</span>
+                            <span style={styles.currentPrice}>₹{discountedPrice}</span>
+                            <span style={styles.originalPrice}>₹{originalPrice}</span>
                           </div>
                           
                         </div>
