@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TeaHeader = () => {
-  const backgroundImageUrl = '../../../public/TeaHeader.png';
+  const backgroundImageUrl = '/TeaHeader.png';
   
   return (
     <div style={{

@@ -14,7 +14,7 @@ HeroSection = () => {
       overflow: 'hidden',
       display: 'flex',
       alignItems: 'center',
-      backgroundImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), url("../../../public/Bg-image.jpg")',
+      backgroundImage: 'linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3)), url("/Bg-image.jpg")',
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
       backgroundRepeat: 'no-repeat',

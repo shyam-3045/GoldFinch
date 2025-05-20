@@ -38,7 +38,7 @@ export default function ProductCard({ product, addItem, productNavigate }) {
         aspectRatio: '1/1',
       }}>
         <img 
-          src="../../../public/Product1-front.jpg"
+          src="/Product1-front.jpg"
           alt={product.name}
           style={{
             width: '100%',
