@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Footer from '../layout/Footer';
 import { useAlert } from '../../context/AlertMsgContext';
 import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { useProducts } from '../../context/ProductsDetails';
@@ -596,29 +595,25 @@ export default function ProductDetailsPage() {
           <div style={imageColumnStyles}>
             {/* Thumbnails column */}
             <div style={thumbnailColumnStyles}>
-              {products[0]?.images?.slice(0, 2).map((img, index) => {
-                const imageUrl = img?.url ? `/${img.url.replace(/^public\//, '')}` : '';
-
-                return (
-                  <img
-                    key={index}
-                    src={imageUrl}
-                    alt={`Thumbnail ${index + 1}`}
-                    style={index === selectedImage ? selectedThumbnailStyles : thumbnailStyles}
-                    onClick={() => setSelectedImage(index)}
-                  />
-                );
-              })}
-            </div>
+  {products[0]?.images?.slice(0, 2).map((img, index) => (
+    <img
+      key={index}
+      src={img?.url || '/api/placeholder/400/400'}
+      alt={`Thumbnail ${index + 1}`}
+      style={index === selectedImage ? selectedThumbnailStyles : thumbnailStyles}
+      onClick={() => setSelectedImage(index)}
+    />
+  ))}
+</div>
             
             {/* Main image */}
             <div style={mainImageContainerStyles}>
-              <img 
-                src={products[0]?.images[selectedImage]?.url ? `/${products[0].images[selectedImage].url.replace(/^public\//, '')}` : '/api/placeholder/400/400'} 
-                alt={product.name}
-                style={mainImageStyles}
-              />
-            </div>
+  <img 
+    src={products[0]?.images[selectedImage]?.url || '/api/placeholder/400/400'} 
+    alt={product.name}
+    style={mainImageStyles}
+  />
+</div>
           </div>
 
           {/* Right column - Product info with scrollable content */}
