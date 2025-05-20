@@ -30,7 +30,7 @@ const router=createBrowserRouter([
     },element:<Cart/>},
   {path:"/product",loader:async()=>
     {
-        const res = await axios.get('https://goldfinch-backend.onrender.comapi/products');
+        const res = await axios.get('https://goldfinch-backend.onrender.com/api/products');
         return res.data.products
 
     },element:<ProductDetailsPage/>},

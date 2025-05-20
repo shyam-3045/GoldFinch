@@ -420,7 +420,7 @@ export default function PaymentConfirmationPage() {
             {checkoutItems && checkoutItems.map((item, index) => (
               <div key={index} style={styles.orderItem}>
                 <div style={styles.productImage}>
-                  <img src={item.product.name === "Assam Delight Tea" ?"../../../public/Product1-front.jpg":"/"} alt={item.name} style={styles.productImg} />
+                  <img src={item.product.name === "Assam Delight Tea" ?"Product1-front.jpg":"/"} alt={item.name} style={styles.productImg} />
                 </div>
                 <div style={styles.productDetails}>
                   <h3 style={styles.productName}>{item.product.name || 'Product Name'}</h3>

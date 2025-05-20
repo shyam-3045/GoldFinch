@@ -288,7 +288,7 @@ export default function ShoppingCart() {
                     gridRow: windowWidth <= 768 ? 'span 3' : 'auto'
                   }}>
                     <img
-                      src={item.product.name === "Assam Delight Tea" ?"../../../public/Product1-front.jpg":"/"}
+                      src={item.product.name === "Assam Delight Tea" ?"/Product1-front.jpg":"/"}
                       alt={item.product.name}
                       style={{
                         width: '100px',

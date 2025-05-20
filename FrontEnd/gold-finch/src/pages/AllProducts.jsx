@@ -491,7 +491,7 @@ export default function ProductDisplay() {
                       style={styles.productImageContainer}
                     >
                       <img 
-                        src="../../../public//Product1-front.jpg"
+                        src="/Product1-front.jpg"
                         alt={product.name} 
                         style={styles.productImage} 
                       />
