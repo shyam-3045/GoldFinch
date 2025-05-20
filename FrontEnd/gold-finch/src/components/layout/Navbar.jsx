@@ -22,7 +22,7 @@ export default function Navbar() {
   "Savor Luxury in Every Sip – Explore Our Premium Tea Collection",
   "Complimentary Shipping on All Orders Above ₹499 In Future",
   "Now Brewing: Limited Edition Seasonal Tea Blends",
-  "Expects Some Discounts in Future"
+  "Discounts Will Be Avialable In Future"
 ];
 
   // Scroll effect
