@@ -3,11 +3,10 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import Model from "./Model";
 import { useAuth } from "../../context/authContext";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useAlert  } from "../../context/AlertMsgContext";
-
+import { useAlert } from "../../context/AlertMsgContext";
 
 export default function Navbar() {
-  const {alertMsg}=useAlert()
+  const { alertMsg } = useAlert();
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -45,14 +44,21 @@ export default function Navbar() {
 
   // Media query handling
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth < 480);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      setIsSmallMobile(window.innerWidth < 480);
+      
+      // Close mobile menu on resize to desktop
+      if (window.innerWidth >= 768 && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [mobileMenuOpen]);
 
   // Sync token changes
   useEffect(() => {
@@ -71,7 +77,7 @@ export default function Navbar() {
       setIsOpen(true);
     } else {
       logout();
-      navigate("/")
+      navigate("/");
       localStorage.removeItem("token");
       setToken("");
       setLoggedIn(false);
@@ -88,13 +94,13 @@ export default function Navbar() {
   };
 
   const handlePrevAnnouncement = () => {
-    setCurrentAnnouncementIndex((prevIndex) => 
+    setCurrentAnnouncementIndex((prevIndex) =>
       prevIndex === 0 ? announcements.length - 1 : prevIndex - 1
     );
   };
 
   const handleNextAnnouncement = () => {
-    setCurrentAnnouncementIndex((prevIndex) => 
+    setCurrentAnnouncementIndex((prevIndex) =>
       (prevIndex + 1) % announcements.length
     );
   };
@@ -103,253 +109,439 @@ export default function Navbar() {
   const scrollToSection = (sectionId, event) => {
     event.preventDefault();
     setMobileMenuOpen(false); // Close mobile menu if open
-    
+
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const navigateOrder=()=>
-  {
-    if(token)
-    {
-      navigate("/Myorder")
+  const navigateOrder = () => {
+    if (token) {
+      navigate("/Myorder");
+    } else {
+      alertMsg("Login First");
+      navigate("/");
     }
-    else{
-      alertMsg("Login First")
-      navigate("/")
-    }
-
-  }
-
-  // Announcement bar styles
-  const announcementBarStyles = {
-    backgroundColor: "#000000",
-    color: "#ffffff",
-    padding: isMobile ? "6px 30px" : "8px 0",
-    textAlign: "center",
-    position: "sticky",
-    top: "0",
-    width: "100%",
-    fontFamily: "Arial, sans-serif",
-    fontSize: isMobile ? "12px" : "14px",
-    fontWeight: "500",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: "1001",
-    transition: "all 0.3s ease",
-    boxSizing: "border-box",
-  };
-
-  const arrowStyles = {
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    cursor: "pointer",
-    color: "#ffffff",
-    fontSize: isMobile ? "16px" : "18px",
-  };
-
-  const leftArrowStyles = {
-    ...arrowStyles,
-    left: isMobile ? "10px" : "20px",
-  };
-
-  const rightArrowStyles = {
-    ...arrowStyles,
-    right: isMobile ? "10px" : "20px",
-  };
-
-  // Navbar styles
-  const navStyles = {
-    position: "sticky",
-    top: isMobile ? "30px" : "36px", // Height of announcement bar - adjust for mobile
-    backgroundColor: "#ffffff",
-    boxShadow: isScrolled ? "0 2px 5px rgba(0,0,0,0.1)" : "none",
-    padding: "0",
-    zIndex: "1000",
-    borderBottom: "1px solid #e0e0e0",
-  };
-
-  const containerStyles = {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-  };
-
-  const navRow = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: isMobile ? "10px 15px" : "15px 20px",
-    flexWrap: "wrap",
-  };
-
-  const logoStyles = {
-    fontSize: isMobile ? "20px" : "24px",
-    fontWeight: "bold",
-    color: "#37b24d",
-    display: "flex",
-    alignItems: "center",
-    marginRight: isMobile ? "10px" : "0",
-  };
-
-  const navLinks = {
-    display: "flex",
-    gap: isMobile ? "15px" : "30px",
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-  };
-
-  const navLink = {
-    color: "#333333",
-    textDecoration: "none",
-    fontWeight: "600",
-    fontSize: isMobile ? "14px" : "16px",
-    textTransform: "uppercase",
-    padding: "5px 0",
-    position: "relative",
-    cursor: "pointer", // Add cursor pointer to indicate clickable
-  };
-
-  const iconSection = {
-    display: "flex",
-    alignItems: "center",
-    gap: isMobile ? "10px" : "15px",
-  };
-
-  const iconButton = {
-    background: "none",
-    border: "none",
-    cursor: "pointer",
-    color: "#333333",
-    position: "relative",
-  };
-
-  const cartIndicator = {
-    position: "absolute",
-    top: "-8px",
-    right: "-8px",
-    backgroundColor: "#37b24d",
-    color: "white",
-    borderRadius: "50%",
-    width: "20px",
-    height: "20px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "12px",
-    fontWeight: "bold",
-  };
-
-  const mobileMenuStyles = {
-    display: mobileMenuOpen ? "flex" : "none",
-    flexDirection: "column",
-    gap: "15px",
-    padding: "15px 20px",
-    borderTop: "1px solid #e0e0e0",
-    backgroundColor: "#ffffff",
-    width: "100%",
-  };
-
-  const announcementTextStyles = {
-    maxWidth: isMobile ? "200px" : "none",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
   };
 
   return (
-  <>
-    {/* Announcement Bar */}
-    <div style={announcementBarStyles}>
-      <span style={leftArrowStyles} onClick={handlePrevAnnouncement}>‹</span>
-      <span style={announcementTextStyles}>{announcements[currentAnnouncementIndex]}</span>
-      <span style={rightArrowStyles} onClick={handleNextAnnouncement}>›</span>
-    </div>
+    <>
+      {/* Announcement Bar */}
+      <div
+        style={{
+          backgroundColor: "#000000",
+          color: "#ffffff",
+          padding: isSmallMobile ? "6px 20px" : isMobile ? "6px 30px" : "8px 0",
+          textAlign: "center",
+          position: "sticky",
+          top: "0",
+          width: "100%",
+          fontFamily: "Arial, sans-serif",
+          fontSize: isSmallMobile ? "11px" : isMobile ? "12px" : "14px",
+          fontWeight: "500",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: "1001",
+          transition: "all 0.3s ease",
+          boxSizing: "border-box",
+        }}
+      >
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            left: isSmallMobile ? "5px" : isMobile ? "10px" : "20px",
+            cursor: "pointer",
+            color: "#ffffff",
+            fontSize: isSmallMobile ? "14px" : isMobile ? "16px" : "18px",
+          }}
+          onClick={handlePrevAnnouncement}
+        >
+          ‹
+        </span>
+        <span
+          style={{
+            maxWidth: isSmallMobile ? "150px" : isMobile ? "200px" : "none",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {announcements[currentAnnouncementIndex]}
+        </span>
+        <span
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            right: isSmallMobile ? "5px" : isMobile ? "10px" : "20px",
+            cursor: "pointer",
+            color: "#ffffff",
+            fontSize: isSmallMobile ? "14px" : isMobile ? "16px" : "18px",
+          }}
+          onClick={handleNextAnnouncement}
+        >
+          ›
+        </span>
+      </div>
 
-    <nav style={navStyles}>
-      <div style={containerStyles}>
-        <div style={navRow}>
-          {/* Logo */}
-          <div style={logoStyles}>
-            <img 
-              src="public/Logo.png" 
-              alt="Goldfinch Logo" 
+      <nav
+        style={{
+          position: "sticky",
+          top: isSmallMobile ? "28px" : isMobile ? "30px" : "36px", // Height of announcement bar
+          backgroundColor: "#ffffff",
+          boxShadow: isScrolled ? "0 2px 5px rgba(0,0,0,0.1)" : "none",
+          padding: "0",
+          zIndex: "1000",
+          borderBottom: "1px solid #e0e0e0",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: isSmallMobile ? "8px 10px" : isMobile ? "10px 15px" : "15px 20px",
+              flexWrap: "wrap",
+            }}
+          >
+            {/* Logo */}
+            <div
               style={{
-                height: isMobile ? "32px" : "45px",
-                width: "auto",
-                objectFit: "contain",
-                marginRight: isMobile ? "10px" : "12px",
-                display: "inline-block",
-                verticalAlign: "middle",
-                filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.1))",
-                backgroundColor: "transparent",
-              }} 
-            />
-            <NavLink to="/" ><span style={{ color: "#37b24d" }}>GOLDFINCH TEAS</span></NavLink>
-            
-          </div>
-
-          {/* Desktop Nav Links */}
-          <div style={{ ...navLinks, display: isMobile ? "none" : "flex" }}>
-            <NavLink to="/" style={navLink}>Home</NavLink>
-            <NavLink to="/allProducts" style={navLink}>Shop</NavLink>
-            <a href="#about" style={navLink} onClick={(e) => scrollToSection('about', e)}>About</a>
-            <a href="#contact" style={navLink} onClick={(e) => scrollToSection('contact', e)}>Contact</a>
-            <button onClick={navigateOrder} style={navLink}>
-              My Orders
-            </button>
-          </div>
-
-          {/* Icons */}
-          <div style={iconSection}>
-            <button
-              style={{
-                ...iconButton,
-                fontSize: isMobile ? "14px" : "16px",
+                fontSize: isSmallMobile ? "16px" : isMobile ? "18px" : "24px",
+                fontWeight: "bold",
+                color: "#37b24d",
+                display: "flex",
+                alignItems: "center",
+                marginRight: isMobile ? "10px" : "0",
+                flex: isSmallMobile ? "1" : "initial",
               }}
-              onClick={handleLogin}
-              value={loggedin ? "logout" : "login"}
             >
-              {loggedin ? "Logout" : "Login"}
-            </button>
+              <img
+                src="/Logo.png"
+                alt="Goldfinch Logo"
+                style={{
+                  height: isSmallMobile ? "28px" : isMobile ? "32px" : "45px",
+                  width: "auto",
+                  objectFit: "contain",
+                  marginRight: isSmallMobile ? "6px" : isMobile ? "8px" : "12px",
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.1))",
+                  backgroundColor: "transparent",
+                }}
+              />
+              <NavLink 
+                to="/" 
+                style={{ 
+                  textDecoration: "none",
+                  display: isSmallMobile ? "block" : "inline-block",
+                  maxWidth: isSmallMobile ? "100px" : "none",
+                  overflow: isSmallMobile ? "hidden" : "visible",
+                  textOverflow: isSmallMobile ? "ellipsis" : "initial",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                <span style={{ 
+                  color: "#37b24d",
+                  fontSize: isSmallMobile ? "14px" : isMobile ? "16px" : "20px",
+                }}>
+                  GOLDFINCH TEAS
+                </span>
+              </NavLink>
+            </div>
 
-            <div style={{ position: "relative" }}>
-              <button style={iconButton} onClick={goToCart}>
-                <ShoppingCart size={isMobile ? 20 : 22} />
-                <div style={cartIndicator}>1</div>
+            {/* Desktop Nav Links */}
+            <div
+              style={{
+                display: isMobile ? "none" : "flex",
+                gap: "30px",
+                alignItems: "center",
+                justifyContent: "center",
+                flex: 1,
+              }}
+            >
+              <NavLink
+                to="/"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  padding: "5px 0",
+                  position: "relative",
+                  cursor: "pointer",
+                }}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/allProducts"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  padding: "5px 0",
+                  position: "relative",
+                  cursor: "pointer",
+                }}
+              >
+                Shop
+              </NavLink>
+              <a
+                href="#about"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  padding: "5px 0",
+                  position: "relative",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => scrollToSection("about", e)}
+              >
+                About
+              </a>
+              <a
+                href="#contact"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  padding: "5px 0",
+                  position: "relative",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => scrollToSection("contact", e)}
+              >
+                Contact
+              </a>
+              <button
+                onClick={navigateOrder}
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "16px",
+                  textTransform: "uppercase",
+                  padding: "5px 0",
+                  position: "relative",
+                  cursor: "pointer",
+                  background: "none",
+                  border: "none",
+                }}
+              >
+                My Orders
               </button>
             </div>
 
-            <button
-              style={{ ...iconButton, display: isMobile ? "block" : "none" }}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            {/* Icons */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: isSmallMobile ? "8px" : isMobile ? "10px" : "15px",
+              }}
             >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+              <button
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#333333",
+                  position: "relative",
+                  fontSize: isSmallMobile ? "12px" : isMobile ? "14px" : "16px",
+                  padding: isSmallMobile ? "4px" : "5px",
+                }}
+                onClick={handleLogin}
+                value={loggedin ? "logout" : "login"}
+              >
+                {loggedin ? "Logout" : "Login"}
+              </button>
+
+              <div style={{ position: "relative" }}>
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#333333",
+                    position: "relative",
+                    padding: isSmallMobile ? "4px" : "5px",
+                  }}
+                  onClick={goToCart}
+                >
+                  <ShoppingCart size={isSmallMobile ? 18 : isMobile ? 20 : 22} />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "-8px",
+                      right: "-8px",
+                      backgroundColor: "#37b24d",
+                      color: "white",
+                      borderRadius: "50%",
+                      width: isSmallMobile ? "18px" : "20px",
+                      height: isSmallMobile ? "18px" : "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: isSmallMobile ? "10px" : "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    1
+                  </div>
+                </button>
+              </div>
+
+              <button
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#333333",
+                  position: "relative",
+                  display: isMobile ? "block" : "none",
+                  padding: isSmallMobile ? "4px" : "5px",
+                }}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? (
+                  <X size={isSmallMobile ? 20 : 22} />
+                ) : (
+                  <Menu size={isSmallMobile ? 20 : 22} />
+                )}
+              </button>
+            </div>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobile && (
+            <div
+              style={{
+                display: mobileMenuOpen ? "flex" : "none",
+                flexDirection: "column",
+                gap: "15px",
+                padding: isSmallMobile ? "12px 15px" : "15px 20px",
+                borderTop: "1px solid #e0e0e0",
+                backgroundColor: "#ffffff",
+                width: "100%",
+                transition: "height 0.3s ease",
+                overflow: "hidden",
+              }}
+            >
+              <NavLink
+                to="/"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: isSmallMobile ? "14px" : "16px",
+                  textTransform: "uppercase",
+                  padding: "8px 0",
+                  borderBottom: "1px solid #f0f0f0",
+                  width: "100%",
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/allProducts"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: isSmallMobile ? "14px" : "16px",
+                  textTransform: "uppercase",
+                  padding: "8px 0",
+                  borderBottom: "1px solid #f0f0f0",
+                  width: "100%",
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Shop
+              </NavLink>
+              <a
+                href="#about"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: isSmallMobile ? "14px" : "16px",
+                  textTransform: "uppercase",
+                  padding: "8px 0",
+                  borderBottom: "1px solid #f0f0f0",
+                  width: "100%",
+                }}
+                onClick={(e) => scrollToSection("about", e)}
+              >
+                About
+              </a>
+              <a
+                href="#contact"
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: isSmallMobile ? "14px" : "16px",
+                  textTransform: "uppercase",
+                  padding: "8px 0",
+                  borderBottom: "1px solid #f0f0f0",
+                  width: "100%",
+                }}
+                onClick={(e) => scrollToSection("contact", e)}
+              >
+                Contact
+              </a>
+              <button
+                onClick={() => {
+                  navigateOrder();
+                  setMobileMenuOpen(false);
+                }}
+                style={{
+                  color: "#333333",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: isSmallMobile ? "14px" : "16px",
+                  textTransform: "uppercase",
+                  padding: "8px 0",
+                  textAlign: "left",
+                  background: "none",
+                  border: "none",
+                  borderBottom: "1px solid #f0f0f0",
+                  width: "100%",
+                  cursor: "pointer",
+                }}
+              >
+                My Orders
+              </button>
+            </div>
+          )}
         </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        {isMobile && mobileMenuOpen && (
-          <div style={mobileMenuStyles}>
-            <a href="/" style={navLink}>Home</a>
-            <a href="/allProducts" style={navLink}>Shop</a>
-            <a href="#about" style={navLink} onClick={(e) => scrollToSection('about', e)}>About</a>
-            <a href="#contact" style={navLink} onClick={(e) => scrollToSection('contact', e)}>Contact</a>
-            <a href={token ? "/Myorder" : "/"} style={navLink}>My Orders</a>
-          </div>
-        )}
-      </div>
-    </nav>
-
-    <Model isOpen={isOpen} closeMod={() => setIsOpen(false)} />
-  </>
-);
+      <Model isOpen={isOpen} closeMod={() => setIsOpen(false)} />
+    </>
+  );
 }
