@@ -514,6 +514,7 @@ const handlePayment = async (total) => {
             Please enter the <span style={styles.highlight}>6-digit OTP</span> sent to your registered email
             {user?.email && <span style={styles.highlight}> ({user.email})</span>}.
           </p>
+          <p style={styles.message}>(Check in Spam Email !)</p>
           
           {isLoading.sending ? (
             <div style={styles.statusMessage}>

@@ -110,6 +110,19 @@ export default function Navbar() {
     }
   };
 
+  const navigateOrder=()=>
+  {
+    if(token)
+    {
+      navigate("/Myorder")
+    }
+    else{
+      alertMsg("Login First")
+      navigate("/")
+    }
+
+  }
+
   // Announcement bar styles
   const announcementBarStyles = {
     backgroundColor: "#000000",
@@ -289,7 +302,9 @@ export default function Navbar() {
             <NavLink to="/allProducts" style={navLink}>Shop</NavLink>
             <a href="#about" style={navLink} onClick={(e) => scrollToSection('about', e)}>About</a>
             <a href="#contact" style={navLink} onClick={(e) => scrollToSection('contact', e)}>Contact</a>
-            <NavLink to={token ? "/Myorder" : "/"} style={navLink}>My Orders</NavLink>
+            <button onClick={navigateOrder} style={navLink}>
+              My Orders
+            </button>
           </div>
 
           {/* Icons */}

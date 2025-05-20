@@ -17,6 +17,7 @@ export default function AuthModal({isOpen, closeMod}) {
     e.preventDefault();
     const endPoint = (isLogin) ? "login" : 'signup';
     const msg = await login(endPoint, name, password, email);
+
     
     if(msg !== "success") {
       setError(msg);
