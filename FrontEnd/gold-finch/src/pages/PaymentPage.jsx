@@ -198,7 +198,7 @@ export default function PaymentConfirmationPage() {
       <div style={styles.progressStep}>
         <div style={{
           ...styles.progressCircle,
-          backgroundColor: '#4a90e2',
+          backgroundColor: '#45035b ',
           color: '#fff'
         }}>1</div>
         <div style={styles.progressLabel}>Cart</div>
@@ -207,7 +207,7 @@ export default function PaymentConfirmationPage() {
       <div style={styles.progressStep}>
         <div style={{
           ...styles.progressCircle,
-          backgroundColor: activeSection === 'address' || activeSection === 'payment' ? '#4a90e2' : '#e0e0e0',
+          backgroundColor: activeSection === 'address' || activeSection === 'payment' ? '#45035b ' : '#e0e0e0',
           color: activeSection === 'address' || activeSection === 'payment' ? '#fff' : '#666'
         }}>2</div>
         <div style={styles.progressLabel}>Address</div>
@@ -216,7 +216,7 @@ export default function PaymentConfirmationPage() {
       <div style={styles.progressStep}>
         <div style={{
           ...styles.progressCircle,
-          backgroundColor: activeSection === 'payment' ? '#4a90e2' : '#e0e0e0',
+          backgroundColor: activeSection === 'payment' ? '#45035b ' : '#e0e0e0',
           color: activeSection === 'payment' ? '#fff' : '#666'
         }}>3</div>
         <div style={styles.progressLabel}>Payment</div>
@@ -245,7 +245,7 @@ export default function PaymentConfirmationPage() {
                     key={index} 
                     style={{
                       ...styles.savedAddress,
-                      border: add === addr ? '2px solid #4a90e2' : '1px solid #ddd'
+                      border: add === addr ? '2px solid #45035b' : '1px solid #ddd'
                     }}
                     onClick={() => {
                       setAdd(addr);
@@ -663,7 +663,7 @@ const styles = {
     backgroundColor: '#fff',
     boxSizing: 'border-box',
     transition: 'border-color 0.2s ease',
-    outlineColor: '#4a90e2',
+    outlineColor: '#45035b ',
   },
   
   textarea: {
@@ -697,7 +697,7 @@ const styles = {
     marginRight: '10px',
     width: '16px',
     height: '16px',
-    accentColor: '#4a90e2',
+    accentColor: '#45035b ',
   },
   
   checkboxLabel: {
@@ -712,8 +712,8 @@ const styles = {
   },
   
   submitButton: {
-    backgroundColor: '#4a90e2',
-    color: '#fff',
+    backgroundColor: '#45035b ',
+    color: '#d3b20d ',
     border: 'none',
     borderRadius: '6px',
     padding: '14px 30px',

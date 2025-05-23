@@ -12,14 +12,11 @@ export default function Footer() {
               2020.
             </p>
             <div className="social-links">
-              <a href="#" className="social-link">
+              <a href="https://www.facebook.com/profile.php?id=61576109014467" target="_blank" className="social-link">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="social-link">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="social-link">
-                <Twitter size={20} />
+              <a href="https://www.instagram.com/goldfinchteas?igsh=MXE1cWVhdWxtdHhoYg==" target="_blank" className="social-link">
+                <Instagram size={20} /> 
               </a>
             </div>
           </div>
@@ -77,13 +74,29 @@ export default function Footer() {
           </div>
 
           <div className="footer-column">
-            <h3 className="footer-title">Contact Us</h3>
-            <address className="footer-address">
-              <p>Instagram : <a href="https://www.instagram.com/goldfinchteas?igsh=MXE1cWVhdWxtdHhoYg==" target="_blank">goldfinchteas</a></p>
-              <a href="https://mail.google.com/mail/u/0/#sent?compose=DmwnWrRspXPLKWpnCLGPnmLsQQjTHRkHzjpdmbzhPqNdHflhtrpbGWFGfpcGSNgFVqlnhJnSTNDL" target="_blank"><p>sealarkint@gmail.com</p></a>
-              <p>+91 8190070009</p>
-            </address>
-          </div>
+  <h3 className="footer-title">Contact Us</h3>
+  <address className="footer-address">
+    <a
+      href="https://www.instagram.com/goldfinchteas?igsh=MXE1cWVhdWxtdHhoYg=="
+      target="_blank"
+      rel="noopener noreferrer"
+      className="footer-link"
+      style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
+    >
+      <Instagram size={20} />
+      @goldfinchteas
+    </a>
+    <a
+      href="mailto:sealarkint@gmail.com"
+      className="footer-link"
+    >
+      sealarkint@gmail.com
+    </a>
+    <p>+91 8190070009</p>
+  </address>
+</div>
+
+
         </div>
 
         <div className="footer-bottom">

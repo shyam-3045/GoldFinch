@@ -40,9 +40,9 @@ export default function AboutSection() {
               by dedicated farmers across Assam.
             </p>
             <p className="about-paragraph">
-              We bring you signature blends like <strong>Assam Delight</strong>,
-              the warming <strong>Masala Magic</strong>, and the aromatic{" "}
-              <strong>Cardamom Wonder</strong>, each crafted to offer a burst of
+              We bring you signature blends like <strong style={{color:"#d3b20d"}}>Assam Delight</strong>,
+              the warming <strong style={{color:"#d3b20d"}}>Masala Magic</strong>, and the aromatic{" "}
+              <strong style={{color:"#d3b20d"}}>Cardamom Wonder</strong>, each crafted to offer a burst of
               freshness and authenticity. All our teas are directly sourced from
               local producers, ensuring purity, fairness, and bold, unforgettable
               flavors.

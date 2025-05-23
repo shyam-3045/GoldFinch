@@ -36,7 +36,7 @@ HeroSection = () => {
     mainTitle: {
       fontSize: '72px', // Increased font size
       fontWeight: '800',
-      color: '#ffffff',
+      color: '#d3b20d ',
       lineHeight: '1.1',
       letterSpacing: '1px',
       marginBottom: '16px',
@@ -62,8 +62,8 @@ HeroSection = () => {
       fontSize: '18px',
       fontWeight: '600',
       textTransform: 'uppercase',
-      color: '#ffffff',
-      backgroundColor: '#00c853',
+      color: '#d3b20d ',
+      backgroundColor: '#45035b ',
       border: 'none',
       borderRadius: '4px',
       cursor: 'pointer',

@@ -48,13 +48,13 @@ export default function ProductCard({ product, addItem, productNavigate }) {
           }}
         />
         
-        {product.isNew && (
+         (
           <div style={{
             position: 'absolute',
             top: '10px',
             left: '10px',
-            backgroundColor: '#ffcc00',
-            color: '#000',
+            backgroundColor: 'white ',
+            color: '#d3b20d ',
             padding: '4px 8px',
             fontSize: '12px',
             fontWeight: 'bold',
@@ -62,7 +62,7 @@ export default function ProductCard({ product, addItem, productNavigate }) {
           }}>
             NEW
           </div>
-        )}
+        )
         
         <button 
           onClick={(e) => {
@@ -86,7 +86,7 @@ export default function ProductCard({ product, addItem, productNavigate }) {
             transition: 'transform 0.2s ease',
           }}
         >
-          <ShoppingCart size={20} color="#333" />
+          <ShoppingCart size={20} color="#d3b20d " />
         </button>
       </div>
       
@@ -104,7 +104,7 @@ export default function ProductCard({ product, addItem, productNavigate }) {
           fontSize: '18px', 
           fontWeight: '600',
           margin: '0 0 5px 0',
-          color: '#333'
+          color: '#d3b20d '
         }}>
           {product.name}
         </h3>
@@ -132,7 +132,7 @@ export default function ProductCard({ product, addItem, productNavigate }) {
           <span style={{
             fontSize: '18px',
             fontWeight: '600',
-            color: '#333'
+            color: '#45035b '
           }}>
             ₹{product.price.toFixed(2)}
           </span>

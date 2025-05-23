@@ -10,24 +10,24 @@ const MyOrdersPage = () => {
   const [activeTab, setActiveTab] = useState('all');
 
   // Enhanced professional color palette
-  const colors = {
-    primary: '#4f46e5',
-    primaryLight: '#ebe9ff',
-    secondary: '#f8fafc',
-    accent: '#f59e0b',
-    success: '#10b981',
-    successLight: '#d1fae5',
-    processing: '#3b82f6',
-    processingLight: '#dbeafe',
-    textDark: '#1e293b',
-    textMedium: '#475569',
-    textLight: '#94a3b8',
-    border: '#e2e8f0',
-    borderDark: '#cbd5e1',
-    white: '#ffffff',
-    background: '#f1f5f9',
-    cardHover: '#f8fafc',
-    shadow: 'rgba(0, 0, 0, 0.05)'
+const colors = {
+    primary: '#45035b',           // Purple - main brand color
+    primaryLight: '#f3e6f7',      // Light purple for backgrounds
+    secondary: '#faf9f6',         // Very light cream/off-white
+    accent: '#d3b20d',            // Gold - accent color
+    success: '#10b981',           // Keep green for success states
+    successLight: '#d1fae5',      // Keep light green for success backgrounds
+    processing: '#45035b',        // Use purple for processing states
+    processingLight: '#f3e6f7',   // Light purple for processing backgrounds
+    textDark: '#1a1a1a',          // Near black for primary text
+    textMedium: '#4a4a4a',        // Dark gray for secondary text
+    textLight: '#7a7a7a',         // Medium gray for tertiary text
+    border: '#e8e8e8',            // Light gray for borders
+    borderDark: '#d0d0d0',        // Darker gray for emphasized borders
+    white: '#ffffff',             // Pure white
+    background: '#fefefe',        // Very light background
+    cardHover: '#f8f8f8',         // Light hover state
+    shadow: 'rgba(69, 3, 91, 0.08)' // Purple-tinted shadow
   };
 
   // Modernized professional styles
@@ -477,7 +477,7 @@ const MyOrdersPage = () => {
       left: '10%',
       width: '50%',
       height: '2px',
-      backgroundColor: colors.primary,
+      backgroundColor: colors.border,
       zIndex: 1,
     },
     progressStep: {
@@ -544,7 +544,6 @@ const MyOrdersPage = () => {
       },
     }
   };
-
   // Apply media queries manually since we're using inline styles
   const applyMediaQueries = () => {
     const isMobile = window.innerWidth <= 768;

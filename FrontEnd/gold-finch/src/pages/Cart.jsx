@@ -69,7 +69,7 @@ export default function ShoppingCart() {
       <h1 style={{
         fontSize: '28px',
         fontWeight: '700',
-        color: '#2b5d34',
+        color: '#45035b',
         marginBottom: '30px',
         textAlign: 'center'
       }}>Your Tea Cart</h1> 
@@ -101,7 +101,7 @@ export default function ShoppingCart() {
           
           {/* Active Step */}
           <div style={{
-            backgroundColor: '#4a7c59',
+            backgroundColor: '#45035b',
             color: 'white',
             width: '40px',
             height: '40px',
@@ -123,15 +123,15 @@ export default function ShoppingCart() {
             left: '0',
             textAlign: 'center',
             fontWeight: '600',
-            color: '#4a7c59'
+            color: '#45035b'
           }}>
             Cart
           </div>
           
           {/* Inactive Step */}
           <div style={{
-            backgroundColor: '#7fad8b',
-            color: 'white',
+            backgroundColor: '#e0e0e0',
+            color: '#666',
             width: '40px',
             height: '40px',
             borderRadius: '50%',
@@ -202,13 +202,13 @@ export default function ShoppingCart() {
         }}>
           <div style={{
             fontSize: '64px',
-            color: '#d1e0d5',
+            color: '#d1d1d1',
             marginBottom: '20px'
           }}>🛒</div>
           <h2 style={{
             fontSize: '24px',
             fontWeight: '600',
-            color: '#2b5d34',
+            color: '#45035b',
             marginBottom: '16px'
           }}>Your cart is empty</h2>
           <p style={{
@@ -224,7 +224,7 @@ export default function ShoppingCart() {
             onClick={handleContinueShopping}
             style={{
               padding: '14px 28px',
-              backgroundColor: '#4a7c59',
+              backgroundColor: '#45035b',
               color: 'white',
               border: 'none',
               borderRadius: '4px',
@@ -233,8 +233,8 @@ export default function ShoppingCart() {
               fontSize: '16px',
               transition: 'background-color 0.2s ease'
             }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3d6a4a'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4a7c59'}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#37032b'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#45035b'}
           >
             Browse Our Tea Collection
           </button>
@@ -254,9 +254,9 @@ export default function ShoppingCart() {
           }}>
             {/* Cart Header */}
             <div style={{
-              backgroundColor: '#f1f7f3',
+              backgroundColor: '#f8f5ff',
               padding: '16px 20px',
-              color: '#2b5d34',
+              color: '#45035b',
               fontWeight: '600',
               borderBottom: '1px solid #e0e0e0',
               display: windowWidth > 768 ? 'grid' : 'none',
@@ -313,8 +313,8 @@ export default function ShoppingCart() {
                     }}>{item.product.name}</h3>
                     <span style={{
                       fontSize: '14px',
-                      color: '#666',
-                      backgroundColor: '#f1f7f3',
+                      color: '#45035b',
+                      backgroundColor: '#f8f5ff',
                       padding: '4px 8px',
                       borderRadius: '4px'
                     }}>{item.product.category}</span>
@@ -341,10 +341,10 @@ export default function ShoppingCart() {
                           width: '32px',
                           height: '32px',
                           border: 'none',
-                          backgroundColor: '#f1f7f3',
+                          backgroundColor: '#f8f5ff',
                           cursor: 'pointer',
                           fontSize: '16px',
-                          color: '#2b5d34'
+                          color: '#45035b'
                         }}
                       >-</button>
                       <span style={{
@@ -360,10 +360,10 @@ export default function ShoppingCart() {
                           width: '32px',
                           height: '32px',
                           border: 'none',
-                          backgroundColor: '#f1f7f3',
+                          backgroundColor: '#f8f5ff',
                           cursor: 'pointer',
                           fontSize: '16px',
-                          color: '#2b5d34'
+                          color: '#45035b'
                         }}
                       >+</button>
                     </div>
@@ -378,7 +378,7 @@ export default function ShoppingCart() {
                   }}>
                     <div style={{
                       fontWeight: '600',
-                      color: '#4a7c59',
+                      color: '#d3b20d',
                       fontSize: '16px'
                     }}>₹{(item.product.price * item.quantity).toFixed(2)}</div>
                     <div style={{
@@ -423,7 +423,7 @@ export default function ShoppingCart() {
                   padding: '8px 12px',
                   background: 'none',
                   border: 'none',
-                  color: '#4a7c59',
+                  color: '#45035b',
                   fontWeight: '600',
                   cursor: 'pointer',
                   fontSize: '15px'
@@ -448,7 +448,7 @@ export default function ShoppingCart() {
               fontSize: '20px',
               fontWeight: '700',
               marginBottom: '24px',
-              color: '#2b5d34',
+              color: '#45035b',
               position: 'relative',
               paddingBottom: '12px'
             }}>
@@ -459,7 +459,7 @@ export default function ShoppingCart() {
                 left: '0',
                 width: '60px',
                 height: '3px',
-                backgroundColor: '#7fad8b'
+                backgroundColor: '#d3b20d'
               }}></span>
             </h2>
 
@@ -509,21 +509,21 @@ export default function ShoppingCart() {
                 <span style={{
                   fontWeight: '700',
                   fontSize: '18px',
-                  color: '#2b5d34'
+                  color: '#45035b'
                 }}>₹{total.toFixed(2)}</span>
               </div>
             </div>
 
             {/* Future Discount Note */}
             <div style={{
-              backgroundColor: '#f1f7f3',
+              backgroundColor: '#f8f5ff',
               borderRadius: '6px',
               padding: '14px',
               marginBottom: '24px',
               display: 'flex',
               alignItems: 'center',
               gap: '10px',
-              borderLeft: '4px solid #7fad8b'
+              borderLeft: '4px solid #d3b20d'
             }}>
               <span style={{
                 fontSize: '18px'
@@ -540,7 +540,7 @@ export default function ShoppingCart() {
               style={{
                 width: '100%',
                 padding: '14px',
-                backgroundColor: '#4a7c59',
+                backgroundColor: '#45035b',
                 color: 'white',
                 border: 'none',
                 borderRadius: '6px',
@@ -550,8 +550,8 @@ export default function ShoppingCart() {
                 transition: 'background-color 0.2s ease',
                 marginBottom: '20px'
               }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#3d6a4a'}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#4a7c59'}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#37032b'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#45035b'}
             >
               Proceed to Checkout
             </button>
