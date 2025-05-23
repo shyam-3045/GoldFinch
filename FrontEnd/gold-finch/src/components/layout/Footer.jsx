@@ -79,10 +79,9 @@ export default function Footer() {
           <div className="footer-column">
             <h3 className="footer-title">Contact Us</h3>
             <address className="footer-address">
-              <p>123 Tea Garden Lane</p>
-              <p>Tea Valley, TX 75001</p>
-              <p>info@tealeaf.com</p>
-              <p>(555) 123-4567</p>
+              <p>Instagram : <a href="https://www.instagram.com/goldfinchteas?igsh=MXE1cWVhdWxtdHhoYg==" target="_blank">goldfinchteas</a></p>
+              <a href="https://mail.google.com/mail/u/0/#sent?compose=DmwnWrRspXPLKWpnCLGPnmLsQQjTHRkHzjpdmbzhPqNdHflhtrpbGWFGfpcGSNgFVqlnhJnSTNDL" target="_blank"><p>sealarkint@gmail.com</p></a>
+              <p>+91 8190070009</p>
             </address>
           </div>
         </div>

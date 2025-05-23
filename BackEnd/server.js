@@ -1,8 +1,8 @@
 const express=require("express")
 const app=express()
-const dotenv=require("dotenv").config()
 const cors=require("cors")
 const connectDB=require("./config/connectionDB")
+require("dotenv").config()
 
 const PORT=process.env.PORT ||3000;
 
@@ -18,6 +18,9 @@ app.use("/api",require("./routes/review"))
 app.use("/api",require("./routes/profile"))
 app.use("/cart",require("./routes/cart"))
 app.use("/favorites",require("./routes/favorites"))
+app.use("/api",require("./routes/payment"))
+app.use("/api",require("./routes/otpMailer"))
+app.use("/api",require("./routes/order"))
 
 app.listen(PORT,()=>
 {
