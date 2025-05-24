@@ -53,7 +53,6 @@ export default function AuthModal({isOpen, closeMod}) {
     container: {
       width: '90%',
       maxWidth: '450px',
-      backgroundColor: '#ffffff',
       borderRadius: '12px',
       boxShadow: '0 20px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(139, 92, 246, 0.1)',
       zIndex: 1001,
@@ -67,8 +66,8 @@ export default function AuthModal({isOpen, closeMod}) {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '20px 24px',
-      background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
-      color: '#ffffff',
+      background: '#45035b',
+      color: '#d3b20d',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
     },
     headerTitle: {
@@ -127,8 +126,8 @@ export default function AuthModal({isOpen, closeMod}) {
     submitButton: {
       marginTop: '16px',
       padding: '14px 20px',
-      background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
-      color: '#ffffff',
+      background: '#45035b',
+      color: '#d3b20d',
       border: 'none',
       borderRadius: '8px',
       fontSize: '16px',
@@ -150,7 +149,7 @@ export default function AuthModal({isOpen, closeMod}) {
     toggleButton: {
       background: 'none',
       border: 'none',
-      color: '#7c3aed',
+      color: '#d3b20d',
       fontWeight: '600',
       cursor: 'pointer',
       padding: '4px',

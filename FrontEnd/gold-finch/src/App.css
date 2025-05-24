@@ -90,7 +90,7 @@ img {
 
 .section-title {
   font-size: 2.5rem;
-  color: var(--primary-color);
+  color:#45035b ;
 }
 
 .section-description {
@@ -524,11 +524,12 @@ img {
 .feature-title {
   font-size: 1.1rem;
   margin-bottom: 0.3rem;
+  color: #45035b ;
 }
 
 .feature-description {
   font-size: 0.9rem;
-  color: var(--text-muted);
+  
 }
 
 /* Testimonials Section */

@@ -41,7 +41,7 @@ export default function ProductDetailsPage() {
     price: singlePrd.price,
     originalPrice: 599,
     discountPrice: 24.99,
-    rating: singlePrd.ratings,
+    rating: 5,
     reviews: singlePrd.numOfReviews,
     description: singlePrd.description,
     features: [
@@ -53,7 +53,7 @@ export default function ProductDetailsPage() {
     ],
     specifications: {
       "Type": "Loose Leaf Assam Tea",
-      "Net Weight": "100g",
+      "Net Weight": "400g",
       "Origin": "Assam, India",
       "Packaging": "Sealed foil pouch",
       "Shelf Life": "12 months from packaging date"
@@ -76,40 +76,50 @@ export default function ProductDetailsPage() {
   const reviews = [
     {
       id: 1,
-      user: "Ravi",
+      user: "Joshikaa Sivakumar",
       rating: 5,
-      date: "May 15, 2025",
-      title: "Very good tea!",
-      content: "This Assam tea has a strong aroma and bold taste. Perfect for making my morning chai. Really happy with the quality.",
+      date: " 11 May 2025",
+      title: "Best tea.",
+      content: "Truly felt like drinking the tea from actual Assam plantation site guys. Way better than others. My family tried it and they absolutely loved it. Guaranteed buy👍🏻",
       verified: true
     },
     {
       id: 2,
-      user: "Chandra",
-      rating: 4,
-      date: "May 12, 2025",
-      title: "Good taste but a bit pricey",
-      content: "I liked the taste and aroma, very nice tea. But I think the price could be a little less for daily use.",
+      user: "	Bhuvana",
+      rating: 5,
+      date: "12 May 2025",
+      title: "Taste n Aroma",
+      content: "Taste is amazing 👌. Aroma while brewing it 👌. Loved it . One of the best new tea product launched in market.",
       verified: true
     },
     {
       id: 3,
-      user: "Kumar",
+      user: "	Nausheen",
       rating: 5,
-      date: "May 16, 2025",
-      title: "Highly recommended",
-      content: "Bought this for the first time and really liked the strong flavor. Feels like a true Assam tea experience. Will buy again.",
+      date: "10 May 2025",
+      title: "Every day Comfort in a cup.Must try!",
+      content: "Gold Finch tea offers a clean and comforting brew—simple, smooth, and perfect for everyday moments. A no-fuss cup that stays true to tradition.",
       verified: true
-    }
+    },
+    {
+      id: 3,
+      user: "	SIVABALAN M A",
+      rating: 5,
+      date: "9 May 2025",
+      title: "Good Taste!",
+      content: "The aroma and taste sips like tasting a tea at hills of Assam. Must try product.",
+      verified: true
+    },
+
   ];
 
   const recommendedProducts = products.filter((el) => el.name !== singlePrd.name);
 
-  // Enhanced styles
+ // Enhanced styles with Gold/Purple/Black theme
   const pageStyles = {
     fontFamily: "'Poppins', -apple-system, system-ui, sans-serif",
     color: "#333",
-    backgroundColor: "#f5f7fa",
+    backgroundColor: "#f8f6ff",
     padding: "40px 20px",
     maxWidth: "1200px",
     margin: "0 auto",
@@ -132,7 +142,7 @@ export default function ProductDetailsPage() {
     backgroundColor: "#fff",
     borderRadius: "12px",
     padding: "30px",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+    boxShadow: "0 4px 20px rgba(69, 3, 91, 0.12)",
   };
 
   const imageColumnStyles = {
@@ -161,8 +171,8 @@ export default function ProductDetailsPage() {
 
   const selectedThumbnailStyles = {
     ...thumbnailStyles,
-    borderColor: "#4ade80",
-    boxShadow: "0 0 0 2px #4ade80",
+    borderColor: "#d3b20d",
+    boxShadow: "0 0 0 2px #d3b20d",
   };
 
   const mainImageContainerStyles = {
@@ -170,7 +180,7 @@ export default function ProductDetailsPage() {
     position: "relative",
     borderRadius: "12px",
     overflow: "hidden",
-    boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 8px 16px rgba(69, 3, 91, 0.15)",
   };
 
   const mainImageStyles = {
@@ -195,14 +205,14 @@ export default function ProductDetailsPage() {
     paddingRight: "15px",
     height: "100%",
     scrollbarWidth: "thin",
-    scrollbarColor: "#10b981 transparent",
+    scrollbarColor: "#d3b20d transparent",
   };
 
   const productTitleStyles = {
     fontSize: "32px",
     fontWeight: "700",
     margin: "0 0 8px 0",
-    color: "#111",
+    color: "#45035b",
     letterSpacing: "-0.5px",
   };
 
@@ -216,7 +226,7 @@ export default function ProductDetailsPage() {
   const currentPriceStyles = {
     fontSize: "32px",
     fontWeight: "800",
-    color: "#047857",
+    color: "#d3b20d",
   };
 
   const originalPriceStyles = {
@@ -226,8 +236,8 @@ export default function ProductDetailsPage() {
   };
 
   const discountBadgeStyles = {
-    backgroundColor: "#fef2f2",
-    color: "#ef4444",
+    backgroundColor: "#fdf2f8",
+    color: "#45035b",
     padding: "4px 10px",
     borderRadius: "20px",
     fontSize: "14px",
@@ -242,7 +252,7 @@ export default function ProductDetailsPage() {
   };
 
   const starStyles = {
-    color: "#facc15",
+    color: "#d3b20d",
     fontSize: "18px",
     letterSpacing: "2px",
   };
@@ -282,7 +292,7 @@ export default function ProductDetailsPage() {
   };
 
   const checkmarkStyles = {
-    color: "#10b981",
+    color: "#d3b20d",
     fontSize: "18px",
     fontWeight: "bold",
   };
@@ -292,10 +302,10 @@ export default function ProductDetailsPage() {
     fontWeight: "600",
     marginBottom: "15px",
     marginTop: "25px",
-    color: "#0f172a",
+    color: "#45035b",
     position: "relative",
     paddingLeft: "15px",
-    borderLeft: "4px solid #10b981",
+    borderLeft: "4px solid #d3b20d",
   };
 
   const quantitySelectorStyles = {
@@ -316,7 +326,7 @@ export default function ProductDetailsPage() {
     alignItems: "center",
     borderRadius: "8px",
     overflow: "hidden",
-    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.08)",
+    boxShadow: "0 2px 5px rgba(69, 3, 91, 0.1)",
   };
 
   const quantityButtonStyles = {
@@ -325,7 +335,7 @@ export default function ProductDetailsPage() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "#f3f0ff",
     border: "none",
     cursor: "pointer",
     userSelect: "none",
@@ -357,7 +367,7 @@ export default function ProductDetailsPage() {
 
   const stockInfoStyles = {
     fontSize: "15px",
-    color: product.stock > 5 ? "#10b981" : "#f59e0b",
+    color: product.stock > 5 ? "#d3b20d" : "#f59e0b",
     display: "flex",
     alignItems: "center",
     gap: "8px",
@@ -365,7 +375,7 @@ export default function ProductDetailsPage() {
   };
 
   const addToCartButtonStyles = {
-    backgroundColor: "#047857",
+    backgroundColor: "#45035b",
     color: "white",
     border: "none",
     borderRadius: "10px",
@@ -380,7 +390,7 @@ export default function ProductDetailsPage() {
     transition: "all 0.3s ease",
     marginTop: "15px",
     width: "100%",
-    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)",
+    boxShadow: "0 4px 12px rgba(69, 3, 91, 0.25)",
   };
 
   const specificationsTableStyles = {
@@ -397,7 +407,7 @@ export default function ProductDetailsPage() {
   const tableCellStyles = {
     padding: "12px 15px",
     fontSize: "14px",
-    backgroundColor: "#f8fafc",
+    backgroundColor: "#fefefe",
     border: "1px solid #e2e8f0",
     borderLeft: "none",
     borderRight: "none",
@@ -407,9 +417,10 @@ export default function ProductDetailsPage() {
     ...tableCellStyles,
     fontWeight: "600",
     width: "40%",
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "#f9f7ff",
     borderRadius: "6px 0 0 6px",
     borderLeft: "1px solid #e2e8f0",
+    color: "#45035b",
   };
 
   const tableCellValueStyles = {
@@ -422,7 +433,7 @@ export default function ProductDetailsPage() {
     backgroundColor: "#fff",
     borderRadius: "12px",
     padding: "30px",
-    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+    boxShadow: "0 4px 20px rgba(69, 3, 91, 0.08)",
     marginTop: "40px",
   };
 
@@ -430,13 +441,13 @@ export default function ProductDetailsPage() {
     fontSize: "24px",
     fontWeight: "700",
     marginBottom: "30px",
-    color: "#0f172a",
+    color: "#45035b",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     position: "relative",
     paddingBottom: "15px",
-    borderBottom: "2px solid #e2e8f0",
+    borderBottom: "2px solid #d3b20d",
   };
 
   const reviewContainerStyles = {
@@ -456,7 +467,7 @@ export default function ProductDetailsPage() {
   const reviewUserStyles = {
     fontWeight: "600",
     fontSize: "16px",
-    color: "#1e293b",
+    color: "#45035b",
   };
 
   const reviewDateStyles = {
@@ -468,7 +479,7 @@ export default function ProductDetailsPage() {
     fontSize: "18px",
     fontWeight: "600",
     marginBottom: "10px",
-    color: "#0f172a",
+    color: "#45035b",
   };
 
   const reviewContentStyles = {
@@ -478,8 +489,8 @@ export default function ProductDetailsPage() {
   };
 
   const verifiedBadgeStyles = {
-    backgroundColor: "#ecfdf5",
-    color: "#10b981",
+    backgroundColor: "#fffbeb",
+    color: "#d3b20d",
     padding: "3px 10px",
     borderRadius: "20px",
     fontSize: "12px",
@@ -508,7 +519,7 @@ export default function ProductDetailsPage() {
     border: "1px solid #e5e7eb",
     transition: "transform 0.3s ease, box-shadow 0.3s ease",
     cursor: "pointer",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)",
+    boxShadow: "0 2px 10px rgba(69, 3, 91, 0.08)",
   };
 
   const productCardImageStyles = {
@@ -526,7 +537,7 @@ export default function ProductDetailsPage() {
     fontSize: "17px",
     fontWeight: "600",
     marginBottom: "10px",
-    color: "#1e293b",
+    color: "#45035b",
     lineHeight: "1.4",
   };
 
@@ -540,7 +551,7 @@ export default function ProductDetailsPage() {
   const productCardCurrentPriceStyles = {
     fontSize: "18px",
     fontWeight: "700",
-    color: "#047857",
+    color: "#d3b20d",
   };
 
   const productCardOriginalPriceStyles = {
@@ -567,7 +578,6 @@ export default function ProductDetailsPage() {
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
   }
-
   // Calculate discount percentage
   const calculateDiscount = () => {
     if (product.originalPrice && product.price) {
@@ -586,7 +596,7 @@ export default function ProductDetailsPage() {
           <span>›</span>
           <span style={{cursor: "pointer"}} onClick={() => navigate("/allProducts")}>Tea Collection</span>
           <span>›</span>
-          <span style={{color: "#10b981"}}>{product.name}</span>
+          <span style={{color: "#d3b20d "}}>{product.name}</span>
         </div>
         
         {/* Main container */}

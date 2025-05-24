@@ -69,17 +69,17 @@ export default function ProductDisplay() {
   };
 
   // Styles
-  const styles = {
+const styles = {
     container: {
       minHeight: '100vh',
-      background: 'linear-gradient(to bottom, #ffffff, #f5f9f5)',
+      background: 'linear-gradient(to bottom, #ffffff, #fefefe)',
       fontFamily: '"Playfair Display", "Georgia", serif',
     },
     header: {
-      background: 'linear-gradient(90deg, #6B8E23, #8FBC8F)',
+      background: 'linear-gradient(90deg, #45035b, #6a1f7a)',
       padding: '15px 20px',
       color: 'white',
-      boxShadow: '0 4px 12px rgba(107, 142, 35, 0.2)'
+      boxShadow: '0 4px 12px rgba(69, 3, 91, 0.2)'
     },
     headerContent: {
       maxWidth: '1200px',
@@ -102,7 +102,7 @@ export default function ProductDisplay() {
       position: 'absolute',
       top: '-8px',
       right: '-8px',
-      background: '#e74c3c',
+      background: '#d3b20d',
       color: 'white',
       borderRadius: '50%',
       width: '20px',
@@ -115,11 +115,11 @@ export default function ProductDisplay() {
       boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)'
     },
     searchBar: {
-      background: 'linear-gradient(135deg, rgba(143, 188, 143, 0.15), rgba(143, 188, 143, 0.05))',
+      background: 'linear-gradient(135deg, rgba(69, 3, 91, 0.08), rgba(69, 3, 91, 0.03))',
       padding: '20px',
-      boxShadow: '0 4px 6px rgba(107, 142, 35, 0.08)',
+      boxShadow: '0 4px 6px rgba(69, 3, 91, 0.08)',
       marginBottom: '30px',
-      borderBottom: '1px solid rgba(107, 142, 35, 0.15)'
+      borderBottom: '1px solid rgba(69, 3, 91, 0.15)'
     },
     searchBarContent: {
       maxWidth: '1200px',
@@ -140,23 +140,23 @@ export default function ProductDisplay() {
       width: '100%',
       padding: '12px 12px 12px 42px',
       borderRadius: '30px',
-      border: '1px solid rgba(107, 142, 35, 0.3)',
+      border: '1px solid rgba(69, 3, 91, 0.3)',
       fontSize: '16px',
       transition: 'all 0.3s',
-      boxShadow: '0 2px 5px rgba(107, 142, 35, 0.05)',
+      boxShadow: '0 2px 5px rgba(69, 3, 91, 0.05)',
       backgroundColor: 'rgba(255, 255, 255, 0.9)'
     },
     inputFocus: {
       outline: 'none',
-      borderColor: '#6B8E23',
-      boxShadow: '0 2px 10px rgba(107, 142, 35, 0.2)'
+      borderColor: '#45035b',
+      boxShadow: '0 2px 10px rgba(69, 3, 91, 0.2)'
     },
     searchIcon: {
       position: 'absolute',
       left: '15px',
       top: '50%',
       transform: 'translateY(-50%)',
-      color: '#6B8E23'
+      color: '#45035b'
     },
     filterContainer: {
       display: 'flex',
@@ -165,33 +165,33 @@ export default function ProductDisplay() {
       background: 'rgba(255, 255, 255, 0.8)',
       padding: '8px 15px',
       borderRadius: '25px',
-      border: '1px solid rgba(107, 142, 35, 0.2)',
+      border: '1px solid rgba(69, 3, 91, 0.2)',
     },
     filterLabel: {
-      color: '#556B2F',
+      color: '#45035b',
       fontWeight: '500',
       fontSize: '15px'
     },
     select: {
       padding: '10px 35px 10px 15px',
       borderRadius: '20px',
-      border: '1px solid rgba(107, 142, 35, 0.3)',
+      border: '1px solid rgba(69, 3, 91, 0.3)',
       fontSize: '15px',
       backgroundColor: 'white',
       cursor: 'pointer',
       minWidth: '160px',
       appearance: 'none',
-      backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%236B8E23\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpath d=\'M6 9l6 6 6-6\'/%3e%3c/svg%3e")',
+      backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2345035b\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpath d=\'M6 9l6 6 6-6\'/%3e%3c/svg%3e")',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'right 12px center',
       backgroundSize: '12px',
       transition: 'all 0.3s',
-      boxShadow: '0 2px 5px rgba(107, 142, 35, 0.05)'
+      boxShadow: '0 2px 5px rgba(69, 3, 91, 0.05)'
     },
     selectFocus: {
       outline: 'none',
-      borderColor: '#6B8E23',
-      boxShadow: '0 2px 10px rgba(107, 142, 35, 0.2)'
+      borderColor: '#45035b',
+      boxShadow: '0 2px 10px rgba(69, 3, 91, 0.2)'
     },
     main: {
       maxWidth: '1200px',
@@ -201,8 +201,8 @@ export default function ProductDisplay() {
     categoryHeading: {
       fontSize: '26px',
       fontWeight: '700',
-      color: '#3e5622',
-      borderBottom: '2px solid rgba(107, 142, 35, 0.3)',
+      color: '#1a1a1a',
+      borderBottom: '2px solid rgba(69, 3, 91, 0.3)',
       paddingBottom: '15px',
       marginBottom: '25px',
       marginTop: '40px',
@@ -223,30 +223,30 @@ export default function ProductDisplay() {
       background: 'white',
       borderRadius: '12px',
       overflow: 'hidden',
-      boxShadow: '0 10px 25px rgba(107, 142, 35, 0.08)',
+      boxShadow: '0 10px 25px rgba(69, 3, 91, 0.08)',
       transition: 'transform 0.3s, box-shadow 0.3s',
       cursor: 'pointer',
-      border: '1px solid rgba(143, 188, 143, 0.2)',
+      border: '1px solid rgba(69, 3, 91, 0.15)',
       position: 'relative',
     },
     productCardHover: {
       transform: 'translateY(-5px)',
-      boxShadow: '0 15px 30px rgba(107, 142, 35, 0.15)'
+      boxShadow: '0 15px 30px rgba(69, 3, 91, 0.15)'
     },
     productImageContainer: {
-      width: "100%",      // or fixed width if you want
-  height: "300px",    // or whatever height you want
-  overflow: "hidden", // hide overflow to avoid scrollbars if image overflows
-  padding: 0,
-  margin: 0,
-  position: "relative", // if you want to do anything position-wise later
+      width: "100%",      
+      height: "300px",    
+      overflow: "hidden", 
+      padding: 0,
+      margin: 0,
+      position: "relative", 
     },
      productImage: {
-    width: "100%",         // Make image fill the container's width
-    height: "100%",        // Make image fill the container's height
-    objectFit: "cover",    // Cover the container, cropping if necessary to avoid distortion
-    display: "block",      // Remove any inline gap below image
-  },
+      width: "100%",         
+      height: "100%",        
+      objectFit: "cover",    
+      display: "block",      
+    },
     productInfo: {
       padding: '24px',
       position: 'relative',
@@ -255,11 +255,11 @@ export default function ProductDisplay() {
       fontSize: '18px',
       fontWeight: 'bold',
       marginBottom: '10px',
-      color: '#3e5622',
+      color: '#d3b20d',
       lineHeight: '1.4'
     },
     productCategory: {
-      color: '#71906a',
+      color: '#4a4a4a',
       fontSize: '14px',
       marginBottom: '10px',
       fontStyle: 'italic'
@@ -270,7 +270,7 @@ export default function ProductDisplay() {
       alignItems: 'center',
       marginTop: '20px',
       paddingTop: '15px',
-      borderTop: '1px solid rgba(143, 188, 143, 0.2)'
+      borderTop: '1px solid rgba(69, 3, 91, 0.15)'
     },
     productPrice: {
       display: 'flex',
@@ -279,18 +279,18 @@ export default function ProductDisplay() {
     currentPrice: {
       fontSize: '22px',
       fontWeight: 'bold',
-      color: '#3e5622',
+      color: '#1a1a1a',
       display: 'inline-block',
     },
     originalPrice: {
       fontSize: '16px',
-      color: '#999',
+      color: '#7a7a7a',
       textDecoration: 'line-through',
       marginRight: '8px',
       display: 'inline-block',
     },
     addButton: {
-      backgroundColor: '#6B8E23',
+      backgroundColor: '#45035b',
       color: 'white',
       border: 'none',
       padding: '10px 18px',
@@ -298,26 +298,26 @@ export default function ProductDisplay() {
       fontWeight: '600',
       cursor: 'pointer',
       transition: 'all 0.3s',
-      boxShadow: '0 4px 10px rgba(107, 142, 35, 0.25)',
+      boxShadow: '0 4px 10px rgba(69, 3, 91, 0.25)',
       display: 'flex',
       alignItems: 'center',
       gap: '5px',
       fontSize: '15px'
     },
     addButtonHover: {
-      backgroundColor: '#556B2F',
+      backgroundColor: '#2e0240',
       transform: 'translateY(-2px)',
-      boxShadow: '0 6px 12px rgba(107, 142, 35, 0.35)'
+      boxShadow: '0 6px 12px rgba(69, 3, 91, 0.35)'
     },
     noProducts: {
       textAlign: 'center',
       padding: '80px 0',
-      color: '#71906a',
+      color: '#4a4a4a',
       fontSize: '20px',
       fontStyle: 'italic'
     },
     footer: {
-      background: 'linear-gradient(90deg, #6B8E23, #8FBC8F)',
+      background: 'linear-gradient(90deg, #45035b, #6a1f7a)',
       color: 'white',
       padding: '30px 20px',
       textAlign: 'center',
@@ -329,8 +329,8 @@ export default function ProductDisplay() {
     },
     badge: {
       display: 'inline-block',
-      backgroundColor: 'rgba(107, 142, 35, 0.1)',
-      color: '#556B2F',
+      backgroundColor: 'rgba(69, 3, 91, 0.1)',
+      color: '#45035b',
       padding: '4px 10px',
       borderRadius: '12px',
       fontSize: '12px',
@@ -342,7 +342,7 @@ export default function ProductDisplay() {
       position: 'absolute',
       top: '15px',
       right: '15px',
-      backgroundColor: '#e74c3c',
+      backgroundColor: '#d3b20d',
       color: 'white',
       padding: '5px 10px',
       borderRadius: '12px',
@@ -358,8 +358,8 @@ export default function ProductDisplay() {
       position: 'absolute',
       top: '15px',
       left: '15px',
-      backgroundColor: "green",
-      color: 'white',
+      backgroundColor: "white",
+      color: '#d3b20d',
       padding: '5px 10px',
       borderRadius: '12px',
       fontWeight: 'bold',
@@ -372,7 +372,7 @@ export default function ProductDisplay() {
       bottom: '10px',
       right: '10px',
       backgroundColor: 'rgba(255, 255, 255, 0.9)',
-      color: '#2ecc71',
+      color: '#d3b20d',
       padding: '4px 10px',
       borderRadius: '8px',
       fontSize: '12px',
@@ -386,7 +386,7 @@ export default function ProductDisplay() {
     },
     ratingCount: {
       marginLeft: '8px',
-      color: '#71906a',
+      color: '#4a4a4a',
       fontSize: '14px',
     },
     wishlistButton: {
@@ -531,8 +531,8 @@ export default function ProductDisplay() {
                             e.currentTarget.style.boxShadow = styles.addButton.boxShadow;
                           }}
                         >
-                          <ShoppingCart size={16} />
-                          Add to Cart
+                          <ShoppingCart size={16} style={{color:"#d3b20d"}} />
+                          <span style={{color:"#d3b20d"}}> Add to Cart</span>
                         </button>
                       </div>
                     </div>

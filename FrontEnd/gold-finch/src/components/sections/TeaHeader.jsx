@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TeaHeader = () => {
-  const backgroundImageUrl = '/TeaHeader.png';
+  const backgroundImageUrl = '/Tea-header.jpg';
   
   return (
     <div style={{
@@ -39,14 +39,15 @@ const TeaHeader = () => {
           fontWeight: 'bold',
           marginBottom: '20px',
           fontFamily: 'Georgia, serif',
-          letterSpacing: '1px'
+          letterSpacing: '1px',
+          color:"#d3b20d "
         }}>Assam's Pride in Every Sip</h1>
         
         <p style={{
           fontSize: '24px',
           fontStyle: 'italic',
           marginBottom: '40px',
-          color: '#FFEB3B'
+          color: 'white'
         }}>From Pristine Gardens to Your Cup – The Freshest Tea Experience</p>
         
         <div style={{
