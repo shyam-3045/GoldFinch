@@ -63,18 +63,47 @@ export default function PaymentConfirmationPage() {
 
   // Cities by state for dropdown
   const citiesByState = {
-    'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Tirupati'],
-    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Thane', 'Nashik'],
-    'Karnataka': ['Bengaluru', 'Mysuru', 'Hubli', 'Mangaluru', 'Belgaum'],
-    'Tamil Nadu': [
-      'Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Salem',
-      'Tirunelveli', 'Tiruppur', 'Vellore', 'Thoothukudi', 'Erode',
-      'Dindigul', 'Thanjavur', 'Karur', 'Nagercoil', 'Kanchipuram',
-      'Kumbakonam', 'Cuddalore', 'Ambur', 'Hosur', 'Rajapalayam'
-    ],
-    'Delhi': ['New Delhi', 'Delhi', 'Noida', 'Gurgaon', 'Faridabad'],
-    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar'],
-  };
+  'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Tirupati'],
+  'Arunachal Pradesh': ['Itanagar', 'Naharlagun', 'Pasighat', 'Tawang'],
+  'Assam': ['Guwahati', 'Silchar', 'Dibrugarh', 'Jorhat'],
+  'Bihar': ['Patna', 'Gaya', 'Bhagalpur', 'Muzaffarpur'],
+  'Chhattisgarh': ['Raipur', 'Bhilai', 'Bilaspur', 'Korba'],
+  'Goa': ['Panaji', 'Vasco da Gama', 'Margao', 'Mapusa'],
+  'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar'],
+  'Haryana': ['Faridabad', 'Gurgaon', 'Panipat', 'Ambala'],
+  'Himachal Pradesh': ['Shimla', 'Mandi', 'Solan', 'Dharamshala'],
+  'Jharkhand': ['Ranchi', 'Dhanbad', 'Jamshedpur', 'Bokaro Steel City'],
+  'Karnataka': ['Bengaluru', 'Mysuru', 'Hubli', 'Mangaluru', 'Belgaum'],
+  'Kerala': ['Thiruvananthapuram', 'Kochi', 'Kozhikode', 'Thrissur'],
+  'Madhya Pradesh': ['Indore', 'Bhopal', 'Jabalpur', 'Gwalior'],
+  'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Thane', 'Nashik'],
+  'Manipur': ['Imphal', 'Thoubal', 'Bishnupur', 'Churachandpur'],
+  'Meghalaya': ['Shillong', 'Tura', 'Jowai', 'Nongpoh'],
+  'Mizoram': ['Aizawl', 'Lunglei', 'Champhai', 'Serchhip'],
+  'Nagaland': ['Dimapur', 'Kohima', 'Mokokchung', 'Tuensang'],
+  'Odisha': ['Bhubaneswar', 'Cuttack', 'Rourkela', 'Berhampur'],
+  'Punjab': ['Ludhiana', 'Amritsar', 'Jalandhar', 'Patiala'],
+  'Rajasthan': ['Jaipur', 'Jodhpur', 'Kota', 'Udaipur'],
+  'Sikkim': ['Gangtok', 'Namchi', 'Gyalshing', 'Mangan'],
+  'Tamil Nadu': [
+    'Chennai', 'Coimbatore', 'Madurai', 'Tiruchirappalli', 'Salem',
+    'Tirunelveli', 'Tiruppur', 'Vellore', 'Thoothukudi', 'Erode',
+    'Dindigul', 'Thanjavur', 'Karur', 'Nagercoil', 'Kanchipuram',
+    'Kumbakonam', 'Cuddalore', 'Ambur', 'Hosur', 'Rajapalayam',
+    'Ambattur', 'Avadi', 'Tiruvottiyur', 'Pallavaram', 'Tambaram',
+    'Alandur', 'Tiruvannamalai', 'Kurichi', 'Madavaram', 'Pudukkottai',
+    'Karaikkudi', 'Neyveli', 'Nagapattinam', 'Virudhunagar'
+   ],
+  'Telangana': ['Hyderabad', 'Warangal', 'Nizamabad', 'Karimnagar'],
+  'Tripura': ['Agartala', 'Udaipur', 'Dharmanagar', 'Kailasahar'],
+  'Uttar Pradesh': ['Lucknow', 'Kanpur', 'Agra', 'Varanasi', 'Prayagraj'],
+  'Uttarakhand': ['Dehradun', 'Haridwar', 'Roorkee', 'Haldwani'],
+  'West Bengal': ['Kolkata', 'Howrah', 'Durgapur', 'Asansol'],
+  'Delhi': ['New Delhi', 'Delhi', 'Noida', 'Gurgaon', 'Faridabad'],
+  'Jammu and Kashmir': ['Srinagar', 'Jammu', 'Anantnag', 'Baramulla'],
+  'Ladakh': ['Leh', 'Kargil']
+};
+
 
   // Handle input changes
   const handleChange = (e) => {
