@@ -296,7 +296,7 @@ const handlePayment = async (total) => {
        }); // log the order data for debuggin
        // Step 2: Set up Razorpay options
        const options = {
-           key: "rzp_test_cNG8AXPmxWUyej", // from Razorpay Dashboard
+           key:"rzp_live_4tytQXRekc4sXJ", // from Razorpay Dashboard
            amount: data.order.amount,
            currency: "INR",
            name: "Goldfinch Teas",
