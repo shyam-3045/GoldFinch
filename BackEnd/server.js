@@ -16,6 +16,7 @@ app.use('/razorpay/webhook', express.raw({ type: 'application/json' }));
 
 const webhookRoute = require('./controllers/webhook');
 app.use('/', webhookRoute);
+
 app.use("/",require("./routes/User"))
 app.use("/api",require("./routes/product"))
 app.use("/api",require("./routes/review"))
