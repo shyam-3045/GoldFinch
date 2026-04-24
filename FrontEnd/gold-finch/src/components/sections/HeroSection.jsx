@@ -88,7 +88,7 @@ HeroSection = () => {
       <div style={styles.contentContainer}>
         <div style={styles.titleContainer}>
           <h1 style={styles.mainTitle}>
-            ASSAM' S<br />FIRST FLUSH 2
+            ASSAM' S<br />FIRST FLUSH 3
           </h1>
           <p style={styles.subtitle}>
             Sip the essence of spring with our First Flush Assam Teas
